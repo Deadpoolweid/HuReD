@@ -5,57 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Hured"
         mc:Ignorable="d"
-        Title="Education" Height="Auto" Width="500">
-    <Window.Resources>
-        <Style TargetType="Label">
-            <Setter Property="Margin" Value="5"></Setter>
-            <Setter Property="Background" Value="Bisque"></Setter>
-            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
-            <Setter Property="VerticalAlignment" Value="Center"></Setter>
-        </Style>
-
-        <Style TargetType="TextBox">
-            <Setter Property="Background" Value="MediumSeaGreen"></Setter>
-            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
-            <Setter Property="VerticalAlignment" Value="Center"></Setter>
-            <Setter Property="MinWidth" Value="200"></Setter>
-            <Setter Property="MinHeight" Value="20"></Setter>
-            <Setter Property="Margin" Value="5"></Setter>
-        </Style>
-
-        <Style TargetType="ComboBox">
-            <Setter Property="Background" Value="CornflowerBlue"></Setter>
-            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
-            <Setter Property="VerticalAlignment" Value="Center"></Setter>
-            <Setter Property="Margin" Value="5"></Setter>
-            <Setter Property="MinWidth" Value="200"></Setter>
-            <Setter Property="MinHeight" Value="20"></Setter>
-        </Style>
-
-        <Style TargetType="Button">
-            <Setter Property="Padding" Value="5"></Setter>
-            <Setter Property="Margin" Value="5"></Setter>
-        </Style>
-
-        <Style TargetType="StackPanel">
-            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
-            <Setter Property="VerticalAlignment" Value="Center"></Setter>
-        </Style>
-
-        <Style TargetType="DatePickerTextBox">
-            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
-            <Setter Property="VerticalAlignment" Value="Center"></Setter>
-            <Setter Property="Margin" Value="5"></Setter>
-            <Setter Property="MinWidth" Value="200"></Setter>
-            <Setter Property="MinHeight" Value="20"></Setter>
-        </Style>
-
-        <Style TargetType="CheckBox">
-            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
-            <Setter Property="VerticalAlignment" Value="Center"></Setter>
-        </Style>
-
-    </Window.Resources>
+        Title="Добавить образование" Height="450" Width="300" ResizeMode="CanMinimize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -71,8 +21,8 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
         <Label Grid.Row="0" Grid.Column="0">Тип</Label>
@@ -91,10 +41,10 @@
         <TextBox Grid.Row="4" Grid.Column="1"></TextBox>
 
         <Label Grid.Row="5" Grid.Column="0">Начало обучения</Label>
-        <DatePickerTextBox Grid.Row="5" Grid.Column="1"></DatePickerTextBox>
+        <DatePicker Grid.Row="5" Grid.Column="1"></DatePicker>
 
         <Label Grid.Row="6" Grid.Column="0">Конец обучения</Label>
-        <DatePickerTextBox Grid.Row="6" Grid.Column="1"></DatePickerTextBox>
+        <DatePicker Grid.Row="6" Grid.Column="1"></DatePicker>
 
         <Label Grid.Row="7" Grid.Column="0">Специальность</Label>
         <TextBox Grid.Row="7" Grid.Column="1"></TextBox>

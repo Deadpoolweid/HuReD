@@ -5,69 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Hured"
         mc:Ignorable="d"
-        Title="Statuses" Height="300" Width="300">
-    <Window.Resources>
-        <Style TargetType="Label">
-            <Setter Property="Margin" Value="5"></Setter>
-            <Setter Property="Background" Value="Bisque"></Setter>
-            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
-            <Setter Property="VerticalAlignment" Value="Center"></Setter>
-        </Style>
-
-        <Style TargetType="TextBox">
-            <Setter Property="Background" Value="MediumSeaGreen"></Setter>
-            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
-            <Setter Property="VerticalAlignment" Value="Center"></Setter>
-            <Setter Property="MinWidth" Value="200"></Setter>
-            <Setter Property="MinHeight" Value="20"></Setter>
-            <Setter Property="Margin" Value="5"></Setter>
-        </Style>
-
-        <Style TargetType="ComboBox">
-            <Setter Property="Background" Value="CornflowerBlue"></Setter>
-            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
-            <Setter Property="VerticalAlignment" Value="Center"></Setter>
-            <Setter Property="Margin" Value="5"></Setter>
-            <Setter Property="MinWidth" Value="200"></Setter>
-            <Setter Property="MinHeight" Value="20"></Setter>
-        </Style>
-
-        <Style TargetType="Button">
-            <Setter Property="Padding" Value="5"></Setter>
-            <Setter Property="Margin" Value="5"></Setter>
-        </Style>
-
-        <Style TargetType="StackPanel">
-            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
-            <Setter Property="VerticalAlignment" Value="Center"></Setter>
-        </Style>
-
-        <Style TargetType="DatePickerTextBox">
-            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
-            <Setter Property="VerticalAlignment" Value="Center"></Setter>
-            <Setter Property="Margin" Value="5"></Setter>
-            <Setter Property="MinWidth" Value="200"></Setter>
-            <Setter Property="MinHeight" Value="20"></Setter>
-        </Style>
-
-        <Style TargetType="CheckBox">
-            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
-            <Setter Property="VerticalAlignment" Value="Center"></Setter>
-        </Style>
-
-    </Window.Resources>
-
+        Title="Статусы сотрудников" Height="300" Width="250" ResizeMode="CanMinimize">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
         <ListView Grid.Column="0">
             <ListView.View>
                 <GridView>
                     <GridView.Columns>
-                        <GridViewColumn Header="Название" ></GridViewColumn>
+                        <GridViewColumn Header="Название"></GridViewColumn>
                     </GridView.Columns>
                 </GridView>
             </ListView.View>

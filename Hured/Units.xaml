@@ -5,67 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Hured"
         mc:Ignorable="d"
-        Title="Units" Height="300" Width="300">
-    <Window.Resources>
-        <Style TargetType="Label">
-            <Setter Property="Margin" Value="5"></Setter>
-            <Setter Property="Background" Value="Bisque"></Setter>
-            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
-            <Setter Property="VerticalAlignment" Value="Center"></Setter>
-        </Style>
-
-        <Style TargetType="TextBox">
-            <Setter Property="Background" Value="MediumSeaGreen"></Setter>
-            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
-            <Setter Property="VerticalAlignment" Value="Center"></Setter>
-            <Setter Property="MinWidth" Value="200"></Setter>
-            <Setter Property="MinHeight" Value="20"></Setter>
-            <Setter Property="Margin" Value="5"></Setter>
-        </Style>
-
-        <Style TargetType="ComboBox">
-            <Setter Property="Background" Value="CornflowerBlue"></Setter>
-            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
-            <Setter Property="VerticalAlignment" Value="Center"></Setter>
-            <Setter Property="Margin" Value="5"></Setter>
-            <Setter Property="MinWidth" Value="200"></Setter>
-            <Setter Property="MinHeight" Value="20"></Setter>
-        </Style>
-
-        <Style TargetType="Button">
-            <Setter Property="Padding" Value="5"></Setter>
-            <Setter Property="Margin" Value="5"></Setter>
-        </Style>
-
-        <Style TargetType="StackPanel">
-            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
-            <Setter Property="VerticalAlignment" Value="Center"></Setter>
-        </Style>
-
-        <Style TargetType="DatePickerTextBox">
-            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
-            <Setter Property="VerticalAlignment" Value="Center"></Setter>
-            <Setter Property="Margin" Value="5"></Setter>
-            <Setter Property="MinWidth" Value="200"></Setter>
-            <Setter Property="MinHeight" Value="20"></Setter>
-        </Style>
-
-        <Style TargetType="CheckBox">
-            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
-            <Setter Property="VerticalAlignment" Value="Center"></Setter>
-        </Style>
-
-    </Window.Resources>
+        Title="Список подразделений" Height="250" Width="300" ResizeMode="CanMinimize">
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Row="0">
-            <Label>Подразделения</Label>
-            <TreeView>
+            <TreeView Grid.Column="0">
                 <TreeViewItem Header="Fruit" IsExpanded="True">
                     <TreeViewItem Header="Lime"></TreeViewItem>
                     <TreeViewItem Header="Orange"></TreeViewItem>
@@ -77,9 +25,8 @@
                     <TreeViewItem Header="Green"></TreeViewItem>
                 </TreeViewItem>
             </TreeView>
-        </StackPanel>
         
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
+        <StackPanel Grid.Column="1">
             <Button>Добавить</Button>
             <Button>Изменить</Button>
             <Button>Удалить</Button>
