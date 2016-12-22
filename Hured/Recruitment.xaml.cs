@@ -22,6 +22,26 @@ namespace Hured
         public Recruitment()
         {
             InitializeComponent();
+            // TODO Заполнять списки при инициализации
+        }
+
+        private void bPrint_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO Реализация функции
+            Functions.Print();
+        }
+
+        private void bCancel_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+            Close();
+        }
+
+        private void bOk_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO Добваить логику при сохранении
+            DialogResult = true;
+            Close();
         }
     }
 }

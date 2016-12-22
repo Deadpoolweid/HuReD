@@ -27,10 +27,10 @@
             </TreeView>
         
         <StackPanel Grid.Column="1">
-            <Button>Добавить</Button>
-            <Button>Изменить</Button>
-            <Button>Удалить</Button>
-            <Button>Закрыть</Button>
+            <Button x:Name="bAdd" Click="bAdd_Click">Добавить</Button>
+            <Button x:Name="bChange" Click="bChange_Click">Изменить</Button>
+            <Button x:Name="bRemove" Click="bRemove_Click">Удалить</Button>
+            <Button x:Name="bClose" Click="bClose_Click">Закрыть</Button>
         </StackPanel>
     </Grid>
 </Window>

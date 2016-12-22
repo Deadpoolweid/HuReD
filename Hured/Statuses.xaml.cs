@@ -23,5 +23,25 @@ namespace Hured
         {
             InitializeComponent();
         }
+
+        private void bAdd_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO Вызвать окно добавления статуса
+        }
+
+        private void bChange_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO Вызвать окно изменения статуса
+        }
+
+        private void bRemove_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO Удаление статуса
+        }
+
+        private void bClose_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }

@@ -56,12 +56,12 @@
             <Label>дней</Label>
         </StackPanel>
         
-        <Button Grid.Row="7" Grid.Column="0">Подразделения</Button>
-        <Button Grid.Row="7" Grid.Column="1">Должности</Button>
+        <Button x:Name="bUnits" Grid.Row="7" Grid.Column="0" Click="bUnits_Click">Подразделения</Button>
+        <Button x:Name="bPositions" Grid.Row="7" Grid.Column="1" Click="bPositions_Click">Должности</Button>
         
-        <Button Grid.Row="8" Grid.Column="0">Статусы</Button>
-        <Button Grid.Row="8" Grid.Column="1">Настройки печати</Button>
+        <Button x:Name="bStatuses" Grid.Row="8" Grid.Column="0" Click="bStatuses_Click">Статусы</Button>
+        <Button x:Name="bPrintSettings" Grid.Row="8" Grid.Column="1" Click="bPrintSettings_Click">Настройки печати</Button>
 
-        <Button Grid.Row="9" Grid.Column="1">Закрыть</Button>
+        <Button x:Name="bClose" Grid.Row="9" Grid.Column="1" Click="bClose_Click">Закрыть</Button>
     </Grid>
 </Window>

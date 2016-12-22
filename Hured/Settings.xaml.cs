@@ -23,5 +23,40 @@ namespace Hured
         {
             InitializeComponent();
         }
+
+        private void bUnits_Click(object sender, RoutedEventArgs e)
+        {
+            this.IsManipulationEnabled = false;
+            Units w = new Units();
+            w.ShowDialog();
+            IsManipulationEnabled = true;
+        }
+
+        private void bPositions_Click(object sender, RoutedEventArgs e)
+        {
+            this.IsManipulationEnabled = false;
+            Positions w = new Positions();
+            w.ShowDialog();
+            IsManipulationEnabled = true;
+        }
+
+        private void bStatuses_Click(object sender, RoutedEventArgs e)
+        {
+            this.IsManipulationEnabled = false;
+            Statuses w = new Statuses();
+            w.ShowDialog();
+            IsManipulationEnabled = true;
+        }
+
+        private void bPrintSettings_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO Окно настройки печати
+        }
+
+        private void bClose_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO Добавить логику сохранения настроек при закрытии
+            Close();
+        }
     }
 }

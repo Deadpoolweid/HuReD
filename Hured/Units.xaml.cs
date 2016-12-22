@@ -22,6 +22,27 @@ namespace Hured
         public Units()
         {
             InitializeComponent();
+            // TODO Заполнять списки при инициализации
+        }
+
+        private void bAdd_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO Вызвать окно добавления должности
+        }
+
+        private void bChange_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO Вызвать окно изменения должности
+        }
+
+        private void bRemove_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO Удаление должности
+        }
+
+        private void bClose_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

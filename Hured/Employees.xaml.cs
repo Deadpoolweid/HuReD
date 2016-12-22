@@ -22,10 +22,12 @@ namespace Hured
         public Employees()
         {
             InitializeComponent();
+            // TODO Заполнение списков
         }
 
         private void bAdd_OnClick(object sender, RoutedEventArgs e)
         {
+            // TODO Добавление сотрудника
             IsManipulationEnabled = false;
             Employee w =new Employee();
             w.ShowDialog();
@@ -34,10 +36,21 @@ namespace Hured
 
         private void BChange_OnClick(object sender, RoutedEventArgs e)
         {
+            // TODO Изменение сотрудника
             IsManipulationEnabled = false;
             Employee w = new Employee();
             w.ShowDialog();
             IsManipulationEnabled = true;
+        }
+
+        private void bRemove_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO Удаление сотрудника
+        }
+
+        private void bClose_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

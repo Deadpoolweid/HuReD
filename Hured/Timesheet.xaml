@@ -45,6 +45,6 @@
             </ListView.View>
         </ListView>
         
-        <Button Grid.Row="1" Grid.Column="1" Width="80" HorizontalAlignment="Right" Margin="5,5,10,5">Закрыть</Button>
+        <Button x:Name="bClose" Grid.Row="1" Grid.Column="1" Width="80" HorizontalAlignment="Right" Margin="5,5,10,5" IsDefault="True" Click="bClose_Click">Закрыть</Button>
     </Grid>
 </Window>

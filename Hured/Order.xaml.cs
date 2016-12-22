@@ -22,6 +22,20 @@ namespace Hured
         public Order()
         {
             InitializeComponent();
+            // TODO Заполнение списков
+        }
+
+        private void bOk_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO Добавить логику добавления приказа
+            DialogResult = true;
+            Close();
+        }
+
+        private void bCancel_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+            Close();
         }
     }
 }

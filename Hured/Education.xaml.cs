@@ -23,5 +23,18 @@ namespace Hured
         {
             InitializeComponent();
         }
+
+        private void bCancel_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+            Close();
+        }
+
+        private void bOk_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO Добавить логику добавления образования
+            DialogResult = true;
+            Close();
+        }
     }
 }

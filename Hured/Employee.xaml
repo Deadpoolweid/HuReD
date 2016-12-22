@@ -56,12 +56,12 @@
                     <Label Grid.Row="2" Grid.Column="0">Должность</Label>
                     <ComboBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left"></ComboBox>
                     
-                    <Image Grid.Row="0" Grid.Column="2" Grid.RowSpan="3" Source="E:\Desktop\art.jpg" Width="150" Height="150"></Image>
+                    <Image x:Name="iAvatar" Grid.Row="0" Grid.Column="2" Grid.RowSpan="3" Source="Resources/avatar.jpg" Width="150" Height="150"></Image>
 
                     <StackPanel Grid.Row="3" Grid.Column="2"  Orientation="Horizontal">
-                        <Button >...</Button>
-                        <Button>X</Button>
-                        <Button>S</Button>
+                        <Button x:Name="bChooseImage" Click="bChooseImage_Click" >...</Button>
+                        <Button x:Name="bDeleteImage" Click="bDeleteImage_Click">X</Button>
+                        <Button x:Name="bSetStandartImage" Click="bSetStandartImage_Click">S</Button>
                     </StackPanel>
                     
                         <Label Grid.Row="3" Grid.Column="0">Дата приёма</Label>
@@ -78,8 +78,8 @@
                     
                     <Label Grid.Row="5" Grid.Column="0">Пол</Label>
                     <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal">
-                        <RadioButton Width="40">М</RadioButton>
-                        <RadioButton Width="40">Ж</RadioButton>
+                        <RadioButton x:Name="rbM" Width="40" IsChecked="True" GroupName="Gender">М</RadioButton>
+                        <RadioButton x:Name="rbW" Width="40" GroupName="Gender">Ж</RadioButton>
                     </StackPanel>
                     
                     <Label Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center">Телефоны</Label>
@@ -125,65 +125,65 @@
                     <Label Grid.Row="0" Grid.Column="0">Вид</Label>
                     <ComboBox Grid.Row="0" Grid.Column="1"></ComboBox>
                     <Label Grid.Row="0" Grid.Column="2">Гражданство</Label>
-                    <TextBox Grid.Row="0" Grid.Column="3"></TextBox>
+                    <TextBox x:Name="tbгражданство" Grid.Row="0" Grid.Column="3"></TextBox>
 
                     <Label Grid.Row="1" Grid.Column="0">Серия</Label>
-                    <TextBox Grid.Row="2" Grid.Column="0"></TextBox>
+                    <TextBox x:Name="tbСерия" Grid.Row="2" Grid.Column="0"></TextBox>
 
                     <Label Grid.Row="1" Grid.Column="1">Номер</Label>
-                    <TextBox Grid.Row="2" Grid.Column="1"></TextBox>
+                    <TextBox x:Name="tbномер" Grid.Row="2" Grid.Column="1"></TextBox>
 
                     <Label Grid.Row="1" Grid.Column="2">Дата рождения</Label>
                     <DatePicker Grid.Row="2" Grid.Column="2"></DatePicker>
 
                     <Label Grid.Row="1" Grid.Column="3">Место рождения</Label>
-                    <TextBox Grid.Row="2" Grid.Column="3"></TextBox>
+                    <TextBox x:Name="tbМестоРождения" Grid.Row="2" Grid.Column="3"></TextBox>
 
                     <Label Grid.Row="3" Grid.Column="0">Выдан</Label>
-                    <TextBox Grid.Row="3" Grid.Column="1"></TextBox>
+                    <TextBox x:Name="tbВыдан" Grid.Row="3" Grid.Column="1"></TextBox>
                     <DatePicker Grid.Row="3" Grid.Column="2"></DatePicker>
                 
                     <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">Прописка</Label>
 
                     <Label Grid.Row="5" Grid.Column="0">Индекс</Label>
-                    <TextBox Grid.Row="6" Grid.Column="0"></TextBox>
+                    <TextBox x:Name="tbПИндекс" Grid.Row="6" Grid.Column="0"></TextBox>
 
                     <Label Grid.Row="5" Grid.Column="1">Населённый пункт</Label>
-                    <TextBox Grid.Row="6" Grid.Column="1"></TextBox>
+                    <TextBox x:Name="tbПНаселённыйПункт" Grid.Row="6" Grid.Column="1"></TextBox>
 
                     <Label Grid.Row="7" Grid.Column="0">Улица</Label>
-                    <TextBox Grid.Row="8" Grid.Column="0"></TextBox>
+                    <TextBox x:Name="tbПУлица" Grid.Row="8" Grid.Column="0"></TextBox>
 
                     <Label Grid.Row="7" Grid.Column="1">Дом</Label>
-                    <TextBox Grid.Row="8" Grid.Column="1"></TextBox>
+                    <TextBox x:Name="tbПДом" Grid.Row="8" Grid.Column="1"></TextBox>
 
                     <Label Grid.Row="7" Grid.Column="2">Корпус</Label>
-                    <TextBox Grid.Row="8" Grid.Column="2"></TextBox>
+                    <TextBox x:Name="tbПКорпус" Grid.Row="8" Grid.Column="2"></TextBox>
                     
                     <Label Grid.Row="7" Grid.Column="3">Квартира</Label>
-                    <TextBox Grid.Row="8" Grid.Column="3"></TextBox>
+                    <TextBox x:Name="tbПКвартира" Grid.Row="8" Grid.Column="3"></TextBox>
                     
                     <Label Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2">Фактическое место жительства</Label>
 
                     <Label Grid.Row="10" Grid.Column="0">Индекс</Label>
-                    <TextBox Grid.Row="11" Grid.Column="0"></TextBox>
+                    <TextBox x:Name="tbФИндекс" Grid.Row="11" Grid.Column="0"></TextBox>
 
                     <Label Grid.Row="10" Grid.Column="1">Населённый пункт</Label>
-                    <TextBox Grid.Row="11" Grid.Column="1"></TextBox>
+                    <TextBox x:Name="tbФНаселённыйПункт" Grid.Row="11" Grid.Column="1"></TextBox>
                     
-                    <CheckBox Grid.Row="9" Grid.Column="2">Аналогично прописке</CheckBox>
+                    <CheckBox x:Name="chbSameAsRegistration" Grid.Row="9" Grid.Column="2" Checked="chbSameAsRegistration_Changed" Unchecked="chbSameAsRegistration_Changed">Аналогично прописке</CheckBox>
 
                     <Label Grid.Row="12" Grid.Column="0">Улица</Label>
-                    <TextBox Grid.Row="13" Grid.Column="0"></TextBox>
+                    <TextBox x:Name="tbФУлица" Grid.Row="13" Grid.Column="0"></TextBox>
 
                     <Label Grid.Row="12" Grid.Column="1">Дом</Label>
-                    <TextBox Grid.Row="13" Grid.Column="1"></TextBox>
+                    <TextBox x:Name="tbФДом" Grid.Row="13" Grid.Column="1"></TextBox>
 
                     <Label Grid.Row="12" Grid.Column="2">Корпус</Label>
-                    <TextBox Grid.Row="13" Grid.Column="2"></TextBox>
+                    <TextBox x:Name="tbФКорпус" Grid.Row="13" Grid.Column="2"></TextBox>
 
                     <Label Grid.Row="12" Grid.Column="3">Квартира</Label>
-                    <TextBox Grid.Row="13" Grid.Column="3"></TextBox>
+                    <TextBox x:Name="tbФКвартира" Grid.Row="13" Grid.Column="3"></TextBox>
                 </Grid>
             </TabItem>
             <TabItem Header="Образование">
@@ -217,8 +217,8 @@
                     </ListView>
 
                     <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-                        <Button>Добавить</Button>
-                        <Button>Удалить</Button>
+                        <Button x:Name="bAddEducation" Click="bAddEducation_Click">Добавить</Button>
+                        <Button x:Name="bRemoveEducation" Click="bRemoveEducation_Click">Удалить</Button>
                     </StackPanel>
                    
                 </Grid>
@@ -284,8 +284,8 @@
         </TabControl>
         
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button>OK</Button>
-            <Button>Отмена</Button>
+            <Button x:Name="bOk" IsDefault="True" Click="bOk_Click">OK</Button>
+            <Button x:Name="bCancel" IsCancel="True" Click="bCancel_Click">Отмена</Button>
         </StackPanel>
     </Grid>
 </Window>

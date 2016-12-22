@@ -35,8 +35,8 @@
         <ComboBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left"></ComboBox>
         
         <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
-            <Button>Ок</Button>
-            <Button>Отмена</Button>
+            <Button x:Name="bOk" IsDefault="True" Click="bOk_Click">Ок</Button>
+            <Button x:Name="bCancel" IsCancel="True" Click="bCancel_Click">Отмена</Button>
         </StackPanel>
         
     </Grid>

@@ -23,8 +23,8 @@
         <Label Grid.Row="1" Grid.Column="0">Цвет</Label>
         <TextBox Grid.Row="1" Grid.Column="1"></TextBox>
         
-        <Button Grid.Row="0" Grid.Column="2">ОК</Button>
-        <Button Grid.Row="1" Grid.Column="2">Отмена</Button>
+        <Button x:Name="bOk" Grid.Row="0" Grid.Column="2" IsDefault="True" Click="bOk_Click">ОК</Button>
+        <Button x:Name="bCancel" Grid.Row="1" Grid.Column="2" IsCancel="True" Click="bCancel_Click">Отмена</Button>
         
     </Grid>
 </Window>

@@ -38,9 +38,9 @@
         <RichTextBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"></RichTextBox>
 
         <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Horizontal">
-            <Button>Печать</Button>
-            <Button>Оформить</Button>
-            <Button>Отмена</Button>
+            <Button x:Name="bPrint" Click="bPrint_Click">Печать</Button>
+            <Button x:Name="bOk" IsDefault="True" Click="bOk_Click">Оформить</Button>
+            <Button x:Name="bCancel" IsCancel="True" Click="bCancel_Click">Отмена</Button>
         </StackPanel>
     </Grid>
 </Window>

@@ -56,8 +56,8 @@
         <TextBox Grid.Row="9" Grid.Column="1"></TextBox>
         
         <StackPanel Grid.Row="10" Grid.Column="1" Orientation="Horizontal">
-            <Button>OK</Button>
-            <Button>Отмена</Button>
+            <Button x:Name="bOk" IsDefault="True" Click="bOk_Click">OK</Button>
+            <Button x:Name="bCancel" IsCancel="True" Click="bCancel_Click">Отмена</Button>
         </StackPanel>
         
     </Grid>

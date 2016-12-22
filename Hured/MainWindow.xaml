@@ -15,9 +15,9 @@
         </Grid.RowDefinitions>
 
         <Button Grid.Row="0" Name="bEmployees" Click="BEmployees_OnClick">Сотрудники</Button>
-        <Button Grid.Row="1">Приказы</Button>
-        <Button Grid.Row="2">Табель посещаемости</Button>
-        <Button Grid.Row="3">Настройки</Button>
+        <Button x:Name="bOrders" Grid.Row="1" Click="bOrders_Click">Приказы</Button>
+        <Button x:Name="bTimesheet" Grid.Row="2" Click="bTimesheet_Click">Табель посещаемости</Button>
+        <Button x:Name="bSettings" Grid.Row="3" Click="bSettings_Click">Настройки</Button>
         
     </Grid>
 </Window>

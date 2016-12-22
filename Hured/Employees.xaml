@@ -49,10 +49,10 @@
         <StackPanel Grid.Row="1" Grid.Column="2">
             <Button Name="bAdd" Click="bAdd_OnClick">Добавить</Button>
             <Button Name="bChange" Click="BChange_OnClick">Изменить</Button>
-            <Button>Удалить</Button>
+            <Button x:Name="bRemove" Click="bRemove_Click">Удалить</Button>
         </StackPanel>
 
-        <Button Grid.Row="2" Grid.Column="2">Закрыть</Button>
+        <Button x:Name="bClose" Grid.Row="2" Grid.Column="2" Click="bClose_Click">Закрыть</Button>
 
     </Grid>
 </Window>

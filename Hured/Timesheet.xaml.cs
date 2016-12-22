@@ -22,6 +22,12 @@ namespace Hured
         public Timesheet()
         {
             InitializeComponent();
+            // TODO Заполнение списка должностей
+        }
+
+        private void bClose_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

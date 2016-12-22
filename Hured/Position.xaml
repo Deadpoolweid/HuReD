@@ -31,8 +31,8 @@
         <TextBox Grid.Row="2" Grid.Column="1"></TextBox>
         
         <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
-            <Button>OK</Button>
-            <Button>Отмена</Button>
+            <Button x:Name="bOk" IsDefault="True" Click="bOk_Click">OK</Button>
+            <Button x:Name="bCancel" IsCancel="True" Click="bCancel_Click">Отмена</Button>
         </StackPanel>
         
         

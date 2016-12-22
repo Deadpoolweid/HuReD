@@ -22,6 +22,20 @@ namespace Hured
         public TimesheetEntry()
         {
             InitializeComponent();
+            // Заполнение списка
+        }
+
+        private void bOk_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO Реализовать добавление записи в табель
+            DialogResult = true;
+            Close();
+        }
+
+        private void bCancel_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+            Close();
         }
     }
 }

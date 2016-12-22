@@ -22,6 +22,20 @@ namespace Hured
         public Position()
         {
             InitializeComponent();
+            // TODO Заполнение списка подразделений
+        }
+
+        private void bOk_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO Реализовать добавление должности
+            DialogResult = true;
+            Close();
+        }
+
+        private void bCancel_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+            Close();
         }
     }
 }

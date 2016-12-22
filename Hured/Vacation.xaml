@@ -30,16 +30,16 @@
             <DatePicker></DatePicker>
         </StackPanel>
 
-        <RadioButton Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right">Ежегодный</RadioButton>
-        <RadioButton Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right">Единоразовый</RadioButton>
-        <RadioButton Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right">Другое</RadioButton>
+        <RadioButton Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" GroupName="Type" IsChecked="True">Ежегодный</RadioButton>
+        <RadioButton Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" GroupName="Type">Единоразовый</RadioButton>
+        <RadioButton Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" GroupName="Type">Другое</RadioButton>
 
         <TextBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left"></TextBox>
 
         <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal">
-            <Button>Печать</Button>
-            <Button>Оформить</Button>
-            <Button>Отмена</Button>
+            <Button x:Name="bPrint" Click="bPrint_Click">Печать</Button>
+            <Button x:Name="bOk" Click="bOk_Click">Оформить</Button>
+            <Button x:Name="bCancel" Click="bCancel_Click">Отмена</Button>
         </StackPanel>
     </Grid>
 </Window>
