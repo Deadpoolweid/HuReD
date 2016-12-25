@@ -27,36 +27,36 @@
         
         <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
             <Label>С</Label>
-            <DatePicker></DatePicker>
+            <DatePicker x:Name="dpBegin"></DatePicker>
             <Label>по</Label>
-            <DatePicker></DatePicker>
-            <CheckBox>Испытательный срок</CheckBox>
+            <DatePicker x:Name="dpEnd"></DatePicker>
+            <CheckBox x:Name="chIsTraineship">Испытательный срок</CheckBox>
         </StackPanel>
         
         <Label Grid.Row="1" Grid.Column="0">Подразделение</Label>
-        <ComboBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left"></ComboBox>
+        <ComboBox x:Name="cbUnit" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left"></ComboBox>
         
         <Label Grid.Row="2" Grid.Column="0">Должность</Label>
-        <ComboBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left"></ComboBox>
+        <ComboBox x:Name="cbPosition" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left"></ComboBox>
 
         <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal">
             <Label >Оклад</Label>
-            <TextBox></TextBox>
+            <TextBox x:Name="tbОклад"></TextBox>
         </StackPanel>
         <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
             <Label>Надбавка</Label>
-            <TextBox></TextBox>
+            <TextBox x:Name="tbНадбавка"></TextBox>
         </StackPanel>
 
         <Label Grid.Row="4" Grid.Column="0">Примечание</Label>
         
-        <RichTextBox Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"></RichTextBox>
+        <RichTextBox x:Name="rtbПримечание" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"></RichTextBox>
         
         <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
             <Label>Трудовой договор №</Label>
-            <TextBox></TextBox>
+            <TextBox x:Name="tbНомерДоговора"></TextBox>
             <Label>от</Label>
-            <TextBox></TextBox>
+            <TextBox x:Name="tbДатаДоговора"></TextBox>
         </StackPanel>
         
         <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Horizontal">

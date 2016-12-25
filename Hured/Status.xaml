@@ -18,10 +18,10 @@
         </Grid.ColumnDefinitions>
         
         <Label Grid.Row="0" Grid.Column="0">Название</Label>
-        <TextBox Grid.Row="0" Grid.Column="1"></TextBox>
+        <TextBox x:Name="tbName" Grid.Row="0" Grid.Column="1"></TextBox>
         
         <Label Grid.Row="1" Grid.Column="0">Цвет</Label>
-        <TextBox Grid.Row="1" Grid.Column="1"></TextBox>
+        <TextBox x:Name="tbColor" Grid.Row="1" Grid.Column="1"></TextBox>
         
         <Button x:Name="bOk" Grid.Row="0" Grid.Column="2" IsDefault="True" Click="bOk_Click">ОК</Button>
         <Button x:Name="bCancel" Grid.Row="1" Grid.Column="2" IsCancel="True" Click="bCancel_Click">Отмена</Button>

@@ -22,20 +22,20 @@
 
         <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
             <Label>Трудовой договор №</Label>
-            <TextBox></TextBox>
+            <TextBox x:Name="tbНомерДоговора"></TextBox>
             <Label>от</Label>
-            <TextBox></TextBox>
+            <TextBox x:Name="tbДатаДоговора"></TextBox>
         </StackPanel>
 
         <Label Grid.Row="1" Grid.Column="0">Уволить</Label>
-        <ComboBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left"></ComboBox>
+        <ComboBox x:Name="cbEmployee" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left"></ComboBox>
         
         <Label Grid.Row="2" Grid.Column="0">Основание</Label>
-        <TextBox Grid.Row="2" Grid.Column="1"></TextBox>
+        <TextBox x:Name="tbОснование" Grid.Row="2" Grid.Column="1"></TextBox>
         
         <Label Grid.Row="3" Grid.Column="0">Примечание</Label>
         
-        <RichTextBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"></RichTextBox>
+        <RichTextBox x:Name="rtbПримечание" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"></RichTextBox>
 
         <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Horizontal">
             <Button x:Name="bPrint" Click="bPrint_Click">Печать</Button>

@@ -27,7 +27,7 @@ namespace Hured
 
         private void bPrint_Click(object sender, RoutedEventArgs e)
         {
-            // TODO Реализация функции
+            // TODO Реализация функции печати
             Functions.Print();
         }
 

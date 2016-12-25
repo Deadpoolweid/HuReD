@@ -23,16 +23,16 @@
         
         <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
             <Label>Приказ №</Label>
-            <TextBox></TextBox>
+            <TextBox x:Name="tbНомерПриказа"></TextBox>
             <Label> от </Label>
-            <TextBox></TextBox>
+            <TextBox x:Name="tbДатаПриказа"></TextBox>
         </StackPanel>
         
         <Label Grid.Row="1" Grid.Column="0">Сотрудник</Label>
-        <ComboBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left"></ComboBox>
+        <ComboBox x:Name="cbEmployee" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left"></ComboBox>
         
         <Label Grid.Row="2" Grid.Column="0">Тип приказа</Label>
-        <ComboBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left"></ComboBox>
+        <ComboBox x:Name="cbOrderType" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left"></ComboBox>
         
         <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
             <Button x:Name="bOk" IsDefault="True" Click="bOk_Click">Ок</Button>

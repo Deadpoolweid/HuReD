@@ -24,13 +24,13 @@
         </Grid.ColumnDefinitions>
         
         <Label Grid.Row="0" Grid.Column="0">Место</Label>
-        <TextBox Grid.Row="0" Grid.Column="1"></TextBox>
+        <TextBox x:Name="tbМесто" Grid.Row="0" Grid.Column="1"></TextBox>
 
         <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
             <Label>С</Label>
-            <DatePicker></DatePicker>
+            <DatePicker x:Name="dbBegin"></DatePicker>
             <Label>по</Label>
-            <DatePicker></DatePicker>
+            <DatePicker x:Name="dpEnd"></DatePicker>
         </StackPanel>
 
         <Label Grid.Row="2" Grid.Column="0">Цель</Label>
@@ -40,7 +40,7 @@
         <TextBox Grid.Row="2" Grid.Column="1"></TextBox>
 
         <Label Grid.Row="2" Grid.Column="0">Основание</Label>
-        <TextBox Grid.Row="2" Grid.Column="1"></TextBox>
+        <TextBox x:Name="tbОснование" Grid.Row="2" Grid.Column="1"></TextBox>
 
         <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal">
             <Button x:Name="bPrint" Click="bPrint_Click">Печать</Button>

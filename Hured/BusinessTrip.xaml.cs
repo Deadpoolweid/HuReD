@@ -26,7 +26,7 @@ namespace Hured
 
         private void bPrint_Click(object sender, RoutedEventArgs e)
         {
-            // TODO Реализация функции
+            // TODO Реализация функции печати
             Functions.Print();
         }
 
@@ -39,6 +39,7 @@ namespace Hured
         private void bOk_Click(object sender, RoutedEventArgs e)
         {
             // TODO Добваить логику при сохранении
+            // Сохранение всех полей в класс временных данных
             DialogResult = true;
             Close();
         }

@@ -25,16 +25,16 @@
 
         <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
             <Label>Период С</Label>
-            <DatePicker></DatePicker>
+            <DatePicker x:Name="dpBegin"></DatePicker>
             <Label>по</Label>
-            <DatePicker></DatePicker>
+            <DatePicker x:Name="dpEnd"></DatePicker>
         </StackPanel>
 
         <RadioButton Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" GroupName="Type" IsChecked="True">Ежегодный</RadioButton>
         <RadioButton Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" GroupName="Type">Единоразовый</RadioButton>
         <RadioButton Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" GroupName="Type">Другое</RadioButton>
 
-        <TextBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left"></TextBox>
+        <TextBox x:Name="tbДругое" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left"></TextBox>
 
         <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal">
             <Button x:Name="bPrint" Click="bPrint_Click">Печать</Button>

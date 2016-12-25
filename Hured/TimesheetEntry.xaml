@@ -25,16 +25,16 @@
         
         <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
             <Label>Состояние</Label>
-            <ComboBox></ComboBox>
+            <ComboBox x:Name="cbStatus"></ComboBox>
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
             <Label>Отработанные часы</Label>
-            <TextBox></TextBox>
+            <TextBox x:Name="tbОтработанныеЧасы"></TextBox>
         </StackPanel>
         
         <Label Grid.Row="2" Grid.Column="0">Примечание</Label>
         
-        <RichTextBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"></RichTextBox>
+        <RichTextBox x:Name="rtbпримечание" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"></RichTextBox>
         
         <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal">
             <Button x:Name="bOk" IsDefault="True" Click="bOk_Click">OK</Button>

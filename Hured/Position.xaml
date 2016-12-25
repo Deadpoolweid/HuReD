@@ -22,13 +22,13 @@
         </Grid.ColumnDefinitions>
         
         <Label Grid.Row="0" Grid.Column="0">Название</Label>
-        <TextBox Grid.Row="0" Grid.Column="1"></TextBox>
+        <TextBox x:Name="tbName" Grid.Row="0" Grid.Column="1"></TextBox>
 
         <Label Grid.Row="1" Grid.Column="0">Подразделение</Label>
-        <ComboBox Grid.Row="1" Grid.Column="1"></ComboBox>
+        <ComboBox x:Name="cbUnit" Grid.Row="1" Grid.Column="1"></ComboBox>
         
         <Label Grid.Row="2" Grid.Column="0">Расписание</Label>
-        <TextBox Grid.Row="2" Grid.Column="1"></TextBox>
+        <TextBox x:Name="tbРасписание" Grid.Row="2" Grid.Column="1"></TextBox>
         
         <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
             <Button x:Name="bOk" IsDefault="True" Click="bOk_Click">OK</Button>

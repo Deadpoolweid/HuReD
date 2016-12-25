@@ -29,30 +29,30 @@
         
         <Label Grid.Row="0" Grid.Column="0">Норма рабочего дня</Label>
         <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
-            <TextBox></TextBox>
+            <TextBox x:Name="tbНормаРабочегоДня"></TextBox>
             <Label>часов</Label>
         </StackPanel>
 
         <Label Grid.Row="1" Grid.Column="0">Название организации</Label>
-        <TextBox Grid.Row="1" Grid.Column="1"></TextBox>
+        <TextBox x:Name="tbНазваниеОрганизации" Grid.Row="1" Grid.Column="1"></TextBox>
 
         <Label Grid.Row="2" Grid.Column="0">Руководитель</Label>
-        <TextBox Grid.Row="2" Grid.Column="1"></TextBox>
+        <TextBox x:Name="tbРуководитель" Grid.Row="2" Grid.Column="1"></TextBox>
 
         <Label Grid.Row="3" Grid.Column="0">Должность руководителя</Label>
-        <TextBox Grid.Row="3" Grid.Column="1"></TextBox>
+        <TextBox x:Name="tbДолжностьРуководителя" Grid.Row="3" Grid.Column="1"></TextBox>
         
         <Label Grid.Row="4" Grid.Column="0">Интервал хранения</Label>
 
         <Label Grid.Row="5" Grid.Column="0">Документов</Label>
         <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal">
-            <TextBox></TextBox>
+            <TextBox x:Name="tbИнтервалДокументов"></TextBox>
             <Label>Дней</Label>
         </StackPanel>
 
         <Label Grid.Row="6" Grid.Column="0">Отчётов</Label>
         <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal">
-            <TextBox></TextBox>
+            <TextBox x:Name="tbИнтервалОтчётов"></TextBox>
             <Label>дней</Label>
         </StackPanel>
         

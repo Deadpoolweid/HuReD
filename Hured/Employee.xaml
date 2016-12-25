@@ -48,13 +48,13 @@
                     </Grid.ColumnDefinitions>
                     
                     <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center">Ф.И.О.</Label>
-                    <TextBox  Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" Width="200"></TextBox>
+                    <TextBox x:Name="tbФИО"  Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" Width="200"></TextBox>
                     
                     <Label Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center">Подразделение</Label>
-                    <ComboBox Grid.Row="1" Grid.Column="1"></ComboBox>
+                    <ComboBox x:Name="cbUnit" Grid.Row="1" Grid.Column="1"></ComboBox>
                     
                     <Label Grid.Row="2" Grid.Column="0">Должность</Label>
-                    <ComboBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left"></ComboBox>
+                    <ComboBox x:Name="cbPosition" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left"></ComboBox>
                     
                     <Image x:Name="iAvatar" Grid.Row="0" Grid.Column="2" Grid.RowSpan="3" Source="Resources/avatar.jpg" Width="150" Height="150"></Image>
 
@@ -65,15 +65,15 @@
                     </StackPanel>
                     
                         <Label Grid.Row="3" Grid.Column="0">Дата приёма</Label>
-                        <DatePicker Grid.Row="3" Grid.Column="1"></DatePicker>
+                        <DatePicker x:Name="dpCurrentDate" Grid.Row="3" Grid.Column="1"></DatePicker>
 
                     <StackPanel Grid.Row="4" Grid.Column="0">
                         <Label HorizontalAlignment="Center">ИНН</Label>
-                        <TextBox Width="100"></TextBox>
+                        <TextBox x:Name="tbИНН" Width="100"></TextBox>
                     </StackPanel>
                     <StackPanel Grid.Row="4" Grid.Column="1">
                         <Label HorizontalAlignment="Center">Табельный номер</Label>
-                        <TextBox></TextBox>
+                        <TextBox x:Name="tbТабельныйНомер"></TextBox>
                     </StackPanel>
                     
                     <Label Grid.Row="5" Grid.Column="0">Пол</Label>
@@ -84,14 +84,14 @@
                     
                     <Label Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center">Телефоны</Label>
                     <Label Grid.Row="7" Grid.Column="0">Домашний</Label>
-                    <TextBox Grid.Row="7" Grid.Column="1"></TextBox>
+                    <TextBox x:Name="tbДомашний" Grid.Row="7" Grid.Column="1"></TextBox>
                     <Label Grid.Row="8" Grid.Column="0">Мобильный</Label>
-                    <TextBox Grid.Row="8" Grid.Column="1"></TextBox>
+                    <TextBox x:Name="tbМобильный" Grid.Row="8" Grid.Column="1"></TextBox>
                     <Label Grid.Row="9" Grid.Column="0">Дополнительный</Label>
-                    <TextBox Grid.Row="9" Grid.Column="1"></TextBox>
+                    <TextBox x:Name="Дополнительно" Grid.Row="9" Grid.Column="1"></TextBox>
                     
                     <Label Grid.Row="10" Grid.Column="0">Статус</Label>
-                    <ComboBox Grid.Row="10" Grid.Column="1"></ComboBox>
+                    <ComboBox x:Name="cbStatus" Grid.Row="10" Grid.Column="1"></ComboBox>
                     
                     
                 </Grid>
@@ -123,7 +123,7 @@
                     </Grid.ColumnDefinitions>
                     
                     <Label Grid.Row="0" Grid.Column="0">Вид</Label>
-                    <ComboBox Grid.Row="0" Grid.Column="1"></ComboBox>
+                    <ComboBox x:Name="cbDocumentType" Grid.Row="0" Grid.Column="1"></ComboBox>
                     <Label Grid.Row="0" Grid.Column="2">Гражданство</Label>
                     <TextBox x:Name="tbгражданство" Grid.Row="0" Grid.Column="3"></TextBox>
 
@@ -240,25 +240,25 @@
                     </Grid.ColumnDefinitions>
 
                     <Label Grid.Row="0" Grid.Column="0">Категория запаса</Label>
-                    <TextBox Grid.Row="0" Grid.Column="1"></TextBox>
+                    <TextBox x:Name="tbКатегорияЗапаса" Grid.Row="0" Grid.Column="1"></TextBox>
 
                     <Label Grid.Row="1" Grid.Column="0">Звание</Label>
-                    <TextBox Grid.Row="1" Grid.Column="1"></TextBox>
+                    <TextBox x:Name="tbЗвание" Grid.Row="1" Grid.Column="1"></TextBox>
 
                     <Label Grid.Row="2" Grid.Column="0">Профиль</Label>
-                    <TextBox Grid.Row="2" Grid.Column="1"></TextBox>
+                    <TextBox x:Name="tbПрофиль" Grid.Row="2" Grid.Column="1"></TextBox>
 
                     <Label Grid.Row="3" Grid.Column="0">Код ВУС</Label>
-                    <TextBox Grid.Row="3" Grid.Column="1"></TextBox>
+                    <TextBox x:Name="tbКодВУС" Grid.Row="3" Grid.Column="1"></TextBox>
 
                     <Label Grid.Row="4" Grid.Column="0">Категория годности</Label>
-                    <TextBox Grid.Row="4" Grid.Column="1"></TextBox>
+                    <TextBox x:Name="tbКатегорияГодности" Grid.Row="4" Grid.Column="1"></TextBox>
 
                     <Label Grid.Row="5" Grid.Column="0">Наименование военкомата</Label>
-                    <TextBox Grid.Row="5" Grid.Column="1"></TextBox>
+                    <TextBox x:Name="tbНаименованиеВоенкомата" Grid.Row="5" Grid.Column="1"></TextBox>
 
                     <Label Grid.Row="6" Grid.Column="0">Состоит на учёте</Label>
-                    <TextBox Grid.Row="6" Grid.Column="1"></TextBox>
+                    <TextBox x:Name="tbСостоитНаУчёте" Grid.Row="6" Grid.Column="1"></TextBox>
                 </Grid>
             </TabItem>
             <TabItem Header="Дополнительно">
@@ -275,10 +275,10 @@
                     </Grid.ColumnDefinitions>
 
                     <Label Grid.Row="0" Grid.Column="1">E-mail</Label>
-                    <TextBox Grid.Row="0" Grid.Column="2"></TextBox>
+                    <TextBox x:Name="tbEMail" Grid.Row="0" Grid.Column="2"></TextBox>
 
                     <Label Grid.Row="1" Grid.Column="1">Skype</Label>
-                    <TextBox Grid.Row="1" Grid.Column="2"></TextBox>
+                    <TextBox x:Name="tbSkype" Grid.Row="1" Grid.Column="2"></TextBox>
                 </Grid>
             </TabItem>
         </TabControl>

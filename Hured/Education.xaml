@@ -26,34 +26,34 @@
         </Grid.ColumnDefinitions>
 
         <Label Grid.Row="0" Grid.Column="0">Тип</Label>
-        <TextBox Grid.Row="0" Grid.Column="1"></TextBox>
+        <TextBox x:Name="tbТип" Grid.Row="0" Grid.Column="1"></TextBox>
 
         <Label Grid.Row="1" Grid.Column="0">Учреждение</Label>
-        <TextBox Grid.Row="1" Grid.Column="1"></TextBox>
+        <TextBox x:Name="tbУчреждение" Grid.Row="1" Grid.Column="1"></TextBox>
 
         <Label Grid.Row="2" Grid.Column="0">Документ</Label>
-        <TextBox Grid.Row="2" Grid.Column="1"></TextBox>
+        <TextBox x:Name="tbДокумент" Grid.Row="2" Grid.Column="1"></TextBox>
 
         <Label Grid.Row="3" Grid.Column="0">Серия</Label>
-        <TextBox Grid.Row="3" Grid.Column="1"></TextBox>
+        <TextBox x:Name="tbСерия" Grid.Row="3" Grid.Column="1"></TextBox>
 
         <Label Grid.Row="4" Grid.Column="0">Номер</Label>
-        <TextBox Grid.Row="4" Grid.Column="1"></TextBox>
+        <TextBox x:Name="tbНомер" Grid.Row="4" Grid.Column="1"></TextBox>
 
         <Label Grid.Row="5" Grid.Column="0">Начало обучения</Label>
-        <DatePicker Grid.Row="5" Grid.Column="1"></DatePicker>
+        <DatePicker x:Name="dpBegin" Grid.Row="5" Grid.Column="1"></DatePicker>
 
         <Label Grid.Row="6" Grid.Column="0">Конец обучения</Label>
-        <DatePicker Grid.Row="6" Grid.Column="1"></DatePicker>
+        <DatePicker x:Name="dpEnd" Grid.Row="6" Grid.Column="1"></DatePicker>
 
         <Label Grid.Row="7" Grid.Column="0">Специальность</Label>
-        <TextBox Grid.Row="7" Grid.Column="1"></TextBox>
+        <TextBox x:Name="tbСпециальность" Grid.Row="7" Grid.Column="1"></TextBox>
 
         <Label Grid.Row="8" Grid.Column="0">Квалификация</Label>
-        <TextBox Grid.Row="8" Grid.Column="1"></TextBox>
+        <TextBox x:Name="tbКвалификация" Grid.Row="8" Grid.Column="1"></TextBox>
 
         <Label Grid.Row="9" Grid.Column="0">Дополнительно</Label>
-        <TextBox Grid.Row="9" Grid.Column="1"></TextBox>
+        <TextBox x:Name="tbДополнительно" Grid.Row="9" Grid.Column="1"></TextBox>
         
         <StackPanel Grid.Row="10" Grid.Column="1" Orientation="Horizontal">
             <Button x:Name="bOk" IsDefault="True" Click="bOk_Click">OK</Button>
