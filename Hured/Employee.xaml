@@ -6,14 +6,6 @@
         xmlns:local="clr-namespace:Hured"
         mc:Ignorable="d"
         Title="Сотрудник" Height="580" Width="650" ResizeMode="CanMinimize">
-    <Window.Resources>
-        <Style TargetType="Label">
-            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
-            <Setter Property="Margin" Value="5"></Setter>
-            <Setter Property="Background" Value="Bisque"></Setter>
-            <Setter Property="VerticalAlignment" Value="Center"></Setter>
-        </Style>
-    </Window.Resources>
     <Grid >
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
@@ -87,8 +79,8 @@
                     <TextBox x:Name="tbДомашний" Grid.Row="7" Grid.Column="1"></TextBox>
                     <Label Grid.Row="8" Grid.Column="0">Мобильный</Label>
                     <TextBox x:Name="tbМобильный" Grid.Row="8" Grid.Column="1"></TextBox>
-                    <Label Grid.Row="9" Grid.Column="0">Дополнительный</Label>
-                    <TextBox x:Name="Дополнительно" Grid.Row="9" Grid.Column="1"></TextBox>
+                    <Label Grid.Row="9" Grid.Column="0" Content="Дополнительно"/>
+                    <TextBox x:Name="tbДополнительно" Grid.Row="9" Grid.Column="1"></TextBox>
                     
                     <Label Grid.Row="10" Grid.Column="0">Статус</Label>
                     <ComboBox x:Name="cbStatus" Grid.Row="10" Grid.Column="1"></ComboBox>
@@ -134,14 +126,14 @@
                     <TextBox x:Name="tbномер" Grid.Row="2" Grid.Column="1"></TextBox>
 
                     <Label Grid.Row="1" Grid.Column="2">Дата рождения</Label>
-                    <DatePicker Grid.Row="2" Grid.Column="2"></DatePicker>
+                    <DatePicker x:Name="dpДатаРождения" Grid.Row="2" Grid.Column="2"></DatePicker>
 
                     <Label Grid.Row="1" Grid.Column="3">Место рождения</Label>
                     <TextBox x:Name="tbМестоРождения" Grid.Row="2" Grid.Column="3"></TextBox>
 
                     <Label Grid.Row="3" Grid.Column="0">Выдан</Label>
-                    <TextBox x:Name="tbВыдан" Grid.Row="3" Grid.Column="1"></TextBox>
-                    <DatePicker Grid.Row="3" Grid.Column="2"></DatePicker>
+                    <TextBox x:Name="tbКем" Grid.Row="3" Grid.Column="1"></TextBox>
+                    <DatePicker x:Name="dpКогдаВыдан" Grid.Row="3" Grid.Column="2"></DatePicker>
                 
                     <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">Прописка</Label>
 

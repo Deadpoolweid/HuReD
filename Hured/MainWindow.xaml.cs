@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Hured.DBModel;
 
 namespace Hured
 {
@@ -25,6 +26,7 @@ namespace Hured
         {
             InitializeComponent();
             // TODO Инициализация приложения, первичная настройка
+            Controller.InitDB();
         }
 
         private void BEmployees_OnClick(object sender, RoutedEventArgs e)

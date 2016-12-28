@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Hured.DBModel;
 
 namespace Hured
 {
@@ -22,15 +23,46 @@ namespace Hured
         public Employees()
         {
             InitializeComponent();
+
+            Controller.OpenConnection();
+
+
+            //List<Сотрудник> Сотрудники = Controller.Select(new Сотрудник(), сотрудник => сотрудник != null);
+
+            List<ОсновнаяИнформация> GeneralInfo = Controller.Select(new ОсновнаяИнформация(), e => e != null);
+
+            lvEmployees.ItemsSource = GeneralInfo;
+
+            Functions.FillTreeView(ref tvUnits);
+
+            //tvUnits.SelectedItemChanged += (sender, args) =>
+            //{
+            //    Controller.OpenConnection();
+            //    lvEmployees.ItemsSource = Controller.Select(new ОсновнаяИнформация(),
+            //        e => e.Должность.Подразделение.Название == tvUnits.SelectedItem.ToString());
+            //    Controller.CloseConnection();
+            //};
+
             // TODO Заполнение списков
+            Controller.CloseConnection();
         }
 
         private void bAdd_OnClick(object sender, RoutedEventArgs e)
         {
             // TODO Добавление сотрудника
+            
+
             IsManipulationEnabled = false;
-            Employee w =new Employee();
+            Employee w = new Employee();
             w.ShowDialog();
+
+            if (w.DialogResult == true)
+            {
+                var employeeToAdd = w.Tag as Сотрудник;
+                Controller.OpenConnection();
+                Controller.Insert(employeeToAdd);
+                Controller.CloseConnection();
+            }
             IsManipulationEnabled = true;
         }
 

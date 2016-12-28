@@ -6,9 +6,6 @@
         xmlns:local="clr-namespace:Hured"
         mc:Ignorable="d"
         Title="Взять на работу" Height="370" Width="650" ResizeMode="CanMinimize">
-    <Window.Resources>
-        <ResourceDictionary Source="ResourcesDictionary.xaml" />
-    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>

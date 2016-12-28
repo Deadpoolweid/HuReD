@@ -7,6 +7,7 @@ using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Hured.Tables_templates;
 using MySql.Data.Entity;
 
 namespace Hured.DBModel
@@ -27,6 +28,8 @@ namespace Hured.DBModel
             public DbSet<Должность> Должности { get; set; }
 
             public DbSet<Подразделение> Подразделения { get; set; }
+
+            public DbSet<УдостоверениеЛичности> УдостоверенияЛичности { get; set; }
 
 
             public Hured()

@@ -6,9 +6,6 @@
         xmlns:local="clr-namespace:Hured"
         mc:Ignorable="d"
         Title="Список приказов" Height="300" Width="600" ResizeMode="CanMinimize">
-    <Window.Resources>
-        <ResourceDictionary Source="ResourcesDictionary.xaml" />
-    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>

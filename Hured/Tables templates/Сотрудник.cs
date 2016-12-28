@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Hured.Tables_templates;
 
 namespace Hured.DBModel
 {
@@ -12,12 +13,12 @@ namespace Hured.DBModel
     {
         public int СотрудникId { get; set; }
 
-        public ОсновнаяИнформация ОсновнаяИнформация { get; set; }
+        public virtual ОсновнаяИнформация ОсновнаяИнформация { get; set; }
 
-        public Адрес Адрес { get; set; }
+        public virtual УдостоверениеЛичности УдостоверениеЛичности { get; set; }
 
-        public Образование Образование { get; set; }
+        public virtual IEnumerable<Образование> Образование { get; set; }
 
-        public ВоинскийУчёт ВоинскийУчёт { get; set; }
+        public virtual ВоинскийУчёт ВоинскийУчёт { get; set; }
     }
 }

@@ -8,25 +8,28 @@
         Title="Список подразделений" Height="250" Width="300" ResizeMode="CanMinimize">
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-            <TreeView Grid.Column="0">
-                <TreeViewItem Header="Fruit" IsExpanded="True">
-                    <TreeViewItem Header="Lime"></TreeViewItem>
-                    <TreeViewItem Header="Orange"></TreeViewItem>
-                    <TreeViewItem Header="Apple"></TreeViewItem>
-                </TreeViewItem>
-                <TreeViewItem Header="Colors" IsExpanded="True">
-                    <TreeViewItem Header="Red"></TreeViewItem>
-                    <TreeViewItem Header="Orange"></TreeViewItem>
-                    <TreeViewItem Header="Green"></TreeViewItem>
-                </TreeViewItem>
-            </TreeView>
-        
-        <StackPanel Grid.Column="1">
+            <TextBox Name="tbNewUnit" Grid.Column="0" Grid.Row="0" Width="Auto" Height="Auto">Новое подразделение</TextBox>
+            <ListView Name="lvUnits" Height="Auto" Width="Auto"  Grid.Column="0" Grid.Row="1" >
+                <ListView.View>
+                    <GridView>
+                        <GridView.Columns>
+                            <GridViewColumn Header="Название" ></GridViewColumn>
+                        </GridView.Columns>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+
+        <StackPanel Grid.Row="0" Grid.RowSpan="2"  Grid.Column="1">
             <Button x:Name="bAdd" Click="bAdd_Click">Добавить</Button>
             <Button x:Name="bChange" Click="bChange_Click">Изменить</Button>
             <Button x:Name="bRemove" Click="bRemove_Click">Удалить</Button>

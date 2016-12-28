@@ -16,6 +16,6 @@ namespace Hured.DBModel
 
         public string Расписание { get; set; }
 
-        public Подразделение Подразделение { get; set; }
+        public virtual Подразделение Подразделение { get; set; }
     }
 }

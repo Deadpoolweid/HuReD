@@ -6,10 +6,6 @@
         xmlns:local="clr-namespace:Hured"
         mc:Ignorable="d"
         Title="Выдать отпуск" Height="200" Width="550" FontWeight="Bold" ResizeMode="CanMinimize">
-    <Window.Resources>
-        <ResourceDictionary Source="ResourcesDictionary.xaml" />
-    </Window.Resources>
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>

@@ -6,9 +6,6 @@
         xmlns:local="clr-namespace:Hured"
         mc:Ignorable="d"
         Title="Создать приказ" Height="180" Width="550" ResizeMode="CanMinimize">
-    <Window.Resources>
-        <ResourceDictionary Source="ResourcesDictionary.xaml" />
-    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>

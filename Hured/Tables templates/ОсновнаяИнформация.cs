@@ -18,15 +18,13 @@ namespace Hured.DBModel
 
         public string Отчество { get; set; }
 
-        public Должность Должность { get; set; }
+        public virtual Должность Должность { get; set; }
 
         public DateTime ДатаПриема { get; set; }
 
         public string ИНН { get; set; }
 
         public string ТабельныйНомер { get; set; }
-
-        public string РегистрационныйНомерОТРР { get; set; }
 
         public string Пол { get; set; }
 

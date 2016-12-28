@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Hured"
+        xmlns:dbModel="clr-namespace:Hured.DBModel"
         mc:Ignorable="d"
         Title="Справочник сотрудников" Height="300" Width="Auto" ResizeMode="CanMinimize">
     <Grid>
@@ -12,7 +13,7 @@
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition></RowDefinition>
@@ -20,27 +21,17 @@
         </Grid.RowDefinitions>
 
         <Label Grid.Row="0" Grid.Column="0">Место работы</Label>
-        <TreeView Grid.Column="0" Grid.Row="1">
-            <TreeViewItem Header="Fruit" IsExpanded="True">
-                <TreeViewItem Header="Lime"></TreeViewItem>
-                <TreeViewItem Header="Orange"></TreeViewItem>
-                <TreeViewItem Header="Apple"></TreeViewItem>
-            </TreeViewItem>
-            <TreeViewItem Header="Colors" IsExpanded="True">
-                <TreeViewItem Header="Red"></TreeViewItem>
-                <TreeViewItem Header="Orange"></TreeViewItem>
-                <TreeViewItem Header="Green"></TreeViewItem>
-            </TreeViewItem>
+        <TreeView x:Name="tvUnits" Grid.Column="0" Grid.Row="1">
         </TreeView>
 
         <Label Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center">Сотрудники</Label>
-        <ListView Grid.Row="1" Grid.Column="1">
+        <ListView x:Name="lvEmployees" Grid.Row="1" Grid.Column="1">
             <ListView.View>
                 <GridView>
                     <GridView.Columns>
-                        <GridViewColumn Header="Фамилия" ></GridViewColumn>
-                        <GridViewColumn Header="Имя" ></GridViewColumn>
-                        <GridViewColumn Header="Отчество"></GridViewColumn>
+                        <GridViewColumn Header="Фамилия" DisplayMemberBinding="{Binding Фамилия}"></GridViewColumn>
+                        <GridViewColumn Header="Имя" DisplayMemberBinding="{Binding Имя}"></GridViewColumn>
+                        <GridViewColumn Header="Отчество" DisplayMemberBinding="{Binding Отчество}"></GridViewColumn>
                     </GridView.Columns>
                 </GridView>
             </ListView.View>

@@ -19,27 +19,24 @@
 
         <StackPanel Grid.Row="0" Grid.Column="0" VerticalAlignment="Top">
             <Label>Подразделения</Label>
-            <TreeView>
-                <TreeViewItem Header="Fruit" IsExpanded="True">
-                    <TreeViewItem Header="Lime"></TreeViewItem>
-                    <TreeViewItem Header="Orange"></TreeViewItem>
-                    <TreeViewItem Header="Apple"></TreeViewItem>
-                </TreeViewItem>
-                <TreeViewItem Header="Colors" IsExpanded="True">
-                    <TreeViewItem Header="Red"></TreeViewItem>
-                    <TreeViewItem Header="Orange"></TreeViewItem>
-                    <TreeViewItem Header="Green"></TreeViewItem>
-                </TreeViewItem>
-            </TreeView>
+            <ListView Name="lvUnits" SelectionChanged="LvUnits_OnSelectionChanged">
+                <ListView.View>
+                    <GridView>
+                        <GridView.Columns>
+                            <GridViewColumn Header="Название" ></GridViewColumn>
+                        </GridView.Columns>
+                    </GridView>
+                </ListView.View>
+            </ListView>
         </StackPanel>
         
 
-        <ListView Grid.Row="0" Grid.Column="1">
+        <ListView Grid.Row="0" Grid.Column="1" Name="lvPositions">
             <ListView.View>
                 <GridView>
                     <GridView.Columns>
-                        <GridViewColumn Header="Название" ></GridViewColumn>
-                        <GridViewColumn Header="Расписание" ></GridViewColumn>
+                        <GridViewColumn Header="Название" DisplayMemberBinding="{Binding Название}"></GridViewColumn>
+                        <GridViewColumn Header="Расписание" DisplayMemberBinding="{Binding Расписание}"></GridViewColumn>
                     </GridView.Columns>
                 </GridView>
             </ListView.View>
