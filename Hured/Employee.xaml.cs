@@ -23,27 +23,84 @@ namespace Hured
     /// </summary>
     public partial class Employee : Window
     {
-        public Employee()
+        public Employee(Сотрудник employee = null)
         {
             InitializeComponent();
-            // TODO Инициализация Combobox-ов
 
-            Controller.OpenConnection();
+            Functions.AddUnitsFromDB(ref cbUnit);
 
-            foreach (var подразделение in Controller.Select(new Подразделение(), e => e != null))
+            cbUnit.SelectedIndex = 0;
+            cbPosition.SelectedIndex = 0;
+
+            if (employee != null)
             {
-                cbUnit.Items.Add(подразделение.Название);
-            }
+                Tag = employee.СотрудникId;
 
-            foreach (var должность in Controller.Select(new Должность(), e => e != null))
+                IsEditMode = true;
+                tbФИО.Text = employee.ОсновнаяИнформация.Фамилия + " " +
+                    employee.ОсновнаяИнформация.Имя + " " + 
+                    employee.ОсновнаяИнформация.Отчество;
+                cbUnit.SelectedItem = employee.ОсновнаяИнформация.Должность.Подразделение.Название;
+                cbPosition.SelectedItem = employee.ОсновнаяИнформация.Должность.Название;
+                dpCurrentDate.DisplayDate = employee.ОсновнаяИнформация.ДатаПриема;
+                tbДомашний.Text = employee.ОсновнаяИнформация.ДомашнийТелефон;
+                tbИНН.Text = employee.ОсновнаяИнформация.ИНН;
+                tbМобильный.Text = employee.ОсновнаяИнформация.МобильныйТелефон;
+                if (employee.ОсновнаяИнформация.Пол == "Мужской")
+                {
+                    rbM.IsChecked = true;
+                }
+                else if (employee.ОсновнаяИнформация.Пол == "Женский")
+                {
+                    rbW.IsChecked = true;
+                }
+                tbДополнительно.Text = employee.ОсновнаяИнформация.Дополнительно;
+                cbStatus.SelectedItem = employee.ОсновнаяИнформация.Статус;
+                tbТабельныйНомер.Text = employee.ОсновнаяИнформация.ТабельныйНомер;
+                // TODO Загрузка фотографии из БД
+
+                cbDocumentType.SelectedItem = employee.УдостоверениеЛичности.Вид;
+                dpДатаРождения.DisplayDate = employee.УдостоверениеЛичности.ДатаРождения;
+                tbКем.Text = employee.УдостоверениеЛичности.КемВыдан;
+                dpКогдаВыдан.DisplayDate = employee.УдостоверениеЛичности.КогдаВыдан;
+                tbМестоРождения.Text = employee.УдостоверениеЛичности.МестоРождения;
+                tbСерия.Text = employee.УдостоверениеЛичности.Серия;
+                tbномер.Text = employee.УдостоверениеЛичности.Номер;
+                tbПНаселённыйПункт.Text = employee.УдостоверениеЛичности.Прописка.НаселённыйПункт;
+                tbПИндекс.Text = employee.УдостоверениеЛичности.Прописка.Индекс;
+                tbПУлица.Text = employee.УдостоверениеЛичности.Прописка.Улица;
+                tbПДом.Text = employee.УдостоверениеЛичности.Прописка.Дом;
+                tbПКвартира.Text = employee.УдостоверениеЛичности.Прописка.Квартира;
+                tbФНаселённыйПункт.Text = employee.УдостоверениеЛичности.ФактическоеМестоЖительства.НаселённыйПункт;
+                tbФИндекс.Text = employee.УдостоверениеЛичности.ФактическоеМестоЖительства.Индекс;
+                tbФУлица.Text = employee.УдостоверениеЛичности.ФактическоеМестоЖительства.Улица;
+                tbФДом.Text = employee.УдостоверениеЛичности.ФактическоеМестоЖительства.Дом;
+                tbФКвартира.Text = employee.УдостоверениеЛичности.ФактическоеМестоЖительства.Квартира;
+
+                tbЗвание.Text = employee.ВоинскийУчёт.Звание;
+                tbКатегорияГодности.Text = employee.ВоинскийУчёт.КатегорияГодности;
+                tbКатегорияЗапаса.Text = employee.ВоинскийУчёт.КатегорияЗапаса;
+                tbКодВУС.Text = employee.ВоинскийУчёт.КодВУС;
+                tbНаименованиеВоенкомата.Text = employee.ВоинскийУчёт.НаименованиеВоенкомата;
+                tbПрофиль.Text = employee.ВоинскийУчёт.Профиль;
+                tbСостоитНаУчёте.Text = employee.ВоинскийУчёт.СостоитНаУчете;
+
+                Educations = employee.Образование.ToList();
+                SyncEducationList();
+            }
+    }
+
+        private bool IsEditMode = false;
+
+        private void SyncEducationList()
+        {
+            lvEducations.Items.Clear();
+
+            foreach (var education in Educations)
             {
-                cbPosition.Items.Add(должность.Название);
+                lvEducations.Items.Add(education);
             }
-
-            Controller.CloseConnection();
         }
-
-        private Сотрудник EmployeeToAdd = new Сотрудник();
 
         private void bChooseImage_Click(object sender, RoutedEventArgs e)
         {
@@ -78,7 +135,7 @@ namespace Hured
 
         private void bOk_Click(object sender, RoutedEventArgs e)
         {
-            // TODO Добавить логику добавления сотрудника
+            // TODO Не отображается дата в режиме редактирования
             ImageConverter _imageConverter = new ImageConverter();
             //byte[] xByte = (byte[])_imageConverter.ConvertTo(iAvatar, typeof(byte[]));
             byte[] xByte = null;
@@ -86,27 +143,30 @@ namespace Hured
 
 
             Controller.OpenConnection();
-            EmployeeToAdd = new Сотрудник()
+            var chosenPosition = Controller.Select(new Должность(), 
+                q => q.Название == cbPosition.SelectedValue.ToString()).FirstOrDefault();
+
+            Сотрудник EmployeeToAdd = new Сотрудник()
             {
                 ОсновнаяИнформация = new ОсновнаяИнформация()
                 {
                     Фамилия = tbФИО.Text.Split(' ')[0],
                     Имя = tbФИО.Text.Split(' ')[1],
                     Отчество = tbФИО.Text.Split(' ')[2],
-                    Должность = Controller.Select(new Должность(), q => q.Название == cbPosition.SelectedValue.ToString()).FirstOrDefault(),
+                    Должность = chosenPosition,
                     ДатаПриема = dpCurrentDate.DisplayDate,
                     ДомашнийТелефон = tbДомашний.Text,
                     ИНН = tbИНН.Text,
                     МобильныйТелефон = tbМобильный.Text,
                     Пол = rbM.IsChecked == true ? "Мужской" : "Женский",
                     Дополнительно = tbДополнительно.Text,
-                    Статус = cbStatus.SelectedValue.ToString(),
+                    Статус = cbStatus.SelectedValue?.ToString(),
                     ТабельныйНомер = tbТабельныйНомер.Text,
                     Фото = xByte
                 },
                 УдостоверениеЛичности = new УдостоверениеЛичности()
                 {
-                    Вид = cbDocumentType.SelectedValue.ToString(),
+                    Вид = cbDocumentType.SelectedValue?.ToString(),
                     ДатаРождения = dpДатаРождения.DisplayDate,
                     КемВыдан = tbКем.Text,
                     КогдаВыдан = dpКогдаВыдан.DisplayDate,
@@ -142,13 +202,23 @@ namespace Hured
                     Профиль = tbПрофиль.Text,
                     СостоитНаУчете = tbСостоитНаУчёте.Text
                 },
-
-                // TODO Реализовать добавление образования
             };
+            EmployeeToAdd.Образование = Educations;
 
+            if (IsEditMode)
+            {
+                Controller.Edit(q => q.СотрудникId == (int) Tag, EmployeeToAdd);
+            }
+            else
+            {
             Controller.Insert(EmployeeToAdd);
+
+            }
             Controller.CloseConnection();
 
+            Tag = EmployeeToAdd.СотрудникId;
+            DialogResult = true;
+            Close();
         }
 
         private void chbSameAsRegistration_Changed(object sender, RoutedEventArgs e)
@@ -173,14 +243,36 @@ namespace Hured
             }
         }
 
+        List<Образование> Educations = new List<Образование>();
+
         private void bAddEducation_Click(object sender, RoutedEventArgs e)
         {
-            // TODO Добавление образования вывод окна
+            this.IsEnabled = false;
+
+            Education w = new Education();
+            w.ShowDialog();
+
+            if (w.DialogResult == true)
+            {
+                Educations.Add(w.Tag as Образование);
+            }
+
+
+            this.IsEnabled = true;
+            SyncEducationList();
         }
 
         private void bRemoveEducation_Click(object sender, RoutedEventArgs e)
         {
-            // TODO реализация удаления образования
+            Educations.Remove(lvEducations.SelectedItem as Образование);
+            SyncEducationList();
+        }
+
+        private void CbUnit_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            cbPosition.Items.Clear();
+                Functions.AddPositionsFromDB(ref cbPosition, cbUnit.SelectedValue.ToString());
+            cbPosition.SelectedIndex = 0;
         }
     }
 }

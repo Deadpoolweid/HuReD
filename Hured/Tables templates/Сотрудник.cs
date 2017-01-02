@@ -17,7 +17,7 @@ namespace Hured.DBModel
 
         public virtual УдостоверениеЛичности УдостоверениеЛичности { get; set; }
 
-        public virtual IEnumerable<Образование> Образование { get; set; }
+        public virtual ICollection<Образование> Образование { get; set; }
 
         public virtual ВоинскийУчёт ВоинскийУчёт { get; set; }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Hured.DBModel;
+using Hured.Tables_templates;
 
 namespace Hured
 {
@@ -24,60 +26,89 @@ namespace Hured
         {
             InitializeComponent();
 
-            Controller.OpenConnection();
-
-
-            //List<Сотрудник> Сотрудники = Controller.Select(new Сотрудник(), сотрудник => сотрудник != null);
-
-            List<ОсновнаяИнформация> GeneralInfo = Controller.Select(new ОсновнаяИнформация(), e => e != null);
-
-            lvEmployees.ItemsSource = GeneralInfo;
-
+            SyncEmployeesList();
             Functions.FillTreeView(ref tvUnits);
+        }
 
-            //tvUnits.SelectedItemChanged += (sender, args) =>
-            //{
-            //    Controller.OpenConnection();
-            //    lvEmployees.ItemsSource = Controller.Select(new ОсновнаяИнформация(),
-            //        e => e.Должность.Подразделение.Название == tvUnits.SelectedItem.ToString());
-            //    Controller.CloseConnection();
-            //};
+        private List<int> employeesId = new List<int>();
 
-            // TODO Заполнение списков
+        void SyncEmployeesList()
+        {
+            lvEmployees.Items.Clear();
+            employeesId.Clear();
+            Controller.OpenConnection();
+            List<Сотрудник> Сотрудники = Controller.Select(new Сотрудник(), e => e != null);
             Controller.CloseConnection();
+
+            foreach (var сотрудник in Сотрудники)
+            {
+                lvEmployees.Items.Add(сотрудник.ОсновнаяИнформация);
+                employeesId.Add(сотрудник.СотрудникId);
+            }
         }
 
         private void bAdd_OnClick(object sender, RoutedEventArgs e)
         {
-            // TODO Добавление сотрудника
-            
-
             IsManipulationEnabled = false;
             Employee w = new Employee();
             w.ShowDialog();
 
-            if (w.DialogResult == true)
-            {
-                var employeeToAdd = w.Tag as Сотрудник;
-                Controller.OpenConnection();
-                Controller.Insert(employeeToAdd);
-                Controller.CloseConnection();
-            }
+            SyncEmployeesList();
+
             IsManipulationEnabled = true;
         }
 
         private void BChange_OnClick(object sender, RoutedEventArgs e)
         {
-            // TODO Изменение сотрудника
             IsManipulationEnabled = false;
-            Employee w = new Employee();
+            int index = employeesId[lvEmployees.SelectedIndex];
+            Controller.OpenConnection();
+            var employee = Controller.Select(new Сотрудник(),
+                q => q.СотрудникId == index).FirstOrDefault();
+            Controller.CloseConnection();
+
+            Employee w = new Employee(employee);
+
             w.ShowDialog();
+
             IsManipulationEnabled = true;
+            SyncEmployeesList();
         }
 
         private void bRemove_Click(object sender, RoutedEventArgs e)
         {
-            // TODO Удаление сотрудника
+            Controller.OpenConnection();
+
+            int index = employeesId[lvEmployees.SelectedIndex];
+
+            var employee = Controller.Find(new Сотрудник(), q => q.СотрудникId == index);
+
+            Controller.Remove(new ОсновнаяИнформация(), 
+                q => q.ОсновнаяИнформацияId == employee.ОсновнаяИнформация.ОсновнаяИнформацияId);
+            Controller.Remove(new УдостоверениеЛичности(), 
+                q => q.УдостоверениеЛичностиId == employee.УдостоверениеЛичности.УдостоверениеЛичностиId);
+            Controller.Remove(new ВоинскийУчёт(), 
+                q => q.ВоинскийУчётId == employee.ВоинскийУчёт.ВоинскийУчётId);
+
+            var educationsId = new List<int>();
+            foreach (var образование in employee.Образование)
+            {
+                educationsId.Add(образование.ОбразованиеId);
+            }
+
+            foreach (var id in educationsId)
+            {
+                Controller.Remove(new Образование(), 
+                    q => q.ОбразованиеId == id);
+            }
+
+
+            Controller.Remove(new Сотрудник(), 
+                q => q.СотрудникId == index);
+
+
+            Controller.CloseConnection();
+            SyncEmployeesList();
         }
 
         private void bClose_Click(object sender, RoutedEventArgs e)

@@ -21,8 +21,6 @@ namespace Hured.DBModel
 
         public string Документ { get; set; }
 
-        public string ИностранныеЯзыки { get; set; }
-        
         public DateTime НачалоОбучения { get; set; }
 
         public DateTime КонецОбучения { get; set; }

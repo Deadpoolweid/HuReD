@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Hured.DBModel;
 
 namespace Hured
 {
@@ -32,7 +33,20 @@ namespace Hured
 
         private void bOk_Click(object sender, RoutedEventArgs e)
         {
-            // TODO Добавить логику добавления образования
+            Образование education = new Образование()
+            {
+                Документ = tbДокумент.Text,
+                Номер = tbНомер.Text,
+                Серия = tbСерия.Text,
+                Дополнительно = tbДополнительно.Text,
+                Тип = tbТип.Text,
+                Квалификация = tbКвалификация.Text,
+                НачалоОбучения = dpBegin.DisplayDate,
+                КонецОбучения = dpBegin.DisplayDate,
+                Специальность = tbСпециальность.Text,
+                Учреждение = tbУчреждение.Text,
+            };
+            Tag = education;
             DialogResult = true;
             Close();
         }

@@ -67,6 +67,26 @@ namespace Hured
             }
         }
 
+        public static void AddPositionsFromDB(ref ComboBox cbPositions, string unit = "")
+        {
+            List<Должность> positions = new List<Должность>();
+            if (unit == "")
+            {
+                Controller.OpenConnection();
+                positions = Controller.Select(new Должность(), e => e != null);
+                Controller.CloseConnection();
+
+            }
+            else
+            {
+                positions = GetPositionsForUnit(unit);
+            }
+            foreach (var должность in positions)
+            {
+                cbPositions.Items.Add(должность.Название);
+            }
+        }
+
         // Вызывает стандартный диалог печати
         public static void Print()
         {
@@ -81,6 +101,7 @@ namespace Hured
 
         public static void FillTreeView(ref TreeView tv)
         {
+            Controller.OpenConnection();
             var Подразделения = Controller.Select(new Подразделение(), e => e != null);
 
             TreeViewItem item = new TreeViewItem();
@@ -104,6 +125,7 @@ namespace Hured
                 tv.Items.Add(item);
 
             }
+            Controller.CloseConnection();
         }
 
         //public static void OnTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)

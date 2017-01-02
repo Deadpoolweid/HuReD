@@ -43,7 +43,7 @@
                     <TextBox x:Name="tbФИО"  Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" Width="200"></TextBox>
                     
                     <Label Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center">Подразделение</Label>
-                    <ComboBox x:Name="cbUnit" Grid.Row="1" Grid.Column="1"></ComboBox>
+                    <ComboBox x:Name="cbUnit" Grid.Row="1" Grid.Column="1" SelectionChanged="CbUnit_OnSelectionChanged"></ComboBox>
                     
                     <Label Grid.Row="2" Grid.Column="0">Должность</Label>
                     <ComboBox x:Name="cbPosition" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left"></ComboBox>
@@ -189,20 +189,20 @@
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
-                    <ListView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                    <ListView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Name="lvEducations">
                         <ListView.View>
                             <GridView>
                                 <GridView.Columns>
-                                    <GridViewColumn Header="Тип" ></GridViewColumn>
-                                    <GridViewColumn Header="Учреждение" ></GridViewColumn>
-                                    <GridViewColumn Header="Документ"></GridViewColumn>
-                                    <GridViewColumn Header="Серия"></GridViewColumn>
-                                    <GridViewColumn Header="Номер"></GridViewColumn>
-                                    <GridViewColumn Header="Начало"></GridViewColumn>
-                                    <GridViewColumn Header="Окончание"></GridViewColumn>
-                                    <GridViewColumn Header="Специальность"></GridViewColumn>
-                                    <GridViewColumn Header="Квалификация"></GridViewColumn>
-                                    <GridViewColumn Header="Дополнительно"></GridViewColumn>
+                                    <GridViewColumn Header="Тип" DisplayMemberBinding="{Binding Тип}"></GridViewColumn>
+                                    <GridViewColumn Header="Учреждение" DisplayMemberBinding="{Binding Учреждение}"></GridViewColumn>
+                                    <GridViewColumn Header="Документ" DisplayMemberBinding="{Binding Документ}"></GridViewColumn>
+                                    <GridViewColumn Header="Серия" DisplayMemberBinding="{Binding Серия}"></GridViewColumn>
+                                    <GridViewColumn Header="Номер" DisplayMemberBinding="{Binding Номер}"></GridViewColumn>
+                                    <GridViewColumn Header="Начало" DisplayMemberBinding="{Binding НачалоОбучения}"></GridViewColumn>
+                                    <GridViewColumn Header="Окончание" DisplayMemberBinding="{Binding КонецОбучения}"></GridViewColumn>
+                                    <GridViewColumn Header="Специальность" DisplayMemberBinding="{Binding Специальность}"></GridViewColumn>
+                                    <GridViewColumn Header="Квалификация" DisplayMemberBinding="{Binding Квалификация}"></GridViewColumn>
+                                    <GridViewColumn Header="Дополнительно" DisplayMemberBinding="{Binding Дополнительно}"></GridViewColumn>
                                 </GridView.Columns>
                             </GridView>
                         </ListView.View>

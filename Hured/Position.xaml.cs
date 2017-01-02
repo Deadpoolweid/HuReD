@@ -24,7 +24,7 @@ namespace Hured
         {
             InitializeComponent();
             Functions.AddUnitsFromDB(ref cbUnit);
-
+            cbUnit.SelectedIndex = 0;
             if (position != null)
             {
                 IsEditMode = true;
