@@ -110,10 +110,12 @@ namespace Hured.DBModel
 
             var item = table.FirstOrDefault(predicate);
 
-            foreach (var property in item.GetType().GetProperties())
+            foreach (var property in typeof(T).GetProperties())
             {
                 var value = NewItem.GetType().GetProperty(property.Name).GetValue(NewItem);
-                if (property.Name.Contains("Id") || property.GetValue(NewItem) == null)
+
+                var temp = property.GetValue(NewItem,null);
+                if (property.Name.Contains("Id") || Equals(property.GetValue(NewItem),null))
                 {
                     continue;
                 }

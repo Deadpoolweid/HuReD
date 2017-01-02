@@ -26,24 +26,14 @@ namespace Hured
             lvUnits.Items.Add("Все должности");
             Functions.AddUnitsFromDB(ref lvUnits);
             lvUnits.SelectedIndex = 0;
-            // TODO Заполнение списка подразделений
         }
 
         private void bAdd_Click(object sender, RoutedEventArgs e)
         {
-            // TODO Вызвать окно добавления должности
             IsEnabled = false;
 
             Position w = new Position();
             w.ShowDialog();
-
-            if (w.DialogResult == true)
-            {
-                var position = w.Tag as Должность;
-                Controller.OpenConnection();
-                Controller.Insert(position);
-                Controller.CloseConnection();
-            }
 
             IsEnabled = true;
             SyncPositions();
@@ -51,12 +41,30 @@ namespace Hured
 
         private void bChange_Click(object sender, RoutedEventArgs e)
         {
-            // TODO Вызвать окно изменения должности
+            IsEnabled = false;
+
+            Position w = new Position(lvPositions.SelectedItem as Должность);
+            w.ShowDialog();
+
+            IsEnabled = true;
+            SyncPositions();
         }
 
         private void bRemove_Click(object sender, RoutedEventArgs e)
         {
-            // TODO Удаление должности
+            IsEnabled = false;
+
+            Controller.OpenConnection();
+
+            string НазваниеДолжности = (lvPositions.SelectedItem as Должность).Название;
+                
+
+            Controller.Remove(new Должность(), 
+                q => q.Название == НазваниеДолжности);
+            Controller.CloseConnection();
+
+            IsEnabled = true;
+            SyncPositions();
         }
 
         private void bClose_Click(object sender, RoutedEventArgs e)
@@ -74,12 +82,15 @@ namespace Hured
         {
             lvPositions.Items.Clear();
 
-            Controller.OpenConnection();
-            foreach (var position in Controller.Select(new Должность(), q => q.Подразделение.Название == lvUnits.SelectedValue.ToString()))
+            if (lvUnits.SelectedIndex == 0)
             {
-                lvPositions.Items.Add(position);
+                Functions.AddPositionsFromDB(ref lvPositions);
             }
-            Controller.CloseConnection();
+            else
+            {
+                Functions.AddPositionsFromDB(ref lvPositions,
+                    lvUnits.SelectedValue.ToString());
+            }
         }
     }
 }

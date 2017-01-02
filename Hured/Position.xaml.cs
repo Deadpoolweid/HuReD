@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Hured.DBModel;
 
 namespace Hured
 {
@@ -19,15 +20,51 @@ namespace Hured
     /// </summary>
     public partial class Position : Window
     {
-        public Position()
+        public Position(Должность position = null)
         {
             InitializeComponent();
-            // TODO Заполнение списка подразделений
+            Functions.AddUnitsFromDB(ref cbUnit);
+
+            if (position != null)
+            {
+                IsEditMode = true;
+                tbName.Text = oldName = position.Название;
+                tbРасписание.Text = position.Расписание;
+                cbUnit.SelectedItem = position.Подразделение.Название;
+            }
         }
+
+        private bool IsEditMode = false;
+        private string oldName;
 
         private void bOk_Click(object sender, RoutedEventArgs e)
         {
-            // TODO Реализовать добавление должности
+
+            Controller.OpenConnection();
+
+            var unit = Controller.Select(new Подразделение(),
+                q => q.Название == cbUnit.SelectedValue.ToString()).FirstOrDefault();
+
+            var position = new Должность()
+            {
+                Название = tbName.Text,
+                Расписание = tbРасписание.Text,
+                Подразделение = unit
+            };
+
+
+            if (IsEditMode)
+            {
+                Controller.Edit(q => q.Название == oldName, position);
+            }
+            else
+            {
+                Controller.Insert(position);
+
+            }
+            Controller.CloseConnection();
+
+
             DialogResult = true;
             Close();
         }

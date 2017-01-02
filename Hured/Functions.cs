@@ -25,6 +25,48 @@ namespace Hured
             }
         }
 
+        public static void AddUnitsFromDB(ref ComboBox cbUnits)
+        {
+            Controller.OpenConnection();
+            var units = Controller.Select(new Подразделение(), e => e != null);
+            Controller.CloseConnection();
+
+            var stringUnits = units.Select((подразделение) => подразделение.Название);
+
+            foreach (var unit in stringUnits)
+            {
+                cbUnits.Items.Add(unit);
+            }
+        }
+
+        public static List<Должность> GetPositionsForUnit(string unit)
+        {
+            Controller.OpenConnection();
+            var positions = Controller.Select(new Должность(), e => e.Подразделение.Название == unit);
+            Controller.CloseConnection();
+            return positions;
+        }
+
+        public static void AddPositionsFromDB(ref ListView lvPositions, string unit = "")
+        {
+            List<Должность> positions = new List<Должность>();
+            if (unit == "")
+            {
+                Controller.OpenConnection();
+                positions = Controller.Select(new Должность(), e => e != null);
+                Controller.CloseConnection();
+
+            }
+            else
+            {
+                positions = GetPositionsForUnit(unit);
+            }
+            foreach (var должность in positions)
+            {
+                lvPositions.Items.Add(должность);
+            }
+        }
+
         // Вызывает стандартный диалог печати
         public static void Print()
         {
