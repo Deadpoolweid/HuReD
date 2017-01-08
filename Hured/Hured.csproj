@@ -133,6 +133,10 @@
     <Compile Include="Tables templates\Образование.cs" />
     <Compile Include="Tables templates\ОсновнаяИнформация.cs" />
     <Compile Include="Tables templates\Подразделение.cs" />
+    <Compile Include="Tables templates\ПриказКомандировка.cs" />
+    <Compile Include="Tables templates\ПриказОтпуск.cs" />
+    <Compile Include="Tables templates\ПриказПриём.cs" />
+    <Compile Include="Tables templates\ПриказУвольнение.cs" />
     <Compile Include="Tables templates\Сотрудник.cs" />
     <Compile Include="Tables templates\УдостоверениеЛичности.cs" />
     <Compile Include="Timesheet.xaml.cs">

@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Hured.DBModel;
+using Hured.Tables_templates;
 
 namespace Hured
 {
@@ -19,9 +21,28 @@ namespace Hured
     /// </summary>
     public partial class Dismissal : Window
     {
-        public Dismissal()
+        public Dismissal(int employeeId = 0, ПриказУвольнение order = null)
         {
             InitializeComponent();
+
+            Controller.OpenConnection();
+
+            var employee = Controller.Find(new Сотрудник(),
+                e => e.СотрудникId == employeeId);
+
+            lEmployee.Content = employee.ОсновнаяИнформация.Фамилия + " " +
+                                employee.ОсновнаяИнформация.Имя + " " +
+                                employee.ОсновнаяИнформация.Отчество;
+
+            Controller.CloseConnection();
+
+            if (order != null)
+            {
+                tbНомерДоговора.Text = order.НомерТрудовогоДоговора;
+                dpДатаДоговора.Text = order.ДатаТрудовогоДоговора.ToString();
+                tbОснование.Text = order.Основание;
+                Functions.SetRTBText(rtbПримечание, order.Примечание);
+            }
         }
 
 
@@ -40,6 +61,17 @@ namespace Hured
         private void bOk_Click(object sender, RoutedEventArgs e)
         {
             // TODO Добваить логику при сохранении
+            Controller.OpenConnection();
+
+            var order = new ПриказУвольнение()
+            {
+                НомерТрудовогоДоговора = tbНомерДоговора.Text,
+                ДатаТрудовогоДоговора = dpДатаДоговора.DisplayDate,
+                Основание = tbОснование.Text,
+                Примечание = Functions.GetRTBText(rtbПримечание)
+            };
+            Tag = order;
+
             DialogResult = true;
             Close();
         }

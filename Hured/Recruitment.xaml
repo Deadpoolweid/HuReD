@@ -27,11 +27,11 @@
             <DatePicker x:Name="dpBegin"></DatePicker>
             <Label>по</Label>
             <DatePicker x:Name="dpEnd"></DatePicker>
-            <CheckBox x:Name="chIsTraineship">Испытательный срок</CheckBox>
+            <CheckBox x:Name="chIsTraineship" IsThreeState="False">Испытательный срок</CheckBox>
         </StackPanel>
         
         <Label Grid.Row="1" Grid.Column="0">Подразделение</Label>
-        <ComboBox x:Name="cbUnit" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left"></ComboBox>
+        <ComboBox x:Name="cbUnit" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" SelectionChanged="CbUnit_OnSelectionChanged"></ComboBox>
         
         <Label Grid.Row="2" Grid.Column="0">Должность</Label>
         <ComboBox x:Name="cbPosition" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left"></ComboBox>
@@ -53,7 +53,7 @@
             <Label>Трудовой договор №</Label>
             <TextBox x:Name="tbНомерДоговора"></TextBox>
             <Label>от</Label>
-            <TextBox x:Name="tbДатаДоговора"></TextBox>
+            <DatePicker x:Name="dpДатаДоговора"></DatePicker>
         </StackPanel>
         
         <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Horizontal">

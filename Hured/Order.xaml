@@ -22,7 +22,7 @@
             <Label>Приказ №</Label>
             <TextBox x:Name="tbНомерПриказа"></TextBox>
             <Label> от </Label>
-            <TextBox x:Name="tbДатаПриказа"></TextBox>
+            <DatePicker x:Name="dpДатаПриказа"></DatePicker>
         </StackPanel>
         
         <Label Grid.Row="1" Grid.Column="0">Сотрудник</Label>

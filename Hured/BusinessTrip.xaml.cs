@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Hured.Tables_templates;
 
 namespace Hured
 {
@@ -19,9 +20,19 @@ namespace Hured
     /// </summary>
     public partial class BusinessTrip : Window
     {
-        public BusinessTrip()
+        public BusinessTrip(ПриказКомандировка order = null)
         {
             InitializeComponent();
+
+            if (order != null)
+            {
+                tbМесто.Text = order.Место;
+                dpBegin.Text = order.НачалоКомандировки.ToString();
+                dpEnd.Text = order.КонецКомандировки.ToString();
+                tbЦель.Text = order.Цель;
+                tbЗаСчёт.Text = order.ЗаСчёт;
+                tbОснование.Text = order.Основание;
+            }
         }
 
         private void bPrint_Click(object sender, RoutedEventArgs e)
@@ -39,7 +50,18 @@ namespace Hured
         private void bOk_Click(object sender, RoutedEventArgs e)
         {
             // TODO Добваить логику при сохранении
-            // Сохранение всех полей в класс временных данных
+
+            var order = new ПриказКомандировка()
+            {
+                Место = tbМесто.Text,
+                НачалоКомандировки = dpBegin.DisplayDate,
+                КонецКомандировки = dpEnd.DisplayDate,
+                Цель = tbЦель.Text,
+                ЗаСчёт = tbЗаСчёт.Text,
+                Основание = tbОснование.Text
+            };
+            Tag = order;
+
             DialogResult = true;
             Close();
         }

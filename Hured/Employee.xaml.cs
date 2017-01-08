@@ -42,7 +42,7 @@ namespace Hured
                     employee.ОсновнаяИнформация.Отчество;
                 cbUnit.SelectedItem = employee.ОсновнаяИнформация.Должность.Подразделение.Название;
                 cbPosition.SelectedItem = employee.ОсновнаяИнформация.Должность.Название;
-                dpCurrentDate.DisplayDate = employee.ОсновнаяИнформация.ДатаПриема;
+                dpCurrentDate.Text = employee.ОсновнаяИнформация.ДатаПриема.ToString();
                 tbДомашний.Text = employee.ОсновнаяИнформация.ДомашнийТелефон;
                 tbИНН.Text = employee.ОсновнаяИнформация.ИНН;
                 tbМобильный.Text = employee.ОсновнаяИнформация.МобильныйТелефон;
@@ -60,9 +60,9 @@ namespace Hured
                 // TODO Загрузка фотографии из БД
 
                 cbDocumentType.SelectedItem = employee.УдостоверениеЛичности.Вид;
-                dpДатаРождения.DisplayDate = employee.УдостоверениеЛичности.ДатаРождения;
+                dpДатаРождения.Text = employee.УдостоверениеЛичности.ДатаРождения.ToString();
                 tbКем.Text = employee.УдостоверениеЛичности.КемВыдан;
-                dpКогдаВыдан.DisplayDate = employee.УдостоверениеЛичности.КогдаВыдан;
+                dpКогдаВыдан.Text = employee.УдостоверениеЛичности.КогдаВыдан.ToString();
                 tbМестоРождения.Text = employee.УдостоверениеЛичности.МестоРождения;
                 tbСерия.Text = employee.УдостоверениеЛичности.Серия;
                 tbномер.Text = employee.УдостоверениеЛичности.Номер;

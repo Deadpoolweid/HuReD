@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Hured.Tables_templates;
 
 namespace Hured
 {
@@ -19,9 +20,30 @@ namespace Hured
     /// </summary>
     public partial class Vacation : Window
     {
-        public Vacation()
+        public Vacation(ПриказОтпуск order = null)
         {
             InitializeComponent();
+
+            rbEveryYear.IsChecked = true;
+
+            if (order != null)
+            {
+                dpBegin.Text = order.НачалоОтпуска.ToString();
+                dpEnd.Text = order.КонецОтпуска.ToString();
+                if (order.Вид == "Ежегодный")
+                {
+                    rbEveryYear.IsChecked = true;
+                }
+                else if (order.Вид == "Единоразовый")
+                {
+                    rbOnce.IsChecked = true;
+                }
+                else
+                {
+                    rbOther.IsChecked = true;
+                    tbДругое.Text = order.Вид;
+                }
+            }
         }
 
 
@@ -40,6 +62,28 @@ namespace Hured
         private void bOk_Click(object sender, RoutedEventArgs e)
         {
             // TODO Добваить логику при сохранении
+            string vacationType = "";
+            if (rbEveryYear.IsChecked == true)
+            {
+                vacationType = rbEveryYear.Content.ToString();
+            }
+            else if (rbOnce.IsChecked == true)
+            {
+                vacationType = rbOnce.Content.ToString();
+            }
+            else if (rbOther.IsChecked == true)
+            {
+                vacationType = tbДругое.Text;
+            }
+
+            var order = new ПриказОтпуск()
+            {
+                НачалоОтпуска = dpBegin.DisplayDate,
+                КонецОтпуска = dpEnd.DisplayDate,
+                Вид = vacationType
+            };
+            Tag = order;
+
             DialogResult = true;
             Close();
         }

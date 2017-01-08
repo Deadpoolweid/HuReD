@@ -16,14 +16,14 @@
             <ColumnDefinition Width="Auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <ListView Grid.Row="0" Grid.Column="0">
+        <ListView Grid.Row="0" Grid.Column="0" Name="lvOrders">
             <ListView.View>
                 <GridView >
                     <GridView.Columns>
-                        <GridViewColumn Header="Дата" Width="80"></GridViewColumn>
-                        <GridViewColumn Header="Номер" Width="50"></GridViewColumn>
-                        <GridViewColumn Header="Ф.И.О." Width="200"></GridViewColumn>
-                        <GridViewColumn Header="Тип" Width="60"></GridViewColumn>
+                        <GridViewColumn Header="Дата" Width="80" DisplayMemberBinding="{Binding Дата}"></GridViewColumn>
+                        <GridViewColumn Header="Номер" Width="50" DisplayMemberBinding="{Binding Номер}"></GridViewColumn>
+                        <GridViewColumn Header="Ф.И.О." Width="200" DisplayMemberBinding="{Binding ФИО}"></GridViewColumn>
+                        <GridViewColumn Header="Тип" Width="60" DisplayMemberBinding="{Binding Тип}"></GridViewColumn>
                     </GridView.Columns>
                 </GridView>
             </ListView.View>

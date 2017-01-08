@@ -5,11 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using Hured.DBModel;
 
 namespace Hured
 {
-    class Functions
+    static class Functions
     {
         public static void AddUnitsFromDB(ref ListView lvUnits)
         {
@@ -126,6 +127,21 @@ namespace Hured
 
             }
             Controller.CloseConnection();
+        }
+
+        public static string GetRTBText(RichTextBox rtb)
+        {
+            var textRange = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd);
+            return textRange.Text;
+        }
+
+        public static void SetRTBText(RichTextBox rtb, string text)
+        {
+            FlowDocument document = new FlowDocument();
+            Paragraph paragraph = new Paragraph();
+            paragraph.Inlines.Add(new Bold(new Run(text)));
+            document.Blocks.Add(paragraph);
+            rtb.Document = document;
         }
 
         //public static void OnTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)

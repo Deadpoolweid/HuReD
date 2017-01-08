@@ -24,11 +24,11 @@
             <Label>Трудовой договор №</Label>
             <TextBox x:Name="tbНомерДоговора"></TextBox>
             <Label>от</Label>
-            <TextBox x:Name="tbДатаДоговора"></TextBox>
+            <DatePicker x:Name="dpДатаДоговора"></DatePicker>
         </StackPanel>
 
         <Label Grid.Row="1" Grid.Column="0">Уволить</Label>
-        <ComboBox x:Name="cbEmployee" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left"></ComboBox>
+        <Label x:Name="lEmployee" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left"></Label>
         
         <Label Grid.Row="2" Grid.Column="0">Основание</Label>
         <TextBox x:Name="tbОснование" Grid.Row="2" Grid.Column="1"></TextBox>
