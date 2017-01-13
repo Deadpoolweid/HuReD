@@ -11,13 +11,14 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using MahApps.Metro.Controls;
 
 namespace Hured
 {
     /// <summary>
     /// Логика взаимодействия для TimesheetEntry.xaml
     /// </summary>
-    public partial class TimesheetEntry : Window
+    public partial class TimesheetEntry : MetroWindow
     {
         public TimesheetEntry()
         {

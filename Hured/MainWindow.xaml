@@ -1,11 +1,14 @@
-﻿<Window x:Class="Hured.MainWindow"
+﻿<controls:MetroWindow x:Class="Hured.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Hured"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
-        Title="Главное меню" Height="350" Width="525" ResizeMode="CanMinimize">
+        Title="Отдел кадров - Главное меню" 
+                      WindowStartupLocation="CenterScreen" >
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
@@ -14,10 +17,20 @@
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
 
+        <!--<controls:Tile Title="Сотрудники" 
+                    TiltFactor="3"
+                       Name="bEmployees"
+                       Click="BEmployees_OnClick"
+                       Grid.Row="0"
+                       Width="Auto"
+                       Height="Auto" HorizontalTitleAlignment="Center" VerticalTitleAlignment="Center"
+                       >-->
+        <!--</controls:Tile>-->
+
         <Button Grid.Row="0" Name="bEmployees" Click="BEmployees_OnClick">Сотрудники</Button>
         <Button x:Name="bOrders" Grid.Row="1" Click="bOrders_Click">Приказы</Button>
         <Button x:Name="bTimesheet" Grid.Row="2" Click="bTimesheet_Click">Табель посещаемости</Button>
         <Button x:Name="bSettings" Grid.Row="3" Click="bSettings_Click">Настройки</Button>
-        
+
     </Grid>
-</Window>
+</controls:MetroWindow>

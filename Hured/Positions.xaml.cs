@@ -12,13 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Hured.DBModel;
+using MahApps.Metro.Controls;
 
 namespace Hured
 {
     /// <summary>
     /// Логика взаимодействия для Positions.xaml
     /// </summary>
-    public partial class Positions : Window
+    public partial class Positions : MetroWindow
     {
         public Positions()
         {
@@ -77,7 +78,6 @@ namespace Hured
             SyncPositions();
         }
 
-        // TODO Возможно общая функция
         private void SyncPositions()
         {
             lvPositions.Items.Clear();

@@ -12,13 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Hured.DBModel;
+using MahApps.Metro.Controls;
 
 namespace Hured
 {
     /// <summary>
     /// Логика взаимодействия для Units.xaml
     /// </summary>
-    public partial class Units : Window
+    public partial class Units : MetroWindow
     {
         public Units()
         {

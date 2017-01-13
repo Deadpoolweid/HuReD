@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Hured.DBModel;
 using Hured.Tables_templates;
+using MahApps.Metro.Controls;
 using Microsoft.Win32;
 
 namespace Hured
@@ -21,7 +22,7 @@ namespace Hured
     /// <summary>
     /// Логика взаимодействия для Employee.xaml
     /// </summary>
-    public partial class Employee : Window
+    public partial class Employee : MetroWindow
     {
         public Employee(Сотрудник employee = null)
         {

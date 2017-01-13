@@ -13,13 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Hured.DBModel;
 using Hured.Tables_templates;
+using MahApps.Metro.Controls;
 
 namespace Hured
 {
     /// <summary>
     /// Логика взаимодействия для Recruitment.xaml
     /// </summary>
-    public partial class Recruitment : Window
+    public partial class Recruitment : MetroWindow
     {
         public Recruitment(ПриказПриём order = null)
         {
@@ -47,7 +48,7 @@ namespace Hured
         private void bPrint_Click(object sender, RoutedEventArgs e)
         {
             // TODO Реализация функции печати
-            Functions.Print();
+            //Functions.Print();
         }
 
         private void bCancel_Click(object sender, RoutedEventArgs e)
@@ -58,7 +59,6 @@ namespace Hured
 
         private void bOk_Click(object sender, RoutedEventArgs e)
         {
-            // TODO Добваить логику при сохранении
 
             Controller.OpenConnection();
 

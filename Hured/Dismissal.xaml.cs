@@ -13,13 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Hured.DBModel;
 using Hured.Tables_templates;
+using MahApps.Metro.Controls;
 
 namespace Hured
 {
     /// <summary>
     /// Логика взаимодействия для Dismissal.xaml
     /// </summary>
-    public partial class Dismissal : Window
+    public partial class Dismissal : MetroWindow
     {
         public Dismissal(int employeeId = 0, ПриказУвольнение order = null)
         {
@@ -60,7 +61,6 @@ namespace Hured
 
         private void bOk_Click(object sender, RoutedEventArgs e)
         {
-            // TODO Добваить логику при сохранении
             Controller.OpenConnection();
 
             var order = new ПриказУвольнение()

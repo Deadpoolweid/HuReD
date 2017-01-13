@@ -14,19 +14,21 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Hured.DBModel;
+using MahApps.Metro.Controls;
 
 namespace Hured
 {
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : MetroWindow
     {
         public MainWindow()
         {
             InitializeComponent();
             // TODO Инициализация приложения, первичная настройка
             Controller.InitDB();
+            MainWindow w = this;
         }
 
         private void BEmployees_OnClick(object sender, RoutedEventArgs e)

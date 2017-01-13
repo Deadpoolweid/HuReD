@@ -12,13 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Hured.Tables_templates;
+using MahApps.Metro.Controls;
 
 namespace Hured
 {
     /// <summary>
     /// Логика взаимодействия для BusinessTrip.xaml
     /// </summary>
-    public partial class BusinessTrip : Window
+    public partial class BusinessTrip : MetroWindow
     {
         public BusinessTrip(ПриказКомандировка order = null)
         {
@@ -49,7 +50,6 @@ namespace Hured
 
         private void bOk_Click(object sender, RoutedEventArgs e)
         {
-            // TODO Добваить логику при сохранении
 
             var order = new ПриказКомандировка()
             {

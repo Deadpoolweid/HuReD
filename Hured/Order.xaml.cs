@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Hured.DBModel;
 using Hured.Tables_templates;
+using MahApps.Metro.Controls;
 using Microsoft.Windows.Controls;
 
 namespace Hured
@@ -20,7 +21,7 @@ namespace Hured
     /// <summary>
     /// Логика взаимодействия для Order.xaml
     /// </summary>
-    public partial class Order : Window
+    public partial class Order : MetroWindow
     {
         public Order(OrderInfo orderInfo = null)
         {
@@ -66,8 +67,6 @@ namespace Hured
 
         private void bOk_Click(object sender, RoutedEventArgs e)
         {
-            // TODO Добавить логику добавления приказа
-
             switch (cbOrderType.SelectedIndex)
             {
                 case 0:
@@ -103,6 +102,8 @@ namespace Hured
                             Controller.Insert(order);
                         }
                         Controller.CloseConnection();
+                        // TODO Добавить окно выбора места сохранения
+                        Functions.CreateOrder(OrderType.Recruitment, order);
                     }
                     break;
                 case 1:
@@ -138,6 +139,8 @@ namespace Hured
                             Controller.Insert(order);
                         }
                         Controller.CloseConnection();
+                        // TODO Добавить окно выбора места сохранения
+                        Functions.CreateOrder(OrderType.Dismissal, order);
                     }
 
                     break;
@@ -176,6 +179,8 @@ namespace Hured
                             Controller.Insert(order);
                         }
                         Controller.CloseConnection();
+                        // TODO Добавить окно выбора места сохранения
+                        Functions.CreateOrder(OrderType.Vacation, order);
                     }
 
                     break;
@@ -213,8 +218,9 @@ namespace Hured
                             Controller.Insert(order);
                         }
                         Controller.CloseConnection();
+                        // TODO Добавить окно выбора места сохранения
+                        Functions.CreateOrder(OrderType.BusinessTrip, order);
                     }
-
                     break;
             }
             DialogResult = true;

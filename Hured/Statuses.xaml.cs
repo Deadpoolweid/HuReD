@@ -11,13 +11,14 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using MahApps.Metro.Controls;
 
 namespace Hured
 {
     /// <summary>
     /// Логика взаимодействия для Statuses.xaml
     /// </summary>
-    public partial class Statuses : Window
+    public partial class Statuses : MetroWindow
     {
         public Statuses()
         {

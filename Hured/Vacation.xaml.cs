@@ -12,13 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Hured.Tables_templates;
+using MahApps.Metro.Controls;
 
 namespace Hured
 {
     /// <summary>
     /// Логика взаимодействия для Vacation.xaml
     /// </summary>
-    public partial class Vacation : Window
+    public partial class Vacation : MetroWindow
     {
         public Vacation(ПриказОтпуск order = null)
         {
@@ -61,7 +62,6 @@ namespace Hured
 
         private void bOk_Click(object sender, RoutedEventArgs e)
         {
-            // TODO Добваить логику при сохранении
             string vacationType = "";
             if (rbEveryYear.IsChecked == true)
             {

@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Hured.DBModel;
 using Hured.Tables_templates;
+using MahApps.Metro.Controls;
 
 namespace Hured
 {
@@ -38,7 +39,7 @@ namespace Hured
     /// <summary>
     /// Логика взаимодействия для Orders.xaml
     /// </summary>
-    public partial class Orders : Window
+    public partial class Orders : MetroWindow
     {
         public Orders()
         {
@@ -108,7 +109,6 @@ namespace Hured
 
         private void bChange_Click(object sender, RoutedEventArgs e)
         {
-            // TODO Вызвать окно изменения приказа
             IsEnabled = false;
 
 
@@ -126,7 +126,6 @@ namespace Hured
 
         private void bRemove_Click(object sender, RoutedEventArgs e)
         {
-            // TODO Удаление приказа
             IsEnabled = false;
 
 

@@ -12,13 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Hured.DBModel;
+using MahApps.Metro.Controls;
 
 namespace Hured
 {
     /// <summary>
     /// Логика взаимодействия для Position.xaml
     /// </summary>
-    public partial class Position : Window
+    public partial class Position : MetroWindow
     {
         public Position(Должность position = null)
         {

@@ -1,8 +1,10 @@
-﻿<Window x:Class="Hured.Units"
+﻿<controls:MetroWindow x:Class="Hured.Units"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        
         xmlns:local="clr-namespace:Hured"
         mc:Ignorable="d"
         Title="Список подразделений" Height="250" Width="300" ResizeMode="CanMinimize">
@@ -36,4 +38,4 @@
             <Button x:Name="bClose" Click="bClose_Click">Закрыть</Button>
         </StackPanel>
     </Grid>
-</Window>
+</controls:MetroWindow>

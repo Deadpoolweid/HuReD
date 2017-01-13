@@ -14,13 +14,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Hured.DBModel;
 using Hured.Tables_templates;
+using MahApps.Metro.Controls;
 
 namespace Hured
 {
     /// <summary>
     /// Логика взаимодействия для Employees.xaml
     /// </summary>
-    public partial class Employees : Window
+    public partial class Employees : MetroWindow
     {
         public Employees()
         {
