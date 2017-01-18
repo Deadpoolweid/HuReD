@@ -7,37 +7,41 @@
         
         xmlns:local="clr-namespace:Hured"
         mc:Ignorable="d"
-        Title="Список приказов" Height="300" Width="600" ResizeMode="CanMinimize">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
+        Title="Список приказов" >
 
-        <ListView Grid.Row="0" Grid.Column="0" Name="lvOrders">
-            <ListView.View>
-                <GridView >
-                    <GridView.Columns>
-                        <GridViewColumn Header="Дата" Width="80" DisplayMemberBinding="{Binding Дата}"></GridViewColumn>
-                        <GridViewColumn Header="Номер" Width="50" DisplayMemberBinding="{Binding Номер}"></GridViewColumn>
-                        <GridViewColumn Header="Ф.И.О." Width="200" DisplayMemberBinding="{Binding ФИО}"></GridViewColumn>
-                        <GridViewColumn Header="Тип" Width="60" DisplayMemberBinding="{Binding Тип}"></GridViewColumn>
-                    </GridView.Columns>
-                </GridView>
-            </ListView.View>
-        </ListView>
-        
-        <StackPanel Grid.Row="0" Grid.Column="1">
-            <Button x:Name="bAdd" Click="bAdd_Click">Добавить</Button>
-            <Button x:Name="bChange" Click="bChange_Click">Изменить</Button>
-            <Button x:Name="bRemove" Click="bRemove_Click">Удалить</Button>
-        </StackPanel>
-        
-        <Button x:Name="bOk" Grid.Row="1" Grid.Column="1" Click="bOk_Click">ОК</Button>
+    <Border>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
 
-    </Grid>
+            <ListView Grid.Row="0" Grid.Column="0" Name="lvOrders">
+                <ListView.View>
+                    <GridView >
+                        <GridView.Columns>
+                            <GridViewColumn Header="Дата" Width="80" DisplayMemberBinding="{Binding Дата}"></GridViewColumn>
+                            <GridViewColumn Header="Номер" Width="50" DisplayMemberBinding="{Binding Номер}"></GridViewColumn>
+                            <GridViewColumn Header="Ф.И.О." Width="200" DisplayMemberBinding="{Binding ФИО}"></GridViewColumn>
+                            <GridViewColumn Header="Тип" Width="60" DisplayMemberBinding="{Binding Тип}"></GridViewColumn>
+                        </GridView.Columns>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            <StackPanel Grid.Row="0" Grid.Column="1">
+                <Button x:Name="bAdd" Click="bAdd_Click">Добавить</Button>
+                <Button x:Name="bChange" Click="bChange_Click">Изменить</Button>
+                <Button x:Name="bOpen" Click="BOpen_OnClick">Открыть</Button>
+                <Button x:Name="bRemove" Click="bRemove_Click">Удалить</Button>
+            </StackPanel>
+
+            <Button x:Name="bOk" Grid.Row="1" Grid.Column="1" Click="bOk_Click">ОК</Button>
+
+        </Grid>
+    </Border>
 </controls:MetroWindow>

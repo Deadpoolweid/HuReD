@@ -124,6 +124,11 @@ namespace Hured
             SyncOrders();
         }
 
+        private void BOpen_OnClick(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
         private void bRemove_Click(object sender, RoutedEventArgs e)
         {
             IsEnabled = false;

@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Printing;
+using System.Drawing.Text;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +14,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using Hured.DBModel;
 using Hured.Tables_templates;
+using Microsoft.Win32;
 using Word = Microsoft.Office.Interop.Word;
 
 namespace Hured
@@ -90,12 +95,6 @@ namespace Hured
             {
                 cbPositions.Items.Add(должность.Название);
             }
-        }
-
-        // Вызывает стандартный диалог печати
-        public static void Print(OrderType orderType = OrderType.BusinessTrip)
-        {
-
         }
 
         // Создаёт приказ с заданными параметрами
@@ -249,8 +248,29 @@ namespace Hured
                     break;
             }
 
+            var sfd = new SaveFileDialog()
+            {
+                InitialDirectory = Directory.GetCurrentDirectory() + @"\Documents",
+                Filter = "Word Document | *.docx | Все файлы (*.*)|*.*",
+                FileName = "Новый приказ"
+            };
+
+            sfd.ShowDialog();
+            savePath = sfd.FileName;
+
             WordDocument document = new WordDocument(openPath,savePath);
+
+
             document.SetTemplate(bookmarks,true);
+
+            var result = MessageBox.Show("Распечатать документ?", "Печать документа", MessageBoxButton.YesNo,
+    MessageBoxImage.Question,
+    MessageBoxResult.No, MessageBoxOptions.None);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                document.Print();
+            }
         }
 
         public static void FillTreeView(ref TreeView tv)
@@ -327,7 +347,7 @@ namespace Hured
             SavePath = savePath;
         }
 
-        readonly Word._Application _oWord = new Word.Application();
+        readonly Word._Application wordApp = new Word.Application();
 
         private string OpenPath { get; set; }
         private string SavePath { get; set; }
@@ -340,7 +360,7 @@ namespace Hured
             {
                 path = OpenPath;
             }
-            Document = _oWord.Documents.Add(path);
+            Document = wordApp.Documents.Add(path);
         }
 
         public void Save(string path = null)
@@ -350,6 +370,39 @@ namespace Hured
                 path = SavePath;
             }
             Document.SaveAs(FileName: path);
+        }
+
+        public void Print(string documentPath = null)
+        {
+            if (documentPath == null)
+            {
+                documentPath = SavePath;
+            }
+            object nullobj = Missing.Value;
+            object path = documentPath;
+            object _readonly = true;
+            var doc = wordApp.Documents.Open(ref path,
+                                         ref nullobj, ref _readonly, ref nullobj,
+                                         ref nullobj, ref nullobj, ref nullobj,
+                                         ref nullobj, ref nullobj, ref nullobj,
+                                         ref nullobj, ref nullobj, ref nullobj,
+                                         ref nullobj, ref nullobj, ref nullobj);
+
+            doc.Activate();
+            wordApp.Visible = false;
+            int dialogResult = wordApp.Dialogs[Word.WdWordDialog.wdDialogFilePrint].Show(ref nullobj);
+
+            if (dialogResult == 1)
+            {
+                doc.PrintOut(ref nullobj, ref nullobj, ref nullobj, ref nullobj,
+                             ref nullobj, ref nullobj, ref nullobj, ref nullobj,
+                             ref nullobj, ref nullobj, ref nullobj, ref nullobj,
+                             ref nullobj, ref nullobj, ref nullobj, ref nullobj,
+                             ref nullobj, ref nullobj);
+            }
+
+            wordApp.Quit();
+
         }
 
         public void Close()

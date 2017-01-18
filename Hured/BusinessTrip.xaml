@@ -9,43 +9,45 @@
         mc:Ignorable="d"
         Title="Оформление командировки" Height="250" Width="500" ResizeMode="CanMinimize">
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        
-        <Label Grid.Row="0" Grid.Column="0">Место</Label>
-        <TextBox x:Name="tbМесто" Grid.Row="0" Grid.Column="1"></TextBox>
+    <Border>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
-            <Label>С</Label>
-            <DatePicker x:Name="dpBegin"></DatePicker>
-            <Label>по</Label>
-            <DatePicker x:Name="dpEnd"></DatePicker>
-        </StackPanel>
+            <Label Grid.Row="0" Grid.Column="0">Место</Label>
+            <TextBox x:Name="tbМесто" Grid.Row="0" Grid.Column="1"></TextBox>
 
-        <Label Grid.Row="2" Grid.Column="0">Цель</Label>
-        <TextBox x:Name="tbЦель" Grid.Row="2" Grid.Column="1"></TextBox>
+            <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+                <Label>С</Label>
+                <DatePicker x:Name="dpBegin"></DatePicker>
+                <Label>по</Label>
+                <DatePicker x:Name="dpEnd"></DatePicker>
+            </StackPanel>
 
-        <Label Grid.Row="3" Grid.Column="0">За счёт</Label>
-        <TextBox x:Name="tbЗаСчёт" Grid.Row="3" Grid.Column="1"></TextBox>
+            <Label Grid.Row="2" Grid.Column="0">Цель</Label>
+            <TextBox x:Name="tbЦель" Grid.Row="2" Grid.Column="1"></TextBox>
 
-        <Label Grid.Row="4" Grid.Column="0">Основание</Label>
-        <TextBox x:Name="tbОснование" Grid.Row="4" Grid.Column="1"></TextBox>
+            <Label Grid.Row="3" Grid.Column="0">За счёт</Label>
+            <TextBox x:Name="tbЗаСчёт" Grid.Row="3" Grid.Column="1"></TextBox>
 
-        <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal">
-            <Button x:Name="bPrint" Click="bPrint_Click">Печать</Button>
-            <Button x:Name="bOk" IsDefault="True" Click="bOk_Click">Оформить</Button>
-            <Button x:Name="bCancel" IsCancel="True" Click="bCancel_Click">Отмена</Button>
-        </StackPanel>
-    </Grid>
+            <Label Grid.Row="4" Grid.Column="0">Основание</Label>
+            <TextBox x:Name="tbОснование" Grid.Row="4" Grid.Column="1"></TextBox>
+
+            <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal">
+                <Button x:Name="bPrint" Click="bPrint_Click">Печать</Button>
+                <Button x:Name="bOk" IsDefault="True" Click="bOk_Click">Оформить</Button>
+                <Button x:Name="bCancel" IsCancel="True" Click="bCancel_Click">Отмена</Button>
+            </StackPanel>
+        </Grid>
+    </Border>
 </controls:MetroWindow>

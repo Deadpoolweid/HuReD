@@ -6,37 +6,39 @@
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:local="clr-namespace:Hured"
         mc:Ignorable="d"
-        Title="Выдать отпуск" Height="200" Width="550" FontWeight="Bold" ResizeMode="CanMinimize">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
+        Title="Выдать отпуск" Height="200" Width="550" ResizeMode="CanMinimize">
+    <Border>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
-            <Label>Период С</Label>
-            <DatePicker x:Name="dpBegin"></DatePicker>
-            <Label>по</Label>
-            <DatePicker x:Name="dpEnd"></DatePicker>
-        </StackPanel>
+            <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+                <Label>Период С</Label>
+                <DatePicker x:Name="dpBegin"></DatePicker>
+                <Label>по</Label>
+                <DatePicker x:Name="dpEnd"></DatePicker>
+            </StackPanel>
 
-        <RadioButton x:Name="rbEveryYear" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" GroupName="Type">Ежегодный</RadioButton>
-        <RadioButton x:Name="rbOnce" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" GroupName="Type">Единоразовый</RadioButton>
-        <RadioButton x:Name="rbOther" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" GroupName="Type">Другое</RadioButton>
+            <RadioButton x:Name="rbEveryYear" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" GroupName="Type">Ежегодный</RadioButton>
+            <RadioButton x:Name="rbOnce" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" GroupName="Type">Единоразовый</RadioButton>
+            <RadioButton x:Name="rbOther" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" GroupName="Type">Другое</RadioButton>
 
-        <TextBox x:Name="tbДругое" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left"></TextBox>
+            <TextBox x:Name="tbДругое" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left"></TextBox>
 
-        <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal">
-            <Button x:Name="bPrint" Click="bPrint_Click">Печать</Button>
-            <Button x:Name="bOk" Click="bOk_Click">Оформить</Button>
-            <Button x:Name="bCancel" Click="bCancel_Click">Отмена</Button>
-        </StackPanel>
-    </Grid>
+            <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal">
+                <Button x:Name="bPrint" Click="bPrint_Click">Печать</Button>
+                <Button x:Name="bOk" Click="bOk_Click">Оформить</Button>
+                <Button x:Name="bCancel" Click="bCancel_Click">Отмена</Button>
+            </StackPanel>
+        </Grid>
+    </Border>
 </controls:MetroWindow>

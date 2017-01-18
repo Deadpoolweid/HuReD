@@ -8,60 +8,62 @@
         xmlns:local="clr-namespace:Hured"
         mc:Ignorable="d"
         Title="Взять на работу" Height="370" Width="650" ResizeMode="CanMinimize">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="80"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        
-        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
-            <Label>С</Label>
-            <DatePicker x:Name="dpBegin"></DatePicker>
-            <Label>по</Label>
-            <DatePicker x:Name="dpEnd"></DatePicker>
-            <CheckBox x:Name="chIsTraineship" IsThreeState="False">Испытательный срок</CheckBox>
-        </StackPanel>
-        
-        <Label Grid.Row="1" Grid.Column="0">Подразделение</Label>
-        <ComboBox x:Name="cbUnit" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" SelectionChanged="CbUnit_OnSelectionChanged"></ComboBox>
-        
-        <Label Grid.Row="2" Grid.Column="0">Должность</Label>
-        <ComboBox x:Name="cbPosition" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left"></ComboBox>
+    <Border>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="80"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal">
-            <Label >Оклад</Label>
-            <TextBox x:Name="tbОклад"></TextBox>
-        </StackPanel>
-        <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
-            <Label>Надбавка</Label>
-            <TextBox x:Name="tbНадбавка"></TextBox>
-        </StackPanel>
+            <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+                <Label>С</Label>
+                <DatePicker x:Name="dpBegin"></DatePicker>
+                <Label>по</Label>
+                <DatePicker x:Name="dpEnd"></DatePicker>
+                <CheckBox x:Name="chIsTraineship" IsThreeState="False">Испытательный срок</CheckBox>
+            </StackPanel>
 
-        <Label Grid.Row="4" Grid.Column="0">Примечание</Label>
-        
-        <RichTextBox x:Name="rtbПримечание" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"></RichTextBox>
-        
-        <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
-            <Label>Трудовой договор №</Label>
-            <TextBox x:Name="tbНомерДоговора"></TextBox>
-            <Label>от</Label>
-            <DatePicker x:Name="dpДатаДоговора"></DatePicker>
-        </StackPanel>
-        
-        <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Horizontal">
-            <Button x:Name="bPrint" Click="bPrint_Click">Печать</Button>
-            <Button x:Name="bOk" IsDefault="True" Click="bOk_Click">Оформить</Button>
-            <Button x:Name="bCancel" IsCancel="True" Click="bCancel_Click">Отмена</Button>
-        </StackPanel>
-    </Grid>
+            <Label Grid.Row="1" Grid.Column="0">Подразделение</Label>
+            <ComboBox x:Name="cbUnit" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" SelectionChanged="CbUnit_OnSelectionChanged"></ComboBox>
+
+            <Label Grid.Row="2" Grid.Column="0">Должность</Label>
+            <ComboBox x:Name="cbPosition" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left"></ComboBox>
+
+            <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal">
+                <Label >Оклад</Label>
+                <TextBox x:Name="tbОклад"></TextBox>
+            </StackPanel>
+            <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
+                <Label>Надбавка</Label>
+                <TextBox x:Name="tbНадбавка"></TextBox>
+            </StackPanel>
+
+            <Label Grid.Row="4" Grid.Column="0">Примечание</Label>
+
+            <RichTextBox x:Name="rtbПримечание" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"></RichTextBox>
+
+            <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+                <Label>Трудовой договор №</Label>
+                <TextBox x:Name="tbНомерДоговора"></TextBox>
+                <Label>от</Label>
+                <DatePicker x:Name="dpДатаДоговора"></DatePicker>
+            </StackPanel>
+
+            <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Horizontal">
+                <Button x:Name="bPrint" Click="bPrint_Click">Печать</Button>
+                <Button x:Name="bOk" IsDefault="True" Click="bOk_Click">Оформить</Button>
+                <Button x:Name="bCancel" IsCancel="True" Click="bCancel_Click">Отмена</Button>
+            </StackPanel>
+        </Grid>
+    </Border>
 </controls:MetroWindow>

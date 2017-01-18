@@ -8,35 +8,37 @@
         xmlns:local="clr-namespace:Hured"
         mc:Ignorable="d"
         Title="Создать приказ" Height="180" Width="550" ResizeMode="CanMinimize">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        
-        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
-            <Label>Приказ №</Label>
-            <TextBox x:Name="tbНомерПриказа"></TextBox>
-            <Label> от </Label>
-            <DatePicker x:Name="dpДатаПриказа"></DatePicker>
-        </StackPanel>
-        
-        <Label Grid.Row="1" Grid.Column="0">Сотрудник</Label>
-        <ComboBox x:Name="cbEmployee" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left"></ComboBox>
-        
-        <Label Grid.Row="2" Grid.Column="0">Тип приказа</Label>
-        <ComboBox x:Name="cbOrderType" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left"></ComboBox>
-        
-        <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
-            <Button x:Name="bOk" IsDefault="True" Click="bOk_Click">Ок</Button>
-            <Button x:Name="bCancel" IsCancel="True" Click="bCancel_Click">Отмена</Button>
-        </StackPanel>
-        
-    </Grid>
+    <Border>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+                <Label>Приказ №</Label>
+                <TextBox x:Name="tbНомерПриказа"></TextBox>
+                <Label>от</Label>
+                <DatePicker x:Name="dpДатаПриказа"></DatePicker>
+            </StackPanel>
+
+            <Label Grid.Row="1" Grid.Column="0">Сотрудник</Label>
+            <ComboBox x:Name="cbEmployee" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left"></ComboBox>
+
+            <Label Grid.Row="2" Grid.Column="0">Тип приказа</Label>
+            <ComboBox x:Name="cbOrderType" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left"></ComboBox>
+
+            <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
+                <Button x:Name="bOk" IsDefault="True" Click="bOk_Click">Ок</Button>
+                <Button x:Name="bCancel" IsCancel="True" Click="bCancel_Click">Отмена</Button>
+            </StackPanel>
+
+        </Grid>
+    </Border>
 </controls:MetroWindow>

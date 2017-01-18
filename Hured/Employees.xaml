@@ -9,7 +9,7 @@
   
         mc:Ignorable="d"
         Title="Справочник сотрудников" Height="Auto" Width="Auto">
-    <Border Padding="10">
+    <Border>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>

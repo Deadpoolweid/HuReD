@@ -20,6 +20,146 @@
         <Setter Property="MinWidth" Value="50"></Setter>
     </Style>
 
+    <Style TargetType="Border">
+        <Setter Property="Padding" Value="10"></Setter>
+    </Style>
+
+    <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+        <Setter Property="MinWidth" Value="150"></Setter>
+        <Setter Property="MinHeight" Value="15"></Setter>
+        <Setter Property="Margin" Value="3"></Setter>
+    </Style>
+
+    <Style TargetType="DatePicker" BasedOn="{StaticResource {x:Type DatePicker}}">
+        <Setter Property="Margin" Value="3"></Setter>
+        <Setter Property="MinWidth" Value="150"></Setter>
+        <Setter Property="MinHeight" Value="20"></Setter>
+    </Style>
+
+    <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+        <Setter Property="Margin" Value="3"></Setter>
+        <Setter Property="MinWidth" Value="150"></Setter>
+        <Setter Property="MinHeight" Value="15"></Setter>
+    </Style>
+
+    <Style TargetType="RadioButton" BasedOn="{StaticResource {x:Type RadioButton}}">
+        <Setter Property="MinHeight" Value="20"></Setter>
+        <Setter Property="Margin" Value="3"></Setter>
+    </Style>
+
+    <Style TargetType="Label" BasedOn="{StaticResource {x:Type Label}}">
+        <Setter Property="Margin" Value="3"></Setter>
+        <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+    </Style>
+
+    <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
+
+        <Setter Property="MinHeight" Value="20"></Setter>
+        <Setter Property="Margin" Value="3"></Setter>
+    </Style>
+
+
+
+    <Style TargetType="RichTextBox" BasedOn="{StaticResource {x:Type RichTextBox}}">
+        <Setter Property="MinWidth" Value="300"></Setter>
+        <Setter Property="MinHeight" Value="60"></Setter>
+        <Setter Property="Margin" Value="5"></Setter>
+    </Style>
+
+    <Style x:Key="ScrollBarPageButtonStyle" TargetType="{x:Type RepeatButton}">
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RepeatButton}">
+                    <Border BorderBrush="Transparent"></Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ScrollBarThumbStyle" TargetType="{x:Type Thumb}">
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Margin" Value="1,0,1,0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Thumb}">
+                    <Rectangle Fill="{StaticResource AccentColorBrush}"  Margin="2"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <ControlTemplate x:Key="ScrollBarTemplate" TargetType="{x:Type ScrollBar}">
+        <Track Name="PART_Track"
+                   IsDirectionReversed="True">
+            <Track.DecreaseRepeatButton>
+                <RepeatButton Command="ScrollBar.PageUpCommand" Style="{StaticResource ScrollBarPageButtonStyle}">
+                </RepeatButton>
+            </Track.DecreaseRepeatButton>
+            <Track.Thumb>
+                <Thumb Style="{StaticResource ScrollBarThumbStyle}">
+                </Thumb>
+            </Track.Thumb>
+            <Track.IncreaseRepeatButton>
+                <RepeatButton Command="ScrollBar.PageDownCommand" Style="{StaticResource ScrollBarPageButtonStyle}">
+                </RepeatButton>
+            </Track.IncreaseRepeatButton>
+        </Track>
+
+    </ControlTemplate>
+
+    <Style TargetType="{x:Type ScrollBar}">
+        <Setter Property="Template" Value="{StaticResource ScrollBarTemplate}"/>
+        <Setter Property="Opacity" Value="0.4"></Setter>
+        <Setter Property="Margin" Value="-10"></Setter>
+
+    </Style>
+    <Style TargetType="{x:Type ScrollViewer}">
+        <Setter Property="controls:ScrollBarHelper.VerticalScrollBarOnLeftSide" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                    <Grid x:Name="Grid" Background="{TemplateBinding Background}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition x:Name="leftColumn" Width="*"/>
+                            <ColumnDefinition x:Name="rightColumn" Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" CanContentScroll="{TemplateBinding CanContentScroll}" CanHorizontallyScroll="False" CanVerticallyScroll="False" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Grid.Column="0" Margin="{TemplateBinding Padding}" Grid.Row="0"/>
+                        <ScrollBar x:Name="PART_VerticalScrollBar" AutomationProperties.AutomationId="VerticalScrollBar" Cursor="Arrow" Grid.Column="1" Maximum="{TemplateBinding ScrollableHeight}" Minimum="0" Grid.Row="0" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportHeight}"/>
+                        <ScrollBar x:Name="PART_HorizontalScrollBar" AutomationProperties.AutomationId="HorizontalScrollBar" Cursor="Arrow" Grid.Column="0" Maximum="{TemplateBinding ScrollableWidth}" Minimum="0" Orientation="Horizontal" Grid.Row="1" Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportWidth}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="controls:ScrollBarHelper.VerticalScrollBarOnLeftSide" Value="True">
+                            <Setter Property="Grid.Column" TargetName="PART_HorizontalScrollBar" Value="1"/>
+                            <Setter Property="Grid.Column" TargetName="PART_ScrollContentPresenter" Value="1"/>
+                            <Setter Property="Grid.Column" TargetName="PART_VerticalScrollBar" Value="0"/>
+                            <Setter Property="Width" TargetName="leftColumn" Value="Auto"/>
+                            <Setter Property="Width" TargetName="rightColumn" Value="*"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="False">
+                            <Setter Property="VerticalScrollBarVisibility" Value="Hidden"/>
+                            <Setter Property="HorizontalScrollBarVisibility" Value="Hidden"/>
+                        </Trigger>
+
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+                            <Setter Property="HorizontalScrollBarVisibility" Value="Auto"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+
     <!-- Для тестирования Grid -->
     <!--<Style TargetType="Grid">
         <Setter Property="ShowGridLines" Value="True"></Setter>
@@ -28,49 +168,14 @@
 
 
 
-    <!--<Style TargetType="Label">
-        <Setter Property="Margin" Value="5,0,5,0"></Setter>
-    </Style>
-
-    <Style TargetType="TextBox">
-        <Setter Property="MinWidth" Value="150"></Setter>
-        <Setter Property="MinHeight" Value="15"></Setter>
-        <Setter Property="Margin" Value="5,0,5,0"></Setter>
-    </Style>
 
 
 
-    <Style TargetType="ComboBox">
-        <Setter Property="Margin" Value="5,0,5,0"></Setter>
-        <Setter Property="MinWidth" Value="150"></Setter>
-        <Setter Property="MinHeight" Value="15"></Setter>
-    </Style>
 
 
 
-    <Style TargetType="DatePicker">
-        <Setter Property="Margin" Value="5,0,5,0"></Setter>
-        <Setter Property="MinWidth" Value="150"></Setter>
-        <Setter Property="MinHeight" Value="20"></Setter>
-    </Style>
 
-    <Style TargetType="CheckBox">
 
-        <Setter Property="MinHeight" Value="20"></Setter>
-        <Setter Property="Margin" Value="5,0,5,0"></Setter>
-    </Style>
 
-    <Style TargetType="RadioButton">
-
-        <Setter Property="MinHeight" Value="20"></Setter>
-        <Setter Property="Margin" Value="5,0,5,0"></Setter>
-    </Style>
-    
-    <Style TargetType="RichTextBox">
-
-        <Setter Property="MinWidth" Value="300"></Setter>
-        <Setter Property="MinHeight" Value="60"></Setter>
-        <Setter Property="Margin" Value="10,0,10,0"></Setter>
-    </Style>-->
 
 </ResourceDictionary>
