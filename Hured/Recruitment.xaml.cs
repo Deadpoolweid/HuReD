@@ -31,8 +31,8 @@ namespace Hured
 
             if (order != null)
             {
-                dpBegin.Text = order.НачалоРаботы.ToString();
-                dpEnd.Text = order.КонецРаботы.ToString();
+                dpBegin.Text = order.НачалоРаботы.ToShortDateString();
+                dpEnd.Text = order.КонецРаботы.ToShortDateString();
                 chIsTraineship.IsChecked = order.ИспытательныйСрок;
                 cbUnit.SelectedItem = order.Должность.Подразделение.Название;
                 cbPosition.SelectedItem = order.Должность.Название;
@@ -40,16 +40,13 @@ namespace Hured
                 tbНадбавка.Text = order.Надбавка;
                 Functions.SetRTBText(rtbПримечание, order.Примечания);
                 tbНомерДоговора.Text = order.НомерТрудовогоДоговора;
-                dpДатаДоговора.Text = order.ДатаТрудовогоДоговора.ToString();
+                dpДатаДоговора.Text = order.ДатаТрудовогоДоговора.ToShortDateString();
+                filePath = order.Файл;
             }
 
         }
 
-        private void bPrint_Click(object sender, RoutedEventArgs e)
-        {
-            // TODO Реализация функции печати
-            //Functions.Print();
-        }
+        private string filePath;
 
         private void bCancel_Click(object sender, RoutedEventArgs e)
         {
@@ -81,7 +78,8 @@ namespace Hured
                 Надбавка = tbНадбавка.Text,
                 Примечания = Functions.GetRTBText(rtbПримечание),
                 НомерТрудовогоДоговора = tbНомерДоговора.Text,
-                ДатаТрудовогоДоговора = dpДатаДоговора.DisplayDate
+                ДатаТрудовогоДоговора = dpДатаДоговора.DisplayDate,
+                Файл = filePath
             };
             Tag = приём;
 

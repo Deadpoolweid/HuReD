@@ -33,14 +33,11 @@ namespace Hured
                 tbЦель.Text = order.Цель;
                 tbЗаСчёт.Text = order.ЗаСчёт;
                 tbОснование.Text = order.Основание;
+                filePath = order.Файл;
             }
         }
 
-        private void bPrint_Click(object sender, RoutedEventArgs e)
-        {
-            // TODO Перенести функцию
-
-        }
+        private string filePath;
 
         private void bCancel_Click(object sender, RoutedEventArgs e)
         {
@@ -58,7 +55,8 @@ namespace Hured
                 КонецКомандировки = dpEnd.DisplayDate,
                 Цель = tbЦель.Text,
                 ЗаСчёт = tbЗаСчёт.Text,
-                Основание = tbОснование.Text
+                Основание = tbОснование.Text,
+                Файл = filePath
             };
             Tag = order;
 

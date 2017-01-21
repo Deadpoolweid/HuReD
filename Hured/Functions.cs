@@ -97,8 +97,14 @@ namespace Hured
             }
         }
 
-        // Создаёт приказ с заданными параметрами
-        public static void CreateOrder<T>(OrderType orderType, T _order, string savePath = null)
+        /// <summary>
+        /// Создаёт приказ с заданными параметрами
+        /// </summary>
+        /// <typeparam name="T">Тип приказа</typeparam>
+        /// <param name="orderType">Тип приказа</param>
+        /// <param name="_order">Приказ</param>
+        /// <returns></returns>
+        public static string CreateOrder<T>(OrderType orderType, T _order)
         {
             // TODO выводить только последние две цифры года
 
@@ -106,15 +112,15 @@ namespace Hured
             Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\Documents");
 
             Dictionary<string, string> bookmarks = new Dictionary<string, string>();
-            string openPath;
+            string openPath, initialDirectory;
             switch (orderType)
             {
                 case OrderType.Recruitment:
                     var order = _order as ПриказПриём;
                     bookmarks.Add("Номер", order.Номер);
-                    bookmarks.Add("Дата", order.Дата.ToString());
-                    bookmarks.Add("НачалоРаботы", order.НачалоРаботы.ToString());
-                    bookmarks.Add("КонецРаботы", order.КонецРаботы.ToString());
+                    bookmarks.Add("Дата", order.Дата.ToShortDateString());
+                    bookmarks.Add("НачалоРаботы", order.НачалоРаботы.ToShortDateString());
+                    bookmarks.Add("КонецРаботы", order.КонецРаботы.ToShortDateString());
                     bookmarks.Add("ТабельныйНомер", order.Сотрудник.ОсновнаяИнформация.ТабельныйНомер);
                     bookmarks.Add("ФИО", order.Сотрудник.ОсновнаяИнформация.Фамилия + " " +
                         order.Сотрудник.ОсновнаяИнформация.Имя + " " +
@@ -126,20 +132,16 @@ namespace Hured
                     bookmarks.Add("Надбавка", order.Надбавка);
                     bookmarks.Add("ДатаТрудовогоДоговораЧисло", order.ДатаТрудовогоДоговора.Day.ToString());
                     bookmarks.Add("ДатаТрудовогоДоговораМесяц", order.ДатаТрудовогоДоговора.Month.ToString());
-                    bookmarks.Add("ДатаТрудовогоДоговораГод", order.ДатаТрудовогоДоговора.Year.ToString());
+                    bookmarks.Add("ДатаТрудовогоДоговораГод", order.ДатаТрудовогоДоговора.Year.ToString().Substring(2));
                     bookmarks.Add("НомерТрудовогоДоговора", order.НомерТрудовогоДоговора);
                     bookmarks.Add("ДолжностьРуководителя", "");// TODO Глобальный класс с настройками
                     openPath = Directory.GetCurrentDirectory() + @"\Templates\Recruitment.dotx";
-                    if (savePath == null)
-                    {
-                        savePath = Directory.GetCurrentDirectory() + @"\Documents\ПриказПриём.docx";
-
-                    }
+                    initialDirectory = order.Файл;
                     break;
                 case OrderType.Dismissal:
                     var oDismissal = _order as ПриказУвольнение;
                     bookmarks.Add("Номер", oDismissal.Номер);
-                    bookmarks.Add("Дата", oDismissal.Дата.ToString());
+                    bookmarks.Add("Дата", oDismissal.Дата.ToShortDateString());
                     bookmarks.Add("ТабельныйНомер", oDismissal.Сотрудник.ОсновнаяИнформация.ТабельныйНомер);
                     bookmarks.Add("ФИО", oDismissal.Сотрудник.ОсновнаяИнформация.Фамилия + " " +
                         oDismissal.Сотрудник.ОсновнаяИнформация.Имя + " " +
@@ -153,20 +155,16 @@ namespace Hured
                     bookmarks.Add("ДатаУвольненияГод", "");
                     bookmarks.Add("ДатаТрудовогоДоговораЧисло", oDismissal.ДатаТрудовогоДоговора.Day.ToString());
                     bookmarks.Add("ДатаТрудовогоДоговораМесяц", oDismissal.ДатаТрудовогоДоговора.Month.ToString());
-                    bookmarks.Add("ДатаТрудовогоДоговораГод", oDismissal.ДатаТрудовогоДоговора.Year.ToString());
+                    bookmarks.Add("ДатаТрудовогоДоговораГод", oDismissal.ДатаТрудовогоДоговора.Year.ToString().Substring(2));
                     bookmarks.Add("НомерТрудовогоДоговора", oDismissal.НомерТрудовогоДоговора);
                     bookmarks.Add("ДолжностьРуководителя", "");// TODO Глобальный класс с настройками
                     openPath = Directory.GetCurrentDirectory() + @"\Templates\Dismissal.dotx";
-                    if (savePath == null)
-                    {
-                        savePath = Directory.GetCurrentDirectory() + @"\Documents\ПриказУвольнение.docx";
-
-                    }
+                    initialDirectory = oDismissal.Файл;
                     break;
                 case OrderType.Vacation:
                     var oVacation = _order as ПриказОтпуск;
                     bookmarks.Add("Номер", oVacation.Номер);
-                    bookmarks.Add("Дата", oVacation.Дата.ToString());
+                    bookmarks.Add("Дата", oVacation.Дата.ToShortDateString());
                     bookmarks.Add("ТабельныйНомер", oVacation.Сотрудник.ОсновнаяИнформация.ТабельныйНомер);
                     bookmarks.Add("ФИО", oVacation.Сотрудник.ОсновнаяИнформация.Фамилия + " " +
                         oVacation.Сотрудник.ОсновнаяИнформация.Имя + " " +
@@ -179,10 +177,10 @@ namespace Hured
                         bookmarks.Add("ЕжегодныйДлительность",oVacation.КонецОтпуска.Subtract(oVacation.НачалоОтпуска).Days.ToString());
                         bookmarks.Add("ЕжегодныйНачалоЧисло", oVacation.НачалоОтпуска.Day.ToString());
                         bookmarks.Add("ЕжегодныйНачалоМесяц", oVacation.НачалоОтпуска.Month.ToString());
-                        bookmarks.Add("ЕжегодныйНачалоГод", oVacation.НачалоОтпуска.Year.ToString());
+                        bookmarks.Add("ЕжегодныйНачалоГод", oVacation.НачалоОтпуска.Year.ToString().Substring(2));
                         bookmarks.Add("ЕжегодныйКонецЧисло", oVacation.КонецОтпуска.Day.ToString());
                         bookmarks.Add("ЕжегодныйКонецМесяц", oVacation.КонецОтпуска.Month.ToString());
-                        bookmarks.Add("ЕжегодныйКонецГод", oVacation.КонецОтпуска.Year.ToString());
+                        bookmarks.Add("ЕжегодныйКонецГод", oVacation.КонецОтпуска.Year.ToString().Substring(2));
                     }
                     else if (oVacation.Вид == "Единоразовый")
                     {
@@ -190,10 +188,10 @@ namespace Hured
                             oVacation.КонецОтпуска.Subtract(oVacation.НачалоОтпуска).Days.ToString());
                         bookmarks.Add("ЕдиноразовыйНачалоЧисло", oVacation.НачалоОтпуска.Day.ToString());
                         bookmarks.Add("ЕдиноразовыйНачалоМесяц", oVacation.НачалоОтпуска.Month.ToString());
-                        bookmarks.Add("ЕдиноразовыйНачалоГод", oVacation.НачалоОтпуска.Year.ToString());
+                        bookmarks.Add("ЕдиноразовыйНачалоГод", oVacation.НачалоОтпуска.Year.ToString().Substring(2));
                         bookmarks.Add("ЕдиноразовыйКонецЧисло", oVacation.КонецОтпуска.Day.ToString());
                         bookmarks.Add("ЕдиноразовыйКонецМесяц", oVacation.КонецОтпуска.Month.ToString());
-                        bookmarks.Add("ЕдиноразовыйКонецГод", oVacation.КонецОтпуска.Year.ToString());
+                        bookmarks.Add("ЕдиноразовыйКонецГод", oVacation.КонецОтпуска.Year.ToString().Substring(2));
                     }
                     else
                     {
@@ -202,23 +200,20 @@ namespace Hured
     oVacation.КонецОтпуска.Subtract(oVacation.НачалоОтпуска).Days.ToString());
                         bookmarks.Add("ДругоеНачалоЧисло", oVacation.НачалоОтпуска.Day.ToString());
                         bookmarks.Add("ДругоеНачалоМесяц", oVacation.НачалоОтпуска.Month.ToString());
-                        bookmarks.Add("ДругоеНачалоГод", oVacation.НачалоОтпуска.Year.ToString());
+                        bookmarks.Add("ДругоеНачалоГод", oVacation.НачалоОтпуска.Year.ToString().Substring(2));
                         bookmarks.Add("ДругоеКонецЧисло", oVacation.КонецОтпуска.Day.ToString());
                         bookmarks.Add("ДругоеКонецМесяц", oVacation.КонецОтпуска.Month.ToString());
-                        bookmarks.Add("ДругоеКонецГод", oVacation.КонецОтпуска.Year.ToString());
+                        bookmarks.Add("ДругоеКонецГод", oVacation.КонецОтпуска.Year.ToString().Substring(2));
                     }
                     bookmarks.Add("ДолжностьРуководителя", "");// TODO Глобальный класс с настройками
                     openPath = Directory.GetCurrentDirectory() + @"\Templates\Vacation.dotx";
-                    if (savePath == null)
-                    {
-                        savePath = Directory.GetCurrentDirectory() + @"\Documents\ПриказОтпуск.docx";
+                    initialDirectory = oVacation.Файл;
 
-                    }
                     break;
                 case OrderType.BusinessTrip:
                     var oBusinessTrip = _order as ПриказКомандировка;
                     bookmarks.Add("Номер", oBusinessTrip.Номер);
-                    bookmarks.Add("Дата", oBusinessTrip.Дата.ToString());
+                    bookmarks.Add("Дата", oBusinessTrip.Дата.ToShortDateString());
                     bookmarks.Add("ТабельныйНомер", oBusinessTrip.Сотрудник.ОсновнаяИнформация.ТабельныйНомер);
                     bookmarks.Add("ФИО", oBusinessTrip.Сотрудник.ОсновнаяИнформация.Фамилия + " " +
                         oBusinessTrip.Сотрудник.ОсновнаяИнформация.Имя + " " +
@@ -228,49 +223,39 @@ namespace Hured
                     bookmarks.Add("Срок", oBusinessTrip.КонецКомандировки.Subtract(oBusinessTrip.НачалоКомандировки).Days.ToString());
                     bookmarks.Add("НачалоЧисло", oBusinessTrip.НачалоКомандировки.Day.ToString());
                     bookmarks.Add("НачалоМесяц",oBusinessTrip.НачалоКомандировки.Month.ToString());
-                    bookmarks.Add("НачалоГод",oBusinessTrip.НачалоКомандировки.Year.ToString());
+                    bookmarks.Add("НачалоГод",oBusinessTrip.НачалоКомандировки.Year.ToString().Substring(2));
                     bookmarks.Add("КонецЧисло",oBusinessTrip.КонецКомандировки.Day.ToString());
                     bookmarks.Add("КонецМесяц",oBusinessTrip.КонецКомандировки.Month.ToString());
-                    bookmarks.Add("КонецГод",oBusinessTrip.КонецКомандировки.Year.ToString());
+                    bookmarks.Add("КонецГод",oBusinessTrip.КонецКомандировки.Year.ToString().Substring(2));
                     bookmarks.Add("Цель", oBusinessTrip.Цель);
                     bookmarks.Add("ЗаСчёт", oBusinessTrip.ЗаСчёт);
                     bookmarks.Add("Основание", oBusinessTrip.Основание);
                     bookmarks.Add("ДолжностьРуководителя", ""); // TODO Добавить должность руководителя
                     openPath = Directory.GetCurrentDirectory() + @"\Templates\BusinessTrip.dotx";
-                    if (savePath == null)
-                    {
-                        savePath = Directory.GetCurrentDirectory() + @"\Documents\ПриказКомандировка.docx";
+                    initialDirectory = oBusinessTrip.Файл;
 
-                    }
                     break;
                 default:
-                    openPath = savePath = "";
+                    openPath = initialDirectory = null;
                     break;
             }
 
             var sfd = new SaveFileDialog()
             {
-                InitialDirectory = Directory.GetCurrentDirectory() + @"\Documents",
+                InitialDirectory = initialDirectory == null ? Directory.GetCurrentDirectory() + @"\Documents" : Path.GetDirectoryName(initialDirectory),
                 Filter = "Word Document | *.docx | Все файлы (*.*)|*.*",
                 FileName = "Новый приказ"
             };
 
             sfd.ShowDialog();
-            savePath = sfd.FileName;
 
-            WordDocument document = new WordDocument(openPath,savePath);
+            WordDocument document = new WordDocument(openPath);
+            document.Open();
+            document.SetTemplate(bookmarks);
+            document.Save(sfd.FileName);
 
-
-            document.SetTemplate(bookmarks,true);
-
-            var result = MessageBox.Show("Распечатать документ?", "Печать документа", MessageBoxButton.YesNo,
-    MessageBoxImage.Question,
-    MessageBoxResult.No, MessageBoxOptions.None);
-
-            if (result == MessageBoxResult.Yes)
-            {
-                document.Print();
-            }
+            document.Close();
+            return sfd.FileName;
         }
 
         public static void FillTreeView(ref TreeView tv)
@@ -333,55 +318,63 @@ namespace Hured
         BusinessTrip
     }
 
+    /// <summary>
+    /// Класс для управления файлом Word
+    /// </summary>
     class WordDocument
     {
-        public WordDocument()
+        public string Path { get; set; }
+
+        /// <summary>
+        /// Создаёт интерфейс управления документом, находящемся по указанному пути
+        /// </summary>
+        /// <param name="path">Местонахождение документа</param>
+        public WordDocument(string path)
         {
-            OpenPath = Directory.GetCurrentDirectory() +  @"\Templates\Order.dotx";
-            SavePath = Directory.GetCurrentDirectory() + @"\Documents\Приказ.docx";
+            Path = path;
         }
 
-        public WordDocument(string openPath, string savePath)
+        private Word._Application _wordApp;
+
+        private Word._Document _document;
+
+        /// <summary>
+        /// Открывает фоновое приложение MS Word и документ
+        /// </summary>
+        public void Open()
         {
-            OpenPath = openPath;
-            SavePath = savePath;
+            _wordApp = new Word.Application();
+            _document = _wordApp.Documents.Add(Path);
         }
 
-        readonly Word._Application wordApp = new Word.Application();
-
-        private string OpenPath { get; set; }
-        private string SavePath { get; set; }
-
-        private Word._Document Document;
-
-        public void Open(string path = null)
+        /// <summary>
+        /// Открывает документ с помощью MS Word
+        /// </summary>
+        public void OpenWithWord()
         {
-            if (path == null)
-            {
-                path = OpenPath;
-            }
-            Document = wordApp.Documents.Add(path);
+            System.Diagnostics.Process.Start(Path);
         }
 
-        public void Save(string path = null)
+        /// <summary>
+        /// Сохраняет документ в указанном месте
+        /// </summary>
+        /// <param name="path">Место для сохранения документа</param>
+        public void Save(string path)
         {
-            if (path == null)
-            {
-                path = SavePath;
-            }
-            Document.SaveAs(FileName: path);
+           
+            _document.SaveAs(FileName: path);
         }
 
-        public void Print(string documentPath = null)
+        /// <summary>
+        /// Выводит документ на печать
+        /// </summary>
+        public void Print()
         {
-            if (documentPath == null)
-            {
-                documentPath = SavePath;
-            }
+            
             object nullobj = Missing.Value;
-            object path = documentPath;
+            object path = Path;
             object _readonly = true;
-            var doc = wordApp.Documents.Open(ref path,
+            var doc = _wordApp.Documents.Open(ref path,
                                          ref nullobj, ref _readonly, ref nullobj,
                                          ref nullobj, ref nullobj, ref nullobj,
                                          ref nullobj, ref nullobj, ref nullobj,
@@ -389,8 +382,8 @@ namespace Hured
                                          ref nullobj, ref nullobj, ref nullobj);
 
             doc.Activate();
-            wordApp.Visible = false;
-            int dialogResult = wordApp.Dialogs[Word.WdWordDialog.wdDialogFilePrint].Show(ref nullobj);
+            _wordApp.Visible = false;
+            int dialogResult = _wordApp.Dialogs[Word.WdWordDialog.wdDialogFilePrint].Show(ref nullobj);
 
             if (dialogResult == 1)
             {
@@ -401,35 +394,27 @@ namespace Hured
                              ref nullobj, ref nullobj);
             }
 
-            wordApp.Quit();
+            _wordApp.Quit();
 
         }
 
+        /// <summary>
+        /// Закрывает документ и закрывает фоновое приложение
+        /// </summary>
         public void Close()
         {
-            Document.Close();
+            _wordApp.Quit();
         }
 
+        /// <summary>
+        /// Устанавливает текст в закладках документа в соответствии с указанным словарём
+        /// </summary>
+        /// <param name="bookmarksValuesDictionary">Словарь закладок формата (Имя закладки, Текст в месте закладки)</param>
         public void SetTemplate(Dictionary<string, string> bookmarksValuesDictionary)
         {
             foreach (var bookmark in bookmarksValuesDictionary)
             {
-                Document.Bookmarks[bookmark.Key].Range.Text = bookmark.Value;
-            }
-        }
-
-        public void SetTemplate(Dictionary<string, string> bookmarksValuesDictionary, bool IsDefault)
-        {
-            if (!IsDefault)
-            {
-                SetTemplate(bookmarksValuesDictionary);
-            }
-            else
-            {
-                Open();
-                SetTemplate(bookmarksValuesDictionary);
-                Save();
-                Close();
+                _document.Bookmarks[bookmark.Key].Range.Text = bookmark.Value;
             }
         }
     }

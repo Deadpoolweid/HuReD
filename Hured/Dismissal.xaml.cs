@@ -43,14 +43,11 @@ namespace Hured
                 dpДатаДоговора.Text = order.ДатаТрудовогоДоговора.ToString();
                 tbОснование.Text = order.Основание;
                 Functions.SetRTBText(rtbПримечание, order.Примечание);
+                filePath = order.Файл;
             }
         }
 
-
-        private void bPrint_Click(object sender, RoutedEventArgs e)
-        {
-            // TODO Перенести функцию
-        }
+        private string filePath;
 
         private void bCancel_Click(object sender, RoutedEventArgs e)
         {
@@ -67,7 +64,8 @@ namespace Hured
                 НомерТрудовогоДоговора = tbНомерДоговора.Text,
                 ДатаТрудовогоДоговора = dpДатаДоговора.DisplayDate,
                 Основание = tbОснование.Text,
-                Примечание = Functions.GetRTBText(rtbПримечание)
+                Примечание = Functions.GetRTBText(rtbПримечание),
+                Файл = filePath
             };
             Tag = order;
 

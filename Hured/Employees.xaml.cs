@@ -29,7 +29,6 @@ namespace Hured
 
             SyncEmployeesList();
             Functions.FillTreeView(ref tvUnits);
-            // TODO Не отображается кнопки Ок и отмена на вкладке образование
             // TODO Фильтрация сотрудников по должностям и подразделениям
         }
 

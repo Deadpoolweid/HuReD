@@ -24,7 +24,7 @@
             <TextBox x:Name="tbName" Grid.Row="0" Grid.Column="1"></TextBox>
 
             <Label Grid.Row="1" Grid.Column="0">Цвет</Label>
-            <xctk:ColorPicker Grid.Row="1" Grid.Column="1" x:Name="cpColor"></xctk:ColorPicker>
+            <xctk:ColorPicker  Grid.Row="1" Grid.Column="1" x:Name="cpColor"></xctk:ColorPicker>
             
 
             <Button x:Name="bOk" Grid.Row="0" Grid.Column="2" IsDefault="True" Click="bOk_Click">ОК</Button>

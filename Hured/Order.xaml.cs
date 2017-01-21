@@ -92,6 +92,8 @@ namespace Hured
                         int employeeId = employeesId[cbEmployee.SelectedIndex];
                         order.Сотрудник = Controller.Find(new Сотрудник(),
                             q => q.СотрудникId == employeeId);
+                        order.Файл = Functions.CreateOrder(OrderType.Recruitment, order);
+
                         if (IsEditMode)
                         {
                             Controller.Edit(q => q.Номер == order.Номер,
@@ -102,8 +104,6 @@ namespace Hured
                             Controller.Insert(order);
                         }
                         Controller.CloseConnection();
-                        // TODO Добавить окно выбора места сохранения
-                        Functions.CreateOrder(OrderType.Recruitment, order);
                     }
                     break;
                 case 1:
@@ -130,6 +130,8 @@ namespace Hured
                         int employeeId = employeesId[cbEmployee.SelectedIndex];
                         order.Сотрудник = Controller.Find(new Сотрудник(),
                             q => q.СотрудникId == employeeId);
+                        order.Файл = Functions.CreateOrder(OrderType.Dismissal, order);
+
                         if (IsEditMode)
                         {
                             Controller.Edit(q => q.Номер == order.Номер,order);
@@ -139,8 +141,6 @@ namespace Hured
                             Controller.Insert(order);
                         }
                         Controller.CloseConnection();
-                        // TODO Добавить окно выбора места сохранения
-                        Functions.CreateOrder(OrderType.Dismissal, order);
                     }
 
                     break;
@@ -169,6 +169,7 @@ namespace Hured
                         Controller.OpenConnection();
                         order.Сотрудник = Controller.Find(new Сотрудник(),
                             q => q.СотрудникId == employeeId);
+                        order.Файл = Functions.CreateOrder(OrderType.Vacation, order);
                         if (IsEditMode)
                         {
                             Controller.Edit(q => q.Номер == order.Номер, order);
@@ -179,8 +180,6 @@ namespace Hured
                             Controller.Insert(order);
                         }
                         Controller.CloseConnection();
-                        // TODO Добавить окно выбора места сохранения
-                        Functions.CreateOrder(OrderType.Vacation, order);
                     }
 
                     break;
@@ -208,6 +207,8 @@ namespace Hured
                         Controller.OpenConnection();
                         order.Сотрудник = Controller.Find(new Сотрудник(),
                             q => q.СотрудникId == employeeId);
+                        order.Файл = Functions.CreateOrder(OrderType.BusinessTrip, order);
+
                         if (IsEditMode)
                         {
                             Controller.Edit(q => q.Номер == order.Номер, order);
@@ -218,11 +219,12 @@ namespace Hured
                             Controller.Insert(order);
                         }
                         Controller.CloseConnection();
-                        // TODO Добавить окно выбора места сохранения
-                        Functions.CreateOrder(OrderType.BusinessTrip, order);
                     }
                     break;
             }
+
+
+
             DialogResult = true;
             Close();
         }

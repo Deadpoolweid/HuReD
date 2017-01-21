@@ -8,59 +8,61 @@
         xmlns:local="clr-namespace:Hured"
         mc:Ignorable="d"
         Title="Настройки" Height="400" Width="450" ResizeMode="CanMinimize">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        
-        <Label Grid.Row="0" Grid.Column="0">Норма рабочего дня</Label>
-        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
-            <TextBox x:Name="tbНормаРабочегоДня"></TextBox>
-            <Label>часов</Label>
-        </StackPanel>
+    <Border>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition ></ColumnDefinition>
+                <ColumnDefinition ></ColumnDefinition>
+            </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="1" Grid.Column="0">Название организации</Label>
-        <TextBox x:Name="tbНазваниеОрганизации" Grid.Row="1" Grid.Column="1"></TextBox>
+            <Label Grid.Row="0" Grid.Column="0">Норма рабочего дня</Label>
+            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+                <TextBox x:Name="tbНормаРабочегоДня"></TextBox>
+                <Label>часов</Label>
+            </StackPanel>
 
-        <Label Grid.Row="2" Grid.Column="0">Руководитель</Label>
-        <TextBox x:Name="tbРуководитель" Grid.Row="2" Grid.Column="1"></TextBox>
+            <Label Grid.Row="1" Grid.Column="0">Название организации</Label>
+            <TextBox x:Name="tbНазваниеОрганизации" Grid.Row="1" Grid.Column="1"></TextBox>
 
-        <Label Grid.Row="3" Grid.Column="0">Должность руководителя</Label>
-        <TextBox x:Name="tbДолжностьРуководителя" Grid.Row="3" Grid.Column="1"></TextBox>
-        
-        <Label Grid.Row="4" Grid.Column="0">Интервал хранения</Label>
+            <Label Grid.Row="2" Grid.Column="0">Руководитель</Label>
+            <TextBox x:Name="tbРуководитель" Grid.Row="2" Grid.Column="1"></TextBox>
 
-        <Label Grid.Row="5" Grid.Column="0">Документов</Label>
-        <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal">
-            <TextBox x:Name="tbИнтервалДокументов"></TextBox>
-            <Label>Дней</Label>
-        </StackPanel>
+            <Label Grid.Row="3" Grid.Column="0">Должность руководителя</Label>
+            <TextBox x:Name="tbДолжностьРуководителя" Grid.Row="3" Grid.Column="1"></TextBox>
 
-        <Label Grid.Row="6" Grid.Column="0">Отчётов</Label>
-        <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal">
-            <TextBox x:Name="tbИнтервалОтчётов"></TextBox>
-            <Label>дней</Label>
-        </StackPanel>
-        
-        <Button x:Name="bUnits" Grid.Row="7" Grid.Column="0" Click="bUnits_Click">Подразделения</Button>
-        <Button x:Name="bPositions" Grid.Row="7" Grid.Column="1" Click="bPositions_Click">Должности</Button>
-        
-        <Button x:Name="bStatuses" Grid.Row="8" Grid.Column="0" Click="bStatuses_Click">Статусы</Button>
-        <Button x:Name="bPrintSettings" Grid.Row="8" Grid.Column="1" Click="bPrintSettings_Click">Настройки печати</Button>
+            <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">Интервал хранения</Label>
 
-        <Button x:Name="bClose" Grid.Row="9" Grid.Column="1" Click="bClose_Click">Закрыть</Button>
-    </Grid>
+            <Label Grid.Row="5" Grid.Column="0">Документов</Label>
+            <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal">
+                <TextBox x:Name="tbИнтервалДокументов"></TextBox>
+                <Label>Дней</Label>
+            </StackPanel>
+
+            <Label Grid.Row="6" Grid.Column="0">Отчётов</Label>
+            <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal">
+                <TextBox x:Name="tbИнтервалОтчётов"></TextBox>
+                <Label>дней</Label>
+            </StackPanel>
+
+            <Button x:Name="bUnits" Grid.Row="7" Grid.Column="0" Click="bUnits_Click">Подразделения</Button>
+            <Button x:Name="bPositions" Grid.Row="7" Grid.Column="1" Click="bPositions_Click">Должности</Button>
+
+            <Button x:Name="bStatuses" Grid.Row="8" Grid.Column="0" Click="bStatuses_Click">Статусы</Button>
+            <Button x:Name="bPrintSettings" Grid.Row="8" Grid.Column="1" Click="bPrintSettings_Click">Настройки печати</Button>
+
+            <Button x:Name="bClose" Grid.Row="9" Grid.Column="1" Click="bClose_Click">Закрыть</Button>
+        </Grid>
+    </Border>
 </controls:MetroWindow>

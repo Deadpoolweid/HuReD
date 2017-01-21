@@ -30,5 +30,7 @@ namespace Hured.Tables_templates
         public string Основание { get; set; }
 
         public string ЗаСчёт { get; set; }
+
+        public string Файл { get; set; }
     }
 }

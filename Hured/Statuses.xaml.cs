@@ -109,7 +109,6 @@ namespace Hured
 
         private void bAdd_Click(object sender, RoutedEventArgs e)
         {
-            // TODO Вызвать окно добавления статуса
             IsEnabled = false;
 
             var w = new Status();
@@ -123,9 +122,6 @@ namespace Hured
         private void bChange_Click(object sender, RoutedEventArgs e)
         {
             IsEnabled = false;
-            // TODO Вызвать окно изменения статуса
-
-
 
             int id = StatusesId[lvStatuses.SelectedIndex];
             Controller.OpenConnection();
@@ -140,7 +136,6 @@ namespace Hured
 
         private void bRemove_Click(object sender, RoutedEventArgs e)
         {
-            // TODO Удаление статуса
             Controller.OpenConnection();
             int id = StatusesId[lvStatuses.SelectedIndex];
             Controller.Remove(new Статус(),

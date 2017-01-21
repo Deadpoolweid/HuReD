@@ -33,7 +33,7 @@ namespace Hured
         public Timesheet()
         {
             InitializeComponent();
-            // TODO Заполнение списка должностей
+
             Functions.FillTreeView(ref tvUnits);
 
             dgTimeSheet.CanUserAddRows = false;

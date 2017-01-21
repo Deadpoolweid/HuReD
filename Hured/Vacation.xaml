@@ -35,7 +35,6 @@
             <TextBox x:Name="tbДругое" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left"></TextBox>
 
             <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal">
-                <Button x:Name="bPrint" Click="bPrint_Click">Печать</Button>
                 <Button x:Name="bOk" Click="bOk_Click">Оформить</Button>
                 <Button x:Name="bCancel" Click="bCancel_Click">Отмена</Button>
             </StackPanel>

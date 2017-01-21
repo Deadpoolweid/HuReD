@@ -19,21 +19,24 @@ namespace Hured
 {
     public class OrderInfo
     {
-        public OrderInfo(string номер, string фио, string тип, DateTime дата)
+        public OrderInfo(string номер, string фио, string тип, string дата, string файл)
         {
             Номер = номер;
             Дата = дата;
             Тип = тип;
             ФИО = фио;
+            Файл = файл;
         }
 
         public string Номер { get; set; }
 
-        public DateTime Дата { get; set; }
+        public string Дата { get; set; }
 
         public string ФИО { get; set; }
 
         public string Тип { get; set; }
+
+        public string Файл { get; set; }
     }
 
     /// <summary>
@@ -60,7 +63,7 @@ namespace Hured
                 lvOrders.Items.Add(new OrderInfo(e.Номер,
                     e.Сотрудник.ОсновнаяИнформация.Фамилия + " " +
                     e.Сотрудник.ОсновнаяИнформация.Имя + " " +
-                    e.Сотрудник.ОсновнаяИнформация.Отчество, "Приём", e.Дата));
+                    e.Сотрудник.ОсновнаяИнформация.Отчество, "Приём", e.Дата.ToShortDateString(),e.Файл));
             }
 
             var приказыУвольнение = Controller.Select(new ПриказУвольнение(), e => e != null);
@@ -69,7 +72,7 @@ namespace Hured
                 lvOrders.Items.Add(new OrderInfo(e.Номер,
                     e.Сотрудник.ОсновнаяИнформация.Фамилия + " " +
                     e.Сотрудник.ОсновнаяИнформация.Имя + " " +
-                    e.Сотрудник.ОсновнаяИнформация.Отчество, "Увольнение", e.Дата));
+                    e.Сотрудник.ОсновнаяИнформация.Отчество, "Увольнение", e.Дата.ToShortDateString(), e.Файл));
             }
 
             var приказыОтпуск = Controller.Select(new ПриказОтпуск(), e => e != null);
@@ -78,7 +81,7 @@ namespace Hured
                 lvOrders.Items.Add(new OrderInfo(e.Номер,
                     e.Сотрудник.ОсновнаяИнформация.Фамилия + " " +
                     e.Сотрудник.ОсновнаяИнформация.Имя + " " +
-                    e.Сотрудник.ОсновнаяИнформация.Отчество, "Отпуск", e.Дата));
+                    e.Сотрудник.ОсновнаяИнформация.Отчество, "Отпуск", e.Дата.ToShortDateString(), e.Файл));
             }
 
             var приказыКомандировка = Controller.Select(new ПриказКомандировка(), e => e != null);
@@ -87,7 +90,7 @@ namespace Hured
                 lvOrders.Items.Add(new OrderInfo(e.Номер,
                     e.Сотрудник.ОсновнаяИнформация.Фамилия + " " +
                     e.Сотрудник.ОсновнаяИнформация.Имя + " " +
-                    e.Сотрудник.ОсновнаяИнформация.Отчество, "Командировка", e.Дата));
+                    e.Сотрудник.ОсновнаяИнформация.Отчество, "Командировка", e.Дата.ToShortDateString(), e.Файл));
             }
 
             Controller.CloseConnection();
@@ -126,7 +129,25 @@ namespace Hured
 
         private void BOpen_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            var item = lvOrders.SelectedItem as OrderInfo;
+            if (item != null)
+            {
+                WordDocument document = new WordDocument(item.Файл);
+                document.OpenWithWord();
+            }
+        }
+
+
+        private void BPrint_OnClick(object sender, RoutedEventArgs e)
+        {
+            var item = lvOrders.SelectedItem as OrderInfo;
+            if (item != null)
+            {
+                WordDocument document = new WordDocument(item.Файл);
+                document.Open();
+                document.Print();
+                document.Close();
+            }
         }
 
         private void bRemove_Click(object sender, RoutedEventArgs e)

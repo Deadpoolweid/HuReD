@@ -44,15 +44,11 @@ namespace Hured
                     rbOther.IsChecked = true;
                     tbДругое.Text = order.Вид;
                 }
+                filePath = order.Файл;
             }
         }
 
-
-        private void bPrint_Click(object sender, RoutedEventArgs e)
-        {
-            // TODO Перенести функцию
-
-        }
+        private string filePath;
 
         private void bCancel_Click(object sender, RoutedEventArgs e)
         {
@@ -80,7 +76,8 @@ namespace Hured
             {
                 НачалоОтпуска = dpBegin.DisplayDate,
                 КонецОтпуска = dpEnd.DisplayDate,
-                Вид = vacationType
+                Вид = vacationType,
+                Файл = filePath
             };
             Tag = order;
 

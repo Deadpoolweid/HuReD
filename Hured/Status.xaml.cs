@@ -67,7 +67,6 @@ namespace Hured
 
             Controller.CloseConnection();
 
-            // TODO Добавить логику добавления статуса сотрудника
             DialogResult = true;
             Close();
         }

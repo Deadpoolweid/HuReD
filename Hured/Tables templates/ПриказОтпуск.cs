@@ -24,5 +24,8 @@ namespace Hured.Tables_templates
         public DateTime КонецОтпуска { get; set; }
 
         public string Вид { get; set; }
+
+        public string Файл { get; set; }
+
     }
 }

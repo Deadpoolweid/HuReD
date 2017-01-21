@@ -25,7 +25,6 @@ namespace Hured
         public TimesheetEntry(object[] data)
         {
             InitializeComponent();
-            // TODO Заполнение списка
 
             Controller.OpenConnection();
 
@@ -67,7 +66,6 @@ namespace Hured
 
         private void bOk_Click(object sender, RoutedEventArgs e)
         {
-            // TODO Реализовать добавление записи в табель
             Controller.OpenConnection();
 
             int statusId = StatusesId[cbStatus.SelectedIndex];
