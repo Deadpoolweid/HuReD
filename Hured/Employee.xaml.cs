@@ -88,6 +88,9 @@ namespace Hured
 
                 Educations = employee.Образование.ToList();
                 SyncEducationList();
+
+                tbEMail.Text = employee.ДополнительнаяИнформация.EMail;
+                tbSkype.Text = employee.ДополнительнаяИнформация.Skype;
             }
     }
 
@@ -203,6 +206,11 @@ namespace Hured
                     Профиль = tbПрофиль.Text,
                     СостоитНаУчете = tbСостоитНаУчёте.Text
                 },
+                ДополнительнаяИнформация = new ДополнительнаяИнформация()
+                {
+                    Skype = tbSkype.Text,
+                    EMail = tbEMail.Text
+                }
             };
             EmployeeToAdd.Образование = Educations;
 

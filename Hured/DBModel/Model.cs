@@ -39,6 +39,12 @@ namespace Hured.DBModel
 
         public DbSet<ПриказКомандировка> ПриказыКомандировка { get; set; }
 
+        public DbSet<ТабельнаяЗапись> ТабельныеЗаписи { get; set; } 
+
+        public DbSet<Статус> Статусы { get; set; } 
+
+        public DbSet<ДополнительнаяИнформация> СписокДополнительнойИнформации { get; set; } 
+
         public Hured()
           : base()
         {

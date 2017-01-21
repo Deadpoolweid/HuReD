@@ -8,27 +8,32 @@
         xmlns:local="clr-namespace:Hured"
         mc:Ignorable="d"
         Title="Статусы сотрудников" Height="300" Width="250" ResizeMode="CanMinimize">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
+    <Border>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
 
-        <ListView Grid.Column="0">
-            <ListView.View>
-                <GridView>
-                    <GridView.Columns>
-                        <GridViewColumn Header="Название"></GridViewColumn>
-                    </GridView.Columns>
-                </GridView>
-            </ListView.View>
-        </ListView>
-        
-        <StackPanel Grid.Column="1">
-            <Button x:Name="bAdd" Click="bAdd_Click" >Добавить</Button>
-            <Button x:Name="bChange" Click="bChange_Click">Изменить</Button>
-            <Button x:Name="bRemove" Click="bRemove_Click">Удалить</Button>
-            <Button x:Name="bClose" Click="bClose_Click" IsDefault="True">Закрыть</Button>
-        </StackPanel>
-    </Grid>
+            <ListView Grid.Column="0" Name="lvStatuses" ItemsSource="{Binding Items}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Text}">
+                            <TextBlock.Background>
+                                <SolidColorBrush Color="{Binding BackgroundColor}"/>
+                            </TextBlock.Background>
+                        </TextBlock>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+
+            <StackPanel Grid.Column="1">
+                <Button x:Name="bAdd" Click="bAdd_Click" >Добавить</Button>
+                <Button x:Name="bChange" Click="bChange_Click">Изменить</Button>
+                <Button x:Name="bRemove" Click="bRemove_Click">Удалить</Button>
+                <Button x:Name="bClose" Click="bClose_Click" IsDefault="True">Закрыть</Button>
+            </StackPanel>
+        </Grid>
+    </Border>
 </controls:MetroWindow>

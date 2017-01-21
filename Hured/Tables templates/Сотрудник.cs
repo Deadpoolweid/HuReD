@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Hured.Tables_templates;
+using Hured.DBModel;
 
-namespace Hured.DBModel
+namespace Hured.Tables_templates
 {
     [Table("Сотрудники")]
     public class Сотрудник
@@ -20,5 +16,7 @@ namespace Hured.DBModel
         public virtual ICollection<Образование> Образование { get; set; }
 
         public virtual ВоинскийУчёт ВоинскийУчёт { get; set; }
+
+        public virtual ДополнительнаяИнформация ДополнительнаяИнформация { get; set; }
     }
 }

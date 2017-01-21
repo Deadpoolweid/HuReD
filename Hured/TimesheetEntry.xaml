@@ -9,38 +9,40 @@
         mc:Ignorable="d"
         Title="Редактирование табельной записи" Height="260" Width="650" ResizeMode="CanMinimize">
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
+    <Border>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center">Дата</Label>
-        <Label Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center">Имя</Label>
-        
-        <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
-            <Label>Состояние</Label>
-            <ComboBox x:Name="cbStatus"></ComboBox>
-        </StackPanel>
-        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-            <Label>Отработанные часы</Label>
-            <TextBox x:Name="tbОтработанныеЧасы"></TextBox>
-        </StackPanel>
-        
-        <Label Grid.Row="2" Grid.Column="0">Примечание</Label>
-        
-        <RichTextBox x:Name="rtbпримечание" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"></RichTextBox>
-        
-        <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal">
-            <Button x:Name="bOk" IsDefault="True" Click="bOk_Click">OK</Button>
-            <Button x:Name="bCancel" IsCancel="True" Click="bCancel_Click">Отмена</Button>
-        </StackPanel>
-    </Grid>
+            <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" Name="lDate">Дата</Label>
+            <Label Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" Name="lName">Сотрудник</Label>
+
+            <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+                <Label>Состояние</Label>
+                <ComboBox x:Name="cbStatus"></ComboBox>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                <Label>Отработанные часы</Label>
+                <TextBox x:Name="tbОтработанныеЧасы"></TextBox>
+            </StackPanel>
+
+            <Label Grid.Row="2" Grid.Column="0">Примечание</Label>
+
+            <RichTextBox x:Name="rtbпримечание" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"></RichTextBox>
+
+            <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal">
+                <Button x:Name="bOk" IsDefault="True" Click="bOk_Click">OK</Button>
+                <Button x:Name="bCancel" IsCancel="True" Click="bCancel_Click">Отмена</Button>
+            </StackPanel>
+        </Grid>
+    </Border>
 </controls:MetroWindow>

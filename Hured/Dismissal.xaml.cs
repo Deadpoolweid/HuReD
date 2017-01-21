@@ -49,8 +49,7 @@ namespace Hured
 
         private void bPrint_Click(object sender, RoutedEventArgs e)
         {
-            // TODO Реализация функции печати
-            Functions.Print();
+            // TODO Перенести функцию
         }
 
         private void bCancel_Click(object sender, RoutedEventArgs e)

@@ -7,46 +7,30 @@
         
         xmlns:local="clr-namespace:Hured"
         mc:Ignorable="d"
-        Title="Табель посещаемости" Height="300" Width="600" ResizeMode="CanMinimize">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-        </Grid.ColumnDefinitions>
+        Title="Табель посещаемости" >
+    <Border>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition ></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Row="0" Grid.Column="0" VerticalAlignment="Top">
-            <Label>Подразделения</Label>
-            <TreeView>
-                <TreeViewItem Header="Fruit" IsExpanded="True">
-                    <TreeViewItem Header="Lime"></TreeViewItem>
-                    <TreeViewItem Header="Orange"></TreeViewItem>
-                    <TreeViewItem Header="Apple"></TreeViewItem>
-                </TreeViewItem>
-                <TreeViewItem Header="Colors" IsExpanded="True">
-                    <TreeViewItem Header="Red"></TreeViewItem>
-                    <TreeViewItem Header="Orange"></TreeViewItem>
-                    <TreeViewItem Header="Green"></TreeViewItem>
-                </TreeViewItem>
+            <Label Grid.Row="0" Grid.Column="0">Место работы</Label>
+            <TreeView x:Name="tvUnits" Grid.Column="0" Grid.Row="1">
             </TreeView>
-        </StackPanel>
 
-        <ListView Grid.Row="0" Grid.Column="1">
-            <ListView.View>
-                <GridView>
-                    <GridView.Columns>
-                        <GridViewColumn Header="Сотрудник" ></GridViewColumn>
-                        <GridViewColumn Header="11.12" ></GridViewColumn>
-                        <GridViewColumn Header="12.12"></GridViewColumn>
-                        <GridViewColumn Header="13.12"></GridViewColumn>
-                    </GridView.Columns>
-                </GridView>
-            </ListView.View>
-        </ListView>
-        
-        <Button x:Name="bClose" Grid.Row="1" Grid.Column="1" Width="80" HorizontalAlignment="Right" Margin="5,5,10,5" IsDefault="True" Click="bClose_Click">Закрыть</Button>
-    </Grid>
+            <DataGrid Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Name="dgTimeSheet"
+                      BeginningEdit="DgTimeSheet_OnBeginningEdit"
+                      >
+                
+            </DataGrid>
+
+            <Button x:Name="bClose" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" IsDefault="True" Click="bClose_Click">Закрыть</Button>
+        </Grid>
+    </Border>
 </controls:MetroWindow>
