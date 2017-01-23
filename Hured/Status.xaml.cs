@@ -35,9 +35,11 @@ namespace Hured
                 byte b = Convert.ToByte(status.Цвет.Split(' ')[2]);
 
 
-                cpColor.SelectedColor = Color.FromRgb(r, g, b);
+                _selectedColor = Color.FromRgb(r, g, b);
                 Tag = status.СтатусId;
             }
+
+            bColor.Background = new SolidColorBrush(_selectedColor);
         }
 
         private bool IsEditMode = false;
@@ -46,12 +48,13 @@ namespace Hured
         {
             Controller.OpenConnection();
 
+
             var status = new Статус()
             {
                 Название = tbName.Text,
-                Цвет = cpColor.SelectedColor.Value.R.ToString() + " " +
-                    cpColor.SelectedColor.Value.G.ToString() + " " +
-                    cpColor.SelectedColor.Value.B.ToString()
+                Цвет = _selectedColor.R.ToString() + " " +
+                    _selectedColor.G.ToString() + " " +
+                    _selectedColor.B.ToString()
             };
 
             if (IsEditMode)
@@ -75,6 +78,20 @@ namespace Hured
         {
             DialogResult = false;
             Close();
+        }
+
+        private Color _selectedColor = Colors.White;
+
+        private void BColor_OnClick(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.ColorDialog colorDialog = new System.Windows.Forms.ColorDialog();
+            colorDialog.ShowDialog();
+            System.Drawing.Color color = colorDialog.Color;
+            _selectedColor.A = color.A;
+            _selectedColor.R = color.R;
+            _selectedColor.G = color.G;
+            _selectedColor.B = color.B;
+            bColor.Background = new SolidColorBrush(_selectedColor);
         }
     }
 }

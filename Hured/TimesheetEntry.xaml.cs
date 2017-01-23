@@ -44,7 +44,6 @@ namespace Hured
 
             if (data.Count()>2)
             {
-                isEditMode = true;
                 var entry = data[2] as ТабельнаяЗапись;
                 var editingEntry = Controller.Find(new ТабельнаяЗапись(),
                     q => q.ТабельнаяЗаписьId == entry.ТабельнаяЗаписьId);
@@ -58,7 +57,6 @@ namespace Hured
 
         }
 
-        private bool isEditMode = false;
 
         private int editingEntryId;
 

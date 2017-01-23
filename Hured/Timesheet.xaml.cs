@@ -97,7 +97,6 @@ namespace Hured
 
                 for (int i = 1; i < sEntries.Length; i++)
                 {
-                    bool hasMatch = false;
                     foreach (var entry in entries)
                     {
                         if (dgTimeSheet.Columns[i].Header.ToString() == entry.Дата.ToShortDateString())
