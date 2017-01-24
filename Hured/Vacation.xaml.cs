@@ -74,8 +74,8 @@ namespace Hured
 
             var order = new ПриказОтпуск()
             {
-                НачалоОтпуска = dpBegin.DisplayDate,
-                КонецОтпуска = dpEnd.DisplayDate,
+                НачалоОтпуска = DateTime.Parse(dpBegin.Text),
+                КонецОтпуска = DateTime.Parse(dpEnd.Text),
                 Вид = vacationType,
                 Файл = filePath
             };

@@ -43,6 +43,7 @@ namespace Hured
                 dpДатаДоговора.Text = order.ДатаТрудовогоДоговора.ToString();
                 tbОснование.Text = order.Основание;
                 Functions.SetRTBText(rtbПримечание, order.Примечание);
+                dpДатаУвольнения.Text = order.ДатаУвольнения.ToString();
                 filePath = order.Файл;
             }
         }
@@ -65,6 +66,7 @@ namespace Hured
                 ДатаТрудовогоДоговора = dpДатаДоговора.DisplayDate,
                 Основание = tbОснование.Text,
                 Примечание = Functions.GetRTBText(rtbПримечание),
+                ДатаУвольнения = dpДатаУвольнения.DisplayDate,
                 Файл = filePath
             };
             Tag = order;

@@ -21,5 +21,17 @@ namespace Hured
         public string ИнтервалХраненияДокументов { get; set; }
 
         public string ИнтервалХраненияОтчётов { get; set; }
+
+        public static bool operator==(AppSettings a, AppSettings b)
+        {
+            var properties = typeof (AppSettings).GetProperties();
+            return properties.All(propertyInfo => propertyInfo.GetValue(a) == propertyInfo.GetValue(b));
+        }
+
+        public static bool operator !=(AppSettings a, AppSettings b)
+        {
+            var properties = typeof (AppSettings).GetProperties();
+            return properties.Any(propertyInfo => propertyInfo.GetValue(a) != propertyInfo.GetValue(b));
+        }
     }
 }

@@ -30,25 +30,17 @@ namespace Hured
         {
             InitializeComponent();
 
-            
-            // Сохранить объект в локальном файле.
-
-            if (File.Exists(Directory.GetCurrentDirectory() + "/settings.dat"))
-            {
-                var formatter = new BinaryFormatter();
-
-                using (Stream fStream = File.OpenRead("settings.dat"))
-                {
-                    var s = formatter.Deserialize(fStream) as AppSettings;
-                    tbРуководитель.Text = s.РуководительОрганизации;
-                    tbДолжностьРуководителя.Text = s.ДолжностьРуководителя;
-                    tbНазваниеОрганизации.Text = s.НазваниеОрганизации;
-                    tbИнтервалДокументов.Text = s.ИнтервалХраненияДокументов.ToString();
-                    tbИнтервалОтчётов.Text = s.ИнтервалХраненияОтчётов.ToString();
-                    tbНормаРабочегоДня.Text = s.НормаРабочегоДня;
-                }
-            }
+            LoadedSettings = Functions.GetAppSettings() ?? new AppSettings();
+            tbРуководитель.Text = LoadedSettings.РуководительОрганизации;
+            tbДолжностьРуководителя.Text = LoadedSettings.ДолжностьРуководителя;
+            tbНазваниеОрганизации.Text = LoadedSettings.НазваниеОрганизации;
+            tbИнтервалДокументов.Text = LoadedSettings.ИнтервалХраненияДокументов;
+            tbИнтервалОтчётов.Text = LoadedSettings.ИнтервалХраненияОтчётов;
+            tbНормаРабочегоДня.Text = LoadedSettings.НормаРабочегоДня;
+                
         }
+
+        private AppSettings LoadedSettings;
 
         private void bUnits_Click(object sender, RoutedEventArgs e)
         {
@@ -90,23 +82,30 @@ namespace Hured
                 AnimateHide = false
             };
 
-            
+            AppSettings s = new AppSettings()
+            {
+                ДолжностьРуководителя = tbДолжностьРуководителя.Text,
+                НазваниеОрганизации = tbНазваниеОрганизации.Text,
+                РуководительОрганизации = tbРуководитель.Text,
+                НормаРабочегоДня = tbНормаРабочегоДня.Text,
+                ИнтервалХраненияДокументов = tbИнтервалДокументов.Text,
+                ИнтервалХраненияОтчётов = tbИнтервалОтчётов.Text
+            };
+
+            if (!Equals(LoadedSettings,null))
+            {
+                if (s == LoadedSettings)
+                {
+                    Close();
+                }
+            }
 
             MessageDialogResult result = await this.ShowMessageAsync("Предупреждение","Сохранить настройки?", 
                 MessageDialogStyle.AffirmativeAndNegative, mySettings);
 
             if (result == MessageDialogResult.Affirmative)
             {
-                AppSettings s = new AppSettings()
-                {
-                    ДолжностьРуководителя = tbДолжностьРуководителя.Text,
-                    НазваниеОрганизации = tbНазваниеОрганизации.Text,
-                    РуководительОрганизации = tbРуководитель.Text,
-                    НормаРабочегоДня = tbНормаРабочегоДня.Text,
-                    ИнтервалХраненияДокументов = tbИнтервалДокументов.Text,
-                    ИнтервалХраненияОтчётов = tbИнтервалОтчётов.Text
-                };
-
+                
                 var formatter = new BinaryFormatter();
                 // Сохранить объект в локальном файле.
                 using (Stream fStream = new FileStream("settings.dat",

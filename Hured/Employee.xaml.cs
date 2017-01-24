@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -16,6 +18,7 @@ using Hured.DBModel;
 using Hured.Tables_templates;
 using MahApps.Metro.Controls;
 using Microsoft.Win32;
+using Image = System.Drawing.Image;
 
 namespace Hured
 {
@@ -39,7 +42,7 @@ namespace Hured
 
                 IsEditMode = true;
                 tbФИО.Text = employee.ОсновнаяИнформация.Фамилия + " " +
-                    employee.ОсновнаяИнформация.Имя + " " + 
+                    employee.ОсновнаяИнформация.Имя + " " +
                     employee.ОсновнаяИнформация.Отчество;
                 cbUnit.SelectedItem = employee.ОсновнаяИнформация.Должность.Подразделение.Название;
                 cbPosition.SelectedItem = employee.ОсновнаяИнформация.Должность.Название;
@@ -58,7 +61,9 @@ namespace Hured
                 tbДополнительно.Text = employee.ОсновнаяИнформация.Дополнительно;
                 cbStatus.SelectedItem = employee.ОсновнаяИнформация.Статус;
                 tbТабельныйНомер.Text = employee.ОсновнаяИнформация.ТабельныйНомер;
-                // TODO Загрузка фотографии из БД
+
+                var img = Functions.ByteArrayToImage(employee.ОсновнаяИнформация.Фото);
+                iAvatar.Source = Functions.GetImageStream(img);
 
                 cbDocumentType.SelectedItem = employee.УдостоверениеЛичности.Вид;
                 dpДатаРождения.Text = employee.УдостоверениеЛичности.ДатаРождения.ToString();
@@ -92,7 +97,7 @@ namespace Hured
                 tbEMail.Text = employee.ДополнительнаяИнформация.EMail;
                 tbSkype.Text = employee.ДополнительнаяИнформация.Skype;
             }
-    }
+        }
 
         private bool IsEditMode = false;
 
@@ -140,17 +145,14 @@ namespace Hured
         private void bOk_Click(object sender, RoutedEventArgs e)
         {
             // TODO Не отображается дата в режиме редактирования
-            ImageConverter _imageConverter = new ImageConverter();
-            //byte[] xByte = (byte[])_imageConverter.ConvertTo(iAvatar, typeof(byte[]));
-            byte[] xByte = null;
-            // TODO Исправить конвертацию изображения
 
+            byte[] xByte = Functions.ImageSourceToBytes(new PngBitmapEncoder(), iAvatar.Source);
 
             Controller.OpenConnection();
-            var chosenPosition = Controller.Select(new Должность(), 
+            var chosenPosition = Controller.Select(new Должность(),
                 q => q.Название == cbPosition.SelectedValue.ToString()).FirstOrDefault();
 
-            Сотрудник EmployeeToAdd = new Сотрудник()
+            Сотрудник EmployeeToAdd = new Сотрудник
             {
                 ОсновнаяИнформация = new ОсновнаяИнформация()
                 {
@@ -210,17 +212,17 @@ namespace Hured
                 {
                     Skype = tbSkype.Text,
                     EMail = tbEMail.Text
-                }
+                },
+                Образование = Educations
             };
-            EmployeeToAdd.Образование = Educations;
 
             if (IsEditMode)
             {
-                Controller.Edit(q => q.СотрудникId == (int) Tag, EmployeeToAdd);
+                Controller.Edit(q => q.СотрудникId == (int)Tag, EmployeeToAdd);
             }
             else
             {
-            Controller.Insert(EmployeeToAdd);
+                Controller.Insert(EmployeeToAdd);
 
             }
             Controller.CloseConnection();
@@ -280,7 +282,7 @@ namespace Hured
         private void CbUnit_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             cbPosition.Items.Clear();
-                Functions.AddPositionsFromDB(ref cbPosition, cbUnit.SelectedValue.ToString());
+            Functions.AddPositionsFromDB(ref cbPosition, cbUnit.SelectedValue.ToString());
             cbPosition.SelectedIndex = 0;
         }
     }

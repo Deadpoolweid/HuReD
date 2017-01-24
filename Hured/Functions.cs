@@ -6,20 +6,25 @@ using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Hured.DBModel;
 using Hured.Tables_templates;
 using Microsoft.Win32;
+using Image = System.Drawing.Image;
 using Word = Microsoft.Office.Interop.Word;
 
 namespace Hured
 {
-    static class Functions
+    internal static class Functions
     {
         public static void AddUnitsFromDB(ref ListView lvUnits)
         {
@@ -106,13 +111,17 @@ namespace Hured
         /// <returns></returns>
         public static string CreateOrder<T>(OrderType orderType, T _order)
         {
-            // TODO выводить только последние две цифры года
-
             // TODO Перенести в инициализацию
             Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\Documents");
 
             Dictionary<string, string> bookmarks = new Dictionary<string, string>();
             string openPath, initialDirectory;
+
+            var РасшифровкаПодписи = GetAppSettings().РуководительОрганизации;
+            РасшифровкаПодписи = РасшифровкаПодписи.Split(' ')[0] + " " +
+                                 РасшифровкаПодписи.Split(' ')[1][0] + "." +
+                                 РасшифровкаПодписи.Split(' ')[2][0] + ".";
+
             switch (orderType)
             {
                 case OrderType.Recruitment:
@@ -123,8 +132,8 @@ namespace Hured
                     bookmarks.Add("КонецРаботы", order.КонецРаботы.ToShortDateString());
                     bookmarks.Add("ТабельныйНомер", order.Сотрудник.ОсновнаяИнформация.ТабельныйНомер);
                     bookmarks.Add("ФИО", order.Сотрудник.ОсновнаяИнформация.Фамилия + " " +
-                        order.Сотрудник.ОсновнаяИнформация.Имя + " " +
-                        order.Сотрудник.ОсновнаяИнформация.Отчество);
+                                         order.Сотрудник.ОсновнаяИнформация.Имя + " " +
+                                         order.Сотрудник.ОсновнаяИнформация.Отчество);
                     bookmarks.Add("Подразделение", order.Должность.Подразделение.Название);
                     bookmarks.Add("Должность", order.Должность.Название);
                     bookmarks.Add("Примечание", order.Примечания);
@@ -134,7 +143,9 @@ namespace Hured
                     bookmarks.Add("ДатаТрудовогоДоговораМесяц", order.ДатаТрудовогоДоговора.Month.ToString());
                     bookmarks.Add("ДатаТрудовогоДоговораГод", order.ДатаТрудовогоДоговора.Year.ToString().Substring(2));
                     bookmarks.Add("НомерТрудовогоДоговора", order.НомерТрудовогоДоговора);
-                    bookmarks.Add("ДолжностьРуководителя", "");// TODO Глобальный класс с настройками
+                    bookmarks.Add("ДолжностьРуководителя", GetAppSettings().ДолжностьРуководителя); 
+                    bookmarks.Add("НазваниеОрганизации", GetAppSettings().НазваниеОрганизации);
+                    bookmarks.Add("РасшифровкаПодписи", РасшифровкаПодписи);
                     openPath = Directory.GetCurrentDirectory() + @"\Templates\Recruitment.dotx";
                     initialDirectory = order.Файл;
                     break;
@@ -144,20 +155,23 @@ namespace Hured
                     bookmarks.Add("Дата", oDismissal.Дата.ToShortDateString());
                     bookmarks.Add("ТабельныйНомер", oDismissal.Сотрудник.ОсновнаяИнформация.ТабельныйНомер);
                     bookmarks.Add("ФИО", oDismissal.Сотрудник.ОсновнаяИнформация.Фамилия + " " +
-                        oDismissal.Сотрудник.ОсновнаяИнформация.Имя + " " +
-                        oDismissal.Сотрудник.ОсновнаяИнформация.Отчество);
-                    bookmarks.Add("Подразделение", oDismissal.Сотрудник.ОсновнаяИнформация.Должность.Подразделение.Название);
+                                         oDismissal.Сотрудник.ОсновнаяИнформация.Имя + " " +
+                                         oDismissal.Сотрудник.ОсновнаяИнформация.Отчество);
+                    bookmarks.Add("Подразделение",
+                        oDismissal.Сотрудник.ОсновнаяИнформация.Должность.Подразделение.Название);
                     bookmarks.Add("Должность", oDismissal.Сотрудник.ОсновнаяИнформация.Должность.Название);
                     bookmarks.Add("Примечание", oDismissal.Примечание);
-                    // TODO Дата увольнения
-                    bookmarks.Add("ДатаУвольненияЧисло", "");
-                    bookmarks.Add("ДатаУвольненияМесяц", "");
-                    bookmarks.Add("ДатаУвольненияГод", "");
+                    bookmarks.Add("ДатаУвольненияЧисло", oDismissal.ДатаУвольнения.Day.ToString());
+                    bookmarks.Add("ДатаУвольненияМесяц", oDismissal.ДатаУвольнения.Month.ToString());
+                    bookmarks.Add("ДатаУвольненияГод", oDismissal.ДатаУвольнения.Year.ToString().Substring(2));
                     bookmarks.Add("ДатаТрудовогоДоговораЧисло", oDismissal.ДатаТрудовогоДоговора.Day.ToString());
                     bookmarks.Add("ДатаТрудовогоДоговораМесяц", oDismissal.ДатаТрудовогоДоговора.Month.ToString());
-                    bookmarks.Add("ДатаТрудовогоДоговораГод", oDismissal.ДатаТрудовогоДоговора.Year.ToString().Substring(2));
+                    bookmarks.Add("ДатаТрудовогоДоговораГод",
+                        oDismissal.ДатаТрудовогоДоговора.Year.ToString().Substring(2));
                     bookmarks.Add("НомерТрудовогоДоговора", oDismissal.НомерТрудовогоДоговора);
-                    bookmarks.Add("ДолжностьРуководителя", "");// TODO Глобальный класс с настройками
+                    bookmarks.Add("ДолжностьРуководителя", GetAppSettings().ДолжностьРуководителя);
+                    bookmarks.Add("НазваниеОрганизации", GetAppSettings().НазваниеОрганизации);
+                    bookmarks.Add("РасшифровкаПодписи", РасшифровкаПодписи);
                     openPath = Directory.GetCurrentDirectory() + @"\Templates\Dismissal.dotx";
                     initialDirectory = oDismissal.Файл;
                     break;
@@ -167,14 +181,16 @@ namespace Hured
                     bookmarks.Add("Дата", oVacation.Дата.ToShortDateString());
                     bookmarks.Add("ТабельныйНомер", oVacation.Сотрудник.ОсновнаяИнформация.ТабельныйНомер);
                     bookmarks.Add("ФИО", oVacation.Сотрудник.ОсновнаяИнформация.Фамилия + " " +
-                        oVacation.Сотрудник.ОсновнаяИнформация.Имя + " " +
-                        oVacation.Сотрудник.ОсновнаяИнформация.Отчество);
-                    bookmarks.Add("Подразделение", oVacation.Сотрудник.ОсновнаяИнформация.Должность.Подразделение.Название);
+                                         oVacation.Сотрудник.ОсновнаяИнформация.Имя + " " +
+                                         oVacation.Сотрудник.ОсновнаяИнформация.Отчество);
+                    bookmarks.Add("Подразделение",
+                        oVacation.Сотрудник.ОсновнаяИнформация.Должность.Подразделение.Название);
                     bookmarks.Add("Должность", oVacation.Сотрудник.ОсновнаяИнформация.Должность.Название);
 
                     if (oVacation.Вид == "Ежегодный")
                     {
-                        bookmarks.Add("ЕжегодныйДлительность",oVacation.КонецОтпуска.Subtract(oVacation.НачалоОтпуска).Days.ToString());
+                        bookmarks.Add("ЕжегодныйДлительность",
+                            oVacation.КонецОтпуска.Subtract(oVacation.НачалоОтпуска).Days.ToString());
                         bookmarks.Add("ЕжегодныйНачалоЧисло", oVacation.НачалоОтпуска.Day.ToString());
                         bookmarks.Add("ЕжегодныйНачалоМесяц", oVacation.НачалоОтпуска.Month.ToString());
                         bookmarks.Add("ЕжегодныйНачалоГод", oVacation.НачалоОтпуска.Year.ToString().Substring(2));
@@ -195,9 +211,9 @@ namespace Hured
                     }
                     else
                     {
-                        bookmarks.Add("Другое",oVacation.Вид);
+                        bookmarks.Add("Другое", oVacation.Вид);
                         bookmarks.Add("ДругоеДлительность",
-    oVacation.КонецОтпуска.Subtract(oVacation.НачалоОтпуска).Days.ToString());
+                            oVacation.КонецОтпуска.Subtract(oVacation.НачалоОтпуска).Days.ToString());
                         bookmarks.Add("ДругоеНачалоЧисло", oVacation.НачалоОтпуска.Day.ToString());
                         bookmarks.Add("ДругоеНачалоМесяц", oVacation.НачалоОтпуска.Month.ToString());
                         bookmarks.Add("ДругоеНачалоГод", oVacation.НачалоОтпуска.Year.ToString().Substring(2));
@@ -205,7 +221,9 @@ namespace Hured
                         bookmarks.Add("ДругоеКонецМесяц", oVacation.КонецОтпуска.Month.ToString());
                         bookmarks.Add("ДругоеКонецГод", oVacation.КонецОтпуска.Year.ToString().Substring(2));
                     }
-                    bookmarks.Add("ДолжностьРуководителя", "");// TODO Глобальный класс с настройками
+                    bookmarks.Add("ДолжностьРуководителя", GetAppSettings().ДолжностьРуководителя);
+                    bookmarks.Add("НазваниеОрганизации", GetAppSettings().НазваниеОрганизации);
+                    bookmarks.Add("РасшифровкаПодписи", РасшифровкаПодписи);
                     openPath = Directory.GetCurrentDirectory() + @"\Templates\Vacation.dotx";
                     initialDirectory = oVacation.Файл;
 
@@ -216,21 +234,25 @@ namespace Hured
                     bookmarks.Add("Дата", oBusinessTrip.Дата.ToShortDateString());
                     bookmarks.Add("ТабельныйНомер", oBusinessTrip.Сотрудник.ОсновнаяИнформация.ТабельныйНомер);
                     bookmarks.Add("ФИО", oBusinessTrip.Сотрудник.ОсновнаяИнформация.Фамилия + " " +
-                        oBusinessTrip.Сотрудник.ОсновнаяИнформация.Имя + " " +
-                        oBusinessTrip.Сотрудник.ОсновнаяИнформация.Отчество);
-                    bookmarks.Add("Подразделение", oBusinessTrip.Сотрудник.ОсновнаяИнформация.Должность.Подразделение.Название);
+                                         oBusinessTrip.Сотрудник.ОсновнаяИнформация.Имя + " " +
+                                         oBusinessTrip.Сотрудник.ОсновнаяИнформация.Отчество);
+                    bookmarks.Add("Подразделение",
+                        oBusinessTrip.Сотрудник.ОсновнаяИнформация.Должность.Подразделение.Название);
                     bookmarks.Add("Должность", oBusinessTrip.Сотрудник.ОсновнаяИнформация.Должность.Название);
-                    bookmarks.Add("Срок", oBusinessTrip.КонецКомандировки.Subtract(oBusinessTrip.НачалоКомандировки).Days.ToString());
+                    bookmarks.Add("Срок",
+                        oBusinessTrip.КонецКомандировки.Subtract(oBusinessTrip.НачалоКомандировки).Days.ToString());
                     bookmarks.Add("НачалоЧисло", oBusinessTrip.НачалоКомандировки.Day.ToString());
-                    bookmarks.Add("НачалоМесяц",oBusinessTrip.НачалоКомандировки.Month.ToString());
-                    bookmarks.Add("НачалоГод",oBusinessTrip.НачалоКомандировки.Year.ToString().Substring(2));
-                    bookmarks.Add("КонецЧисло",oBusinessTrip.КонецКомандировки.Day.ToString());
-                    bookmarks.Add("КонецМесяц",oBusinessTrip.КонецКомандировки.Month.ToString());
-                    bookmarks.Add("КонецГод",oBusinessTrip.КонецКомандировки.Year.ToString().Substring(2));
+                    bookmarks.Add("НачалоМесяц", oBusinessTrip.НачалоКомандировки.Month.ToString());
+                    bookmarks.Add("НачалоГод", oBusinessTrip.НачалоКомандировки.Year.ToString().Substring(2));
+                    bookmarks.Add("КонецЧисло", oBusinessTrip.КонецКомандировки.Day.ToString());
+                    bookmarks.Add("КонецМесяц", oBusinessTrip.КонецКомандировки.Month.ToString());
+                    bookmarks.Add("КонецГод", oBusinessTrip.КонецКомандировки.Year.ToString().Substring(2));
                     bookmarks.Add("Цель", oBusinessTrip.Цель);
                     bookmarks.Add("ЗаСчёт", oBusinessTrip.ЗаСчёт);
                     bookmarks.Add("Основание", oBusinessTrip.Основание);
-                    bookmarks.Add("ДолжностьРуководителя", ""); // TODO Добавить должность руководителя
+                    bookmarks.Add("ДолжностьРуководителя", GetAppSettings().ДолжностьРуководителя);
+                    bookmarks.Add("НазваниеОрганизации", GetAppSettings().НазваниеОрганизации);
+                    bookmarks.Add("РасшифровкаПодписи", РасшифровкаПодписи);
                     openPath = Directory.GetCurrentDirectory() + @"\Templates\BusinessTrip.dotx";
                     initialDirectory = oBusinessTrip.Файл;
 
@@ -242,7 +264,10 @@ namespace Hured
 
             var sfd = new SaveFileDialog()
             {
-                InitialDirectory = initialDirectory == null ? Directory.GetCurrentDirectory() + @"\Documents" : Path.GetDirectoryName(initialDirectory),
+                InitialDirectory =
+                    initialDirectory == null
+                        ? Directory.GetCurrentDirectory() + @"\Documents"
+                        : Path.GetDirectoryName(initialDirectory),
                 Filter = "Word Document | *.docx | Все файлы (*.*)|*.*",
                 FileName = "Новый приказ"
             };
@@ -277,7 +302,10 @@ namespace Hured
                 item = new TreeViewItem();
                 item.Tag = подразделение;
                 item.Header = подразделение.Название;
-                foreach (var должность in Controller.Select(new Должность(), e => e.Подразделение.ПодразделениеId == подразделение.ПодразделениеId))
+                foreach (
+                    var должность in
+                        Controller.Select(new Должность(),
+                            e => e.Подразделение.ПодразделениеId == подразделение.ПодразделениеId))
                 {
                     item.Items.Add(должность.Название);
                 }
@@ -308,6 +336,78 @@ namespace Hured
 
 
         //}
+
+        public static AppSettings GetAppSettings()
+        {
+            if (File.Exists(Directory.GetCurrentDirectory() + "/settings.dat"))
+            {
+                var formatter = new BinaryFormatter();
+
+                using (Stream fStream = File.OpenRead("settings.dat"))
+                {
+                    return formatter.Deserialize(fStream) as AppSettings;
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        static public byte[] ImageToByteArray(System.Drawing.Image imageIn)
+        {
+            MemoryStream ms = new MemoryStream();
+            imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Gif);
+            return ms.ToArray();
+        }
+
+        static public Image ByteArrayToImage(byte[] byteArrayIn)
+        {
+            MemoryStream ms = new MemoryStream(byteArrayIn);
+            Image returnImage = Image.FromStream(ms);
+            return returnImage;
+        }
+
+        public static BitmapSource GetImageStream(Image myImage)
+        {
+            var bitmap = new Bitmap(myImage);
+            IntPtr bmpPt = bitmap.GetHbitmap();
+            BitmapSource bitmapSource =
+             System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+                   bmpPt,
+                   IntPtr.Zero,
+                   Int32Rect.Empty,
+                   BitmapSizeOptions.FromEmptyOptions());
+
+            //freeze bitmapSource and clear memory to avoid memory leaks
+            bitmapSource.Freeze();
+            DeleteObject(bmpPt);
+
+            return bitmapSource;
+        }
+
+        [DllImport("gdi32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool DeleteObject(IntPtr value);
+
+        static public byte[] ImageSourceToBytes(BitmapEncoder encoder, ImageSource imageSource)
+        {
+            byte[] bytes = null;
+            var bitmapSource = imageSource as BitmapSource;
+
+            if (bitmapSource != null)
+            {
+                encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
+
+                using (var stream = new MemoryStream())
+                {
+                    encoder.Save(stream);
+                    bytes = stream.ToArray();
+                }
+            }
+
+            return bytes;
+        }
     }
 
     public enum OrderType
@@ -393,9 +493,6 @@ namespace Hured
                              ref nullobj, ref nullobj, ref nullobj, ref nullobj,
                              ref nullobj, ref nullobj);
             }
-
-            _wordApp.Quit();
-
         }
 
         /// <summary>

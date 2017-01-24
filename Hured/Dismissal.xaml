@@ -7,10 +7,11 @@
         
         xmlns:local="clr-namespace:Hured"
         mc:Ignorable="d"
-        Title="Оформить увольнение" Height="300" Width="600" ResizeMode="CanMinimize">
+        Title="Оформить увольнение" Height="400" Width="600" ResizeMode="CanMinimize">
     <Border>
         <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
@@ -33,14 +34,17 @@
             <Label Grid.Row="1" Grid.Column="0">Уволить</Label>
             <Label x:Name="lEmployee" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left"></Label>
 
-            <Label Grid.Row="2" Grid.Column="0">Основание</Label>
-            <TextBox x:Name="tbОснование" Grid.Row="2" Grid.Column="1"></TextBox>
+            <Label Grid.Row="2" Grid.Column="0">Дата увольнения</Label>
+            <DatePicker x:Name="dpДатаУвольнения" Grid.Row="2" Grid.Column="1"></DatePicker>
+            
+            <Label Grid.Row="3" Grid.Column="0">Основание</Label>
+            <TextBox x:Name="tbОснование" Grid.Row="3" Grid.Column="1"></TextBox>
 
-            <Label Grid.Row="3" Grid.Column="0">Примечание</Label>
+            <Label Grid.Row="4" Grid.Column="0">Примечание</Label>
 
-            <RichTextBox x:Name="rtbПримечание" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"></RichTextBox>
+            <RichTextBox x:Name="rtbПримечание" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"></RichTextBox>
 
-            <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Horizontal">
+            <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal">
                 <Button x:Name="bOk" IsDefault="True" Click="bOk_Click">Оформить</Button>
                 <Button x:Name="bCancel" IsCancel="True" Click="bCancel_Click">Отмена</Button>
             </StackPanel>

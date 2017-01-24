@@ -151,7 +151,7 @@
     <Compile Include="Recruitment.xaml.cs">
       <DependentUpon>Recruitment.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Settings.cs" />
+    <Compile Include="AppSettings.cs" />
     <Compile Include="Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
