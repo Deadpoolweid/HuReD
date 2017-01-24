@@ -143,9 +143,13 @@ namespace Hured
                     bookmarks.Add("ДатаТрудовогоДоговораМесяц", order.ДатаТрудовогоДоговора.Month.ToString());
                     bookmarks.Add("ДатаТрудовогоДоговораГод", order.ДатаТрудовогоДоговора.Year.ToString().Substring(2));
                     bookmarks.Add("НомерТрудовогоДоговора", order.НомерТрудовогоДоговора);
-                    bookmarks.Add("ДолжностьРуководителя", GetAppSettings().ДолжностьРуководителя); 
+                    bookmarks.Add("ДолжностьРуководителя", GetAppSettings().ДолжностьРуководителя);
                     bookmarks.Add("НазваниеОрганизации", GetAppSettings().НазваниеОрганизации);
                     bookmarks.Add("РасшифровкаПодписи", РасшифровкаПодписи);
+                    if (order.ИспытательныйСрок)
+                    {
+                        bookmarks.Add("ИспытательныйСрокДлительность", order.ИспытательныйСрокДлительность);
+                    }
                     openPath = Directory.GetCurrentDirectory() + @"\Templates\Recruitment.dotx";
                     initialDirectory = order.Файл;
                     break;
@@ -461,7 +465,7 @@ namespace Hured
         /// <param name="path">Место для сохранения документа</param>
         public void Save(string path)
         {
-           
+
             _document.SaveAs(FileName: path);
         }
 
@@ -470,7 +474,7 @@ namespace Hured
         /// </summary>
         public void Print()
         {
-            
+
             object nullobj = Missing.Value;
             object path = Path;
             object _readonly = true;

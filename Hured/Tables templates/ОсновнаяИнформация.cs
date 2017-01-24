@@ -34,8 +34,6 @@ namespace Hured.DBModel
 
         public string Дополнительно { get; set; }
 
-        public string Статус { get; set; }
-
         public byte[] Фото { get; set; }
     }
 }

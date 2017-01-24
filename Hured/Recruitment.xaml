@@ -30,14 +30,29 @@
                 <DatePicker x:Name="dpBegin"></DatePicker>
                 <Label>по</Label>
                 <DatePicker x:Name="dpEnd"></DatePicker>
-                <CheckBox x:Name="chIsTraineship" IsThreeState="False">Испытательный срок</CheckBox>
+                
             </StackPanel>
 
-            <Label Grid.Row="1" Grid.Column="0">Подразделение</Label>
-            <ComboBox x:Name="cbUnit" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" SelectionChanged="CbUnit_OnSelectionChanged"></ComboBox>
 
-            <Label Grid.Row="2" Grid.Column="0">Должность</Label>
-            <ComboBox x:Name="cbPosition" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left"></ComboBox>
+            <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Label >Подразделение</Label>
+                <ComboBox x:Name="cbUnit" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" 
+                          SelectionChanged="CbUnit_OnSelectionChanged" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Label >Должность</Label>
+                <ComboBox x:Name="cbPosition" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" />
+            </StackPanel>
+
+            <CheckBox Grid.Row="1" Grid.Column="1" x:Name="chIsTraineship" IsThreeState="False"
+                      Checked="ChIsTraineship_OnChecked">Испытательный срок на</CheckBox>
+
+            <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
+                <TextBox Name="tbИспытательныйСрокДлительность" />
+                <Label >Месяцев</Label>
+            </StackPanel>
+            
 
             <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal">
                 <Label >Оклад</Label>

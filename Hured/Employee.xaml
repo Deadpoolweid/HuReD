@@ -20,12 +20,11 @@
                 <controls:MetroAnimatedTabControl Grid.Row="0"
                     Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=controls:MetroWindow}, Path=ActualWidth}"
                    >
-                    
+
                     <controls:MetroTabItem Header="Основное">
                         <Border>
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"></RowDefinition>
                                     <RowDefinition Height="Auto"></RowDefinition>
                                     <RowDefinition Height="Auto"></RowDefinition>
                                     <RowDefinition Height="Auto"></RowDefinition>
@@ -91,10 +90,6 @@
                                 <Label Grid.Row="9" Grid.Column="0" Content="Дополнительно"/>
                                 <TextBox x:Name="tbДополнительно" Grid.Row="9" Grid.Column="1"></TextBox>
 
-                                <Label Grid.Row="10" Grid.Column="0">Статус</Label>
-                                <ComboBox x:Name="cbStatus" Grid.Row="10" Grid.Column="1"></ComboBox>
-
-
                             </Grid>
                         </Border>
                     </controls:MetroTabItem>
@@ -124,11 +119,8 @@
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-
-                                <Label Grid.Row="0" Grid.Column="0">Вид</Label>
-                                <ComboBox x:Name="cbDocumentType" Grid.Row="0" Grid.Column="1"></ComboBox>
-                                <Label Grid.Row="0" Grid.Column="2">Гражданство</Label>
-                                <TextBox x:Name="tbгражданство" Grid.Row="0" Grid.Column="3"></TextBox>
+                                <Label Grid.Row="0" Grid.Column="0">Гражданство</Label>
+                                <TextBox x:Name="tbгражданство" Grid.Row="0" Grid.Column="1"/>
 
                                 <Label Grid.Row="1" Grid.Column="0">Серия</Label>
                                 <TextBox x:Name="tbСерия" Grid.Row="2" Grid.Column="0"></TextBox>

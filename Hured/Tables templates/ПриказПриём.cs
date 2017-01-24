@@ -25,6 +25,8 @@ namespace Hured.Tables_templates
 
         public bool ИспытательныйСрок { get; set; }
 
+        public string ИспытательныйСрокДлительность { get; set; }
+
         public virtual Должность Должность { get; set; }
 
         public string Оклад { get; set; }

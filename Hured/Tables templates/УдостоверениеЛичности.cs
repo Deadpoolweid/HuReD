@@ -13,8 +13,6 @@ namespace Hured.Tables_templates
     {
         public int УдостоверениеЛичностиId { get; set; }
 
-        public string Вид { get; set; }
-
         public string Серия { get; set; }
 
         public string Номер { get; set; }

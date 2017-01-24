@@ -34,6 +34,7 @@ namespace Hured
                 dpBegin.Text = order.НачалоРаботы.ToShortDateString();
                 dpEnd.Text = order.КонецРаботы.ToShortDateString();
                 chIsTraineship.IsChecked = order.ИспытательныйСрок;
+                tbИспытательныйСрокДлительность.Text = order.ИспытательныйСрокДлительность ?? "";
                 cbUnit.SelectedItem = order.Должность.Подразделение.Название;
                 cbPosition.SelectedItem = order.Должность.Название;
                 tbОклад.Text = order.Оклад;
@@ -41,9 +42,11 @@ namespace Hured
                 Functions.SetRTBText(rtbПримечание, order.Примечания);
                 tbНомерДоговора.Text = order.НомерТрудовогоДоговора;
                 dpДатаДоговора.Text = order.ДатаТрудовогоДоговора.ToShortDateString();
+
                 filePath = order.Файл;
             }
 
+            tbИспытательныйСрокДлительность.IsEnabled = false;
         }
 
         private string filePath;
@@ -79,6 +82,7 @@ namespace Hured
                 Примечания = Functions.GetRTBText(rtbПримечание),
                 НомерТрудовогоДоговора = tbНомерДоговора.Text,
                 ДатаТрудовогоДоговора = dpДатаДоговора.DisplayDate,
+                ИспытательныйСрокДлительность = tbИспытательныйСрокДлительность.Text,
                 Файл = filePath
             };
             Tag = приём;
@@ -92,6 +96,11 @@ namespace Hured
             cbPosition.Items.Clear();
             Functions.AddPositionsFromDB(ref cbPosition, cbUnit.SelectedValue.ToString());
             cbPosition.SelectedIndex = 0;
+        }
+
+        private void ChIsTraineship_OnChecked(object sender, RoutedEventArgs e)
+        {
+            tbИспытательныйСрокДлительность.IsEnabled = chIsTraineship.IsChecked.Value;
         }
     }
 }

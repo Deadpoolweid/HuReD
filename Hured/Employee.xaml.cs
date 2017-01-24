@@ -59,13 +59,11 @@ namespace Hured
                     rbW.IsChecked = true;
                 }
                 tbДополнительно.Text = employee.ОсновнаяИнформация.Дополнительно;
-                cbStatus.SelectedItem = employee.ОсновнаяИнформация.Статус;
                 tbТабельныйНомер.Text = employee.ОсновнаяИнформация.ТабельныйНомер;
 
                 var img = Functions.ByteArrayToImage(employee.ОсновнаяИнформация.Фото);
                 iAvatar.Source = Functions.GetImageStream(img);
 
-                cbDocumentType.SelectedItem = employee.УдостоверениеЛичности.Вид;
                 dpДатаРождения.Text = employee.УдостоверениеЛичности.ДатаРождения.ToString();
                 tbКем.Text = employee.УдостоверениеЛичности.КемВыдан;
                 dpКогдаВыдан.Text = employee.УдостоверениеЛичности.КогдаВыдан.ToString();
@@ -166,13 +164,11 @@ namespace Hured
                     МобильныйТелефон = tbМобильный.Text,
                     Пол = rbM.IsChecked == true ? "Мужской" : "Женский",
                     Дополнительно = tbДополнительно.Text,
-                    Статус = cbStatus.SelectedValue?.ToString(),
                     ТабельныйНомер = tbТабельныйНомер.Text,
                     Фото = xByte
                 },
                 УдостоверениеЛичности = new УдостоверениеЛичности()
                 {
-                    Вид = cbDocumentType.SelectedValue?.ToString(),
                     ДатаРождения = dpДатаРождения.DisplayDate,
                     КемВыдан = tbКем.Text,
                     КогдаВыдан = dpКогдаВыдан.DisplayDate,
