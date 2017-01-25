@@ -34,6 +34,9 @@
         <Setter Property="Margin" Value="3"/>
         <Setter Property="MinWidth" Value="150"/>
         <Setter Property="MinHeight" Value="20"/>
+        
+        <!-- Debug -->
+        <Setter Property="Text" Value="25.01.2017"></Setter>
     </Style>
 
     <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">

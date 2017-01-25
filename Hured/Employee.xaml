@@ -234,30 +234,32 @@
                                     <RowDefinition Height="Auto"></RowDefinition>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
 
-                                <Label Grid.Row="0" Grid.Column="0">Категория запаса</Label>
-                                <TextBox x:Name="tbКатегорияЗапаса" Grid.Row="0" Grid.Column="1"></TextBox>
+                                <Label Grid.Row="0" Grid.Column="1">Категория запаса</Label>
+                                <TextBox x:Name="tbКатегорияЗапаса" Grid.Row="0" Grid.Column="2"></TextBox>
 
-                                <Label Grid.Row="1" Grid.Column="0">Звание</Label>
-                                <TextBox x:Name="tbЗвание" Grid.Row="1" Grid.Column="1"></TextBox>
+                                <Label Grid.Row="1" Grid.Column="1">Звание</Label>
+                                <TextBox x:Name="tbЗвание" Grid.Row="1" Grid.Column="2"></TextBox>
 
-                                <Label Grid.Row="2" Grid.Column="0">Профиль</Label>
-                                <TextBox x:Name="tbПрофиль" Grid.Row="2" Grid.Column="1"></TextBox>
+                                <Label Grid.Row="2" Grid.Column="1">Профиль</Label>
+                                <TextBox x:Name="tbПрофиль" Grid.Row="2" Grid.Column="2"></TextBox>
 
-                                <Label Grid.Row="3" Grid.Column="0">Код ВУС</Label>
-                                <TextBox x:Name="tbКодВУС" Grid.Row="3" Grid.Column="1"></TextBox>
+                                <Label Grid.Row="3" Grid.Column="1">Код ВУС</Label>
+                                <TextBox x:Name="tbКодВУС" Grid.Row="3" Grid.Column="2"></TextBox>
 
-                                <Label Grid.Row="4" Grid.Column="0">Категория годности</Label>
-                                <TextBox x:Name="tbКатегорияГодности" Grid.Row="4" Grid.Column="1"></TextBox>
+                                <Label Grid.Row="4" Grid.Column="1">Категория годности</Label>
+                                <TextBox x:Name="tbКатегорияГодности" Grid.Row="4" Grid.Column="2"></TextBox>
 
-                                <Label Grid.Row="5" Grid.Column="0">Наименование военкомата</Label>
-                                <TextBox x:Name="tbНаименованиеВоенкомата" Grid.Row="5" Grid.Column="1"></TextBox>
+                                <Label Grid.Row="5" Grid.Column="1">Наименование военкомата</Label>
+                                <TextBox x:Name="tbНаименованиеВоенкомата" Grid.Row="5" Grid.Column="2"></TextBox>
 
-                                <Label Grid.Row="6" Grid.Column="0">Состоит на учёте</Label>
-                                <TextBox x:Name="tbСостоитНаУчёте" Grid.Row="6" Grid.Column="1"></TextBox>
+                                <Label Grid.Row="6" Grid.Column="1">Состоит на учёте</Label>
+                                <TextBox x:Name="tbСостоитНаУчёте" Grid.Row="6" Grid.Column="2"></TextBox>
                             </Grid>
                         </Border>
                     </controls:MetroTabItem>
@@ -269,14 +271,17 @@
                                     <RowDefinition Height="Auto"></RowDefinition>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition></ColumnDefinition>
+
                                 </Grid.ColumnDefinitions>
 
-                                <Label Grid.Row="0" Grid.Column="0">E-mail</Label>
+                                <Label Grid.Row="0" Grid.Column="1">E-mail</Label>
                                 <TextBox x:Name="tbEMail" Grid.Row="0" Grid.Column="2"></TextBox>
 
-                                <Label Grid.Row="1" Grid.Column="0">Skype</Label>
+                                <Label Grid.Row="1" Grid.Column="1">Skype</Label>
                                 <TextBox x:Name="tbSkype" Grid.Row="1" Grid.Column="2"></TextBox>
                             </Grid>
                         </Border>

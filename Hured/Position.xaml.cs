@@ -43,8 +43,10 @@ namespace Hured
 
             Controller.OpenConnection();
 
+            var unitId = (int) (cbUnit.SelectedItem as ComboBoxItem).Tag;
+
             var unit = Controller.Select(new Подразделение(),
-                q => q.Название == cbUnit.SelectedValue.ToString()).FirstOrDefault();
+                q => q.ПодразделениеId == unitId).FirstOrDefault();
 
             var position = new Должность()
             {

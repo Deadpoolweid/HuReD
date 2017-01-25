@@ -51,7 +51,7 @@ namespace Hured
 
         int daysCount = 20;
 
-        void SyncTimeSheet()
+        void SyncTimeSheet(List<Сотрудник> Сотрудники = null)
         {
             if (!IsGridCreated)
             {
@@ -81,9 +81,12 @@ namespace Hured
             dgTimeSheet.Items.Clear();
 
             Controller.OpenConnection();
-            var employees = Controller.Select(new Сотрудник(), q => q != null);
+            if (Сотрудники == null)
+            {
+                Сотрудники = Controller.Select(new Сотрудник(), q => q != null);
+            }
 
-            foreach (var employee in employees)
+            foreach (var employee in Сотрудники)
             {
                 var entries = Controller.Select(new ТабельнаяЗапись(),
                     q => q.Сотрудник.СотрудникId == employee.СотрудникId);
@@ -148,6 +151,37 @@ namespace Hured
                 }
             };
 
+        }
+
+        private void TvUnits_OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            var tvUnits = sender as TreeView;
+
+            List<Сотрудник> СписокСотрудников = null;
+
+            TreeViewItem item = tvUnits.SelectedItem as TreeViewItem;
+
+            Controller.OpenConnection();
+
+            //Выбрано подразделение
+            if (tvUnits.Items.Contains(tvUnits.SelectedItem))
+            {
+                if (item.Header.ToString() != "Все подразделения")
+                {
+                    var unitId = (int)item.Tag;
+                    СписокСотрудников = Controller.Select(new Сотрудник(),
+                        q => q.ОсновнаяИнформация.Должность.Подразделение.ПодразделениеId == unitId);
+                }
+            } // Выбрана должность
+            else
+            {
+                var positionId = (int)item.Tag;
+                СписокСотрудников = Controller.Select(new Сотрудник(),
+                    q => q.ОсновнаяИнформация.Должность.ДолжностьId == positionId);
+            }
+
+            Controller.CloseConnection();
+            SyncTimeSheet(СписокСотрудников);
         }
 
         Brush GetColorFromString(string colorString)

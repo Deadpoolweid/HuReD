@@ -42,20 +42,6 @@
             <Label Grid.Row="3" Grid.Column="0">Должность руководителя</Label>
             <TextBox x:Name="tbДолжностьРуководителя" Grid.Row="3" Grid.Column="1"></TextBox>
 
-            <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">Интервал хранения</Label>
-
-            <Label Grid.Row="5" Grid.Column="0">Документов</Label>
-            <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal">
-                <TextBox x:Name="tbИнтервалДокументов"></TextBox>
-                <Label>Дней</Label>
-            </StackPanel>
-
-            <Label Grid.Row="6" Grid.Column="0">Отчётов</Label>
-            <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal">
-                <TextBox x:Name="tbИнтервалОтчётов"></TextBox>
-                <Label>дней</Label>
-            </StackPanel>
-
             <Button x:Name="bUnits" Grid.Row="7" Grid.Column="0" Click="bUnits_Click">Подразделения</Button>
             <Button x:Name="bPositions" Grid.Row="7" Grid.Column="1" Click="bPositions_Click">Должности</Button>
 

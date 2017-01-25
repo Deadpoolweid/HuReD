@@ -24,9 +24,9 @@ namespace Hured
         public Positions()
         {
             InitializeComponent();
-            lvUnits.Items.Add("Все должности");
-            Functions.AddUnitsFromDB(ref lvUnits);
-            lvUnits.SelectedIndex = 0;
+            lbUnits.Items.Add("Все подразделения");
+            Functions.AddUnitsFromDB(ref lbUnits);
+            lbUnits.SelectedIndex = 0;
         }
 
         private void bAdd_Click(object sender, RoutedEventArgs e)
@@ -82,14 +82,14 @@ namespace Hured
         {
             lvPositions.Items.Clear();
 
-            if (lvUnits.SelectedIndex == 0)
+            if (lbUnits.SelectedIndex == 0)
             {
                 Functions.AddPositionsFromDB(ref lvPositions);
             }
             else
             {
                 Functions.AddPositionsFromDB(ref lvPositions,
-                    lvUnits.SelectedValue.ToString());
+                    (int)(lbUnits.SelectedItem as ListBoxItem).Tag);
             }
         }
     }

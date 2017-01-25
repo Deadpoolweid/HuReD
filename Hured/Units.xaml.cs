@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Hured.DBModel;
 using MahApps.Metro.Controls;
+using ListBox = System.Windows.Forms.ListBox;
 
 namespace Hured
 {
@@ -25,12 +26,12 @@ namespace Hured
         {
             InitializeComponent();
 
-            Functions.AddUnitsFromDB(ref lvUnits);
+            Functions.AddUnitsFromDB(ref lbUnits);
         }
 
         private void bAdd_Click(object sender, RoutedEventArgs e)
         {
-            lvUnits.Items.Add(tbNewUnit.Text);
+            lbUnits.Items.Add(tbNewUnit.Text);
             Controller.OpenConnection();
             Controller.Insert(new Подразделение() {Название = tbNewUnit.Text});
             Controller.CloseConnection();
@@ -44,19 +45,24 @@ namespace Hured
         {
             if (!EditModeEnabled)
             {
-                tbNewUnit.Text = lvUnits.SelectedValue.ToString();
-                lvUnits.IsEnabled = bAdd.IsEnabled = bRemove.IsEnabled =
+                tbNewUnit.Text = (lbUnits.SelectedItem as ListBoxItem).Content.ToString();
+                lbUnits.IsEnabled = bAdd.IsEnabled = bRemove.IsEnabled =
                     bClose.IsEnabled = false;
                 oldValue = tbNewUnit.Text;
                 bChange.Content = "Ok";
             }
             else
             {
+                oldValue = (lbUnits.Items[lbUnits.SelectedIndex] as ListBoxItem).Content.ToString();
                 Controller.OpenConnection();
                 Controller.Edit(q => q.Название == oldValue,new Подразделение() {Название = tbNewUnit.Text});
                 Controller.CloseConnection();
-                lvUnits.Items[lvUnits.SelectedIndex] = tbNewUnit.Text;
-                lvUnits.IsEnabled = bAdd.IsEnabled = bRemove.IsEnabled =
+                lbUnits.Items[lbUnits.SelectedIndex] = new ListBoxItem()
+                {
+                    Content = tbNewUnit.Text,
+                    Tag = (lbUnits.Items[lbUnits.SelectedIndex] as ListBoxItem).Tag
+                };
+                lbUnits.IsEnabled = bAdd.IsEnabled = bRemove.IsEnabled =
                     bClose.IsEnabled = true;
                 bChange.Content = "Изменить";
             }
@@ -65,14 +71,14 @@ namespace Hured
 
         private void bRemove_Click(object sender, RoutedEventArgs e)
         {
-            if (lvUnits.SelectedIndex == -1)
+            if (lbUnits.SelectedIndex == -1)
             {
                 return;
             }
             Controller.OpenConnection();
-            Controller.Remove(new Подразделение(), q => q.Название == lvUnits.SelectedValue.ToString());
+            Controller.Remove(new Подразделение(), q => q.Название == lbUnits.SelectedValue.ToString());
             Controller.CloseConnection();
-            lvUnits.Items.RemoveAt(lvUnits.SelectedIndex);
+            lbUnits.Items.RemoveAt(lbUnits.SelectedIndex);
 
         }
 

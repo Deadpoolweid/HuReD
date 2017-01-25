@@ -38,7 +38,5 @@ namespace Hured.Tables_templates
         public string НомерТрудовогоДоговора { get; set; }
 
         public DateTime ДатаТрудовогоДоговора { get; set; }
-
-        public string Файл { get; set; }
     }
 }

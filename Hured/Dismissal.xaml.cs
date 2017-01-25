@@ -40,15 +40,13 @@ namespace Hured
             if (order != null)
             {
                 tbНомерДоговора.Text = order.НомерТрудовогоДоговора;
-                dpДатаДоговора.Text = order.ДатаТрудовогоДоговора.ToString();
+                dpДатаДоговора.Text = order.ДатаТрудовогоДоговора.ToShortDateString();
                 tbОснование.Text = order.Основание;
-                Functions.SetRTBText(rtbПримечание, order.Примечание);
-                dpДатаУвольнения.Text = order.ДатаУвольнения.ToString();
-                filePath = order.Файл;
+                dpДатаУвольнения.Text = order.ДатаУвольнения.ToShortDateString();
+                tbОснованиеДокумент.Text = order.ОснованиеДокумент;
             }
         }
 
-        private string filePath;
 
         private void bCancel_Click(object sender, RoutedEventArgs e)
         {
@@ -63,11 +61,10 @@ namespace Hured
             var order = new ПриказУвольнение()
             {
                 НомерТрудовогоДоговора = tbНомерДоговора.Text,
-                ДатаТрудовогоДоговора = dpДатаДоговора.DisplayDate,
+                ДатаТрудовогоДоговора = DateTime.Parse(dpДатаДоговора.Text),
                 Основание = tbОснование.Text,
-                Примечание = Functions.GetRTBText(rtbПримечание),
-                ДатаУвольнения = dpДатаУвольнения.DisplayDate,
-                Файл = filePath
+                ДатаУвольнения = DateTime.Parse(dpДатаУвольнения.Text),
+                ОснованиеДокумент = tbОснованиеДокумент.Text,
             };
             Tag = order;
 

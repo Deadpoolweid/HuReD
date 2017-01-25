@@ -29,8 +29,11 @@ namespace Hured
 
             if (order != null)
             {
-                dpBegin.Text = order.НачалоОтпуска.ToString();
-                dpEnd.Text = order.КонецОтпуска.ToString();
+                dpBegin.Text = order.НачалоОтпуска.ToShortDateString();
+                dpEnd.Text = order.КонецОтпуска.ToShortDateString();
+                dpПериодРаботыНачало.Text = order.ПериодРаботыНачало.ToShortDateString();
+                dpПериодРаботыКонец.Text = order.ПериодРаботыКонец.ToShortDateString();
+
                 if (order.Вид == "Ежегодный")
                 {
                     rbEveryYear.IsChecked = true;
@@ -44,11 +47,9 @@ namespace Hured
                     rbOther.IsChecked = true;
                     tbДругое.Text = order.Вид;
                 }
-                filePath = order.Файл;
             }
         }
 
-        private string filePath;
 
         private void bCancel_Click(object sender, RoutedEventArgs e)
         {
@@ -77,7 +78,8 @@ namespace Hured
                 НачалоОтпуска = DateTime.Parse(dpBegin.Text),
                 КонецОтпуска = DateTime.Parse(dpEnd.Text),
                 Вид = vacationType,
-                Файл = filePath
+                ПериодРаботыНачало = DateTime.Parse(dpПериодРаботыНачало.Text),
+                ПериодРаботыКонец = DateTime.Parse(dpПериодРаботыКонец.Text),
             };
             Tag = order;
 

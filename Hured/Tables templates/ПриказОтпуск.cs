@@ -23,9 +23,10 @@ namespace Hured.Tables_templates
 
         public DateTime КонецОтпуска { get; set; }
 
+        public DateTime ПериодРаботыНачало { get; set; }
+
+        public DateTime ПериодРаботыКонец { get; set; }
+
         public string Вид { get; set; }
-
-        public string Файл { get; set; }
-
     }
 }

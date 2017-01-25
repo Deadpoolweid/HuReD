@@ -42,8 +42,8 @@ namespace Hured
                 Дополнительно = tbДополнительно.Text,
                 Тип = tbТип.Text,
                 Квалификация = tbКвалификация.Text,
-                НачалоОбучения = dpBegin.DisplayDate,
-                КонецОбучения = dpBegin.DisplayDate,
+                НачалоОбучения = DateTime.Parse(dpBegin.Text),
+                КонецОбучения = DateTime.Parse(dpBegin.Text),
                 Специальность = tbСпециальность.Text,
                 Учреждение = tbУчреждение.Text,
             };

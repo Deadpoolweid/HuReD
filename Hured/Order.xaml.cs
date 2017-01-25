@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -65,8 +67,64 @@ namespace Hured
 
         private bool IsEditMode = false;
 
+        private bool IsNumberExists(int number, OrderType ordertype)
+        {
+            Controller.OpenConnection();
+
+            bool result = false;
+
+            switch (ordertype)
+            {
+                case OrderType.Recruitment:
+                    result = Controller.Exists(new ПриказПриём(),
+                        q => q.Номер == number.ToString());
+                    break;
+                case OrderType.Dismissal:
+                    result = Controller.Exists(new ПриказУвольнение(),
+                        q => q.Номер == number.ToString());
+                    break;
+                case OrderType.Vacation:
+                    result = Controller.Exists(new ПриказОтпуск(),
+                        q => q.Номер == number.ToString());
+                    break;
+                case OrderType.BusinessTrip:
+                    result = Controller.Exists(new ПриказКомандировка(),
+                        q => q.Номер == number.ToString());
+                    break;
+                default:
+                    break;
+            }
+
+            Controller.CloseConnection();
+            return result;
+        }
+
         private void bOk_Click(object sender, RoutedEventArgs e)
         {
+            if (!IsEditMode)
+            {
+                if (IsNumberExists(int.Parse(tbНомерПриказа.Text), (OrderType)cbOrderType.SelectedIndex))
+                {
+                    var popup = new Popup()
+                    {
+                        StaysOpen = false,
+                        Placement = PlacementMode.Mouse,
+                        PopupAnimation = PopupAnimation.Fade,
+                        AllowsTransparency = true,
+                        Child = new Label()
+                        {
+                            Content = "Номер приказа для своего типа должен быть уникальным."
+                        },
+
+                    };
+
+                    popup.IsOpen = true;
+
+                    return;
+                }
+            }
+           
+
             switch (cbOrderType.SelectedIndex)
             {
                 case 0:
@@ -92,7 +150,6 @@ namespace Hured
                         int employeeId = employeesId[cbEmployee.SelectedIndex];
                         order.Сотрудник = Controller.Find(new Сотрудник(),
                             q => q.СотрудникId == employeeId);
-                        order.Файл = Functions.CreateOrder(OrderType.Recruitment, order);
 
                         if (IsEditMode)
                         {
@@ -130,11 +187,10 @@ namespace Hured
                         int employeeId = employeesId[cbEmployee.SelectedIndex];
                         order.Сотрудник = Controller.Find(new Сотрудник(),
                             q => q.СотрудникId == employeeId);
-                        order.Файл = Functions.CreateOrder(OrderType.Dismissal, order);
 
                         if (IsEditMode)
                         {
-                            Controller.Edit(q => q.Номер == order.Номер,order);
+                            Controller.Edit(q => q.Номер == order.Номер, order);
                         }
                         else
                         {
@@ -169,7 +225,6 @@ namespace Hured
                         Controller.OpenConnection();
                         order.Сотрудник = Controller.Find(new Сотрудник(),
                             q => q.СотрудникId == employeeId);
-                        order.Файл = Functions.CreateOrder(OrderType.Vacation, order);
                         if (IsEditMode)
                         {
                             Controller.Edit(q => q.Номер == order.Номер, order);
@@ -207,7 +262,6 @@ namespace Hured
                         Controller.OpenConnection();
                         order.Сотрудник = Controller.Find(new Сотрудник(),
                             q => q.СотрудникId == employeeId);
-                        order.Файл = Functions.CreateOrder(OrderType.BusinessTrip, order);
 
                         if (IsEditMode)
                         {

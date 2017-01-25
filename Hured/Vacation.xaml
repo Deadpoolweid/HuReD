@@ -6,10 +6,11 @@
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:local="clr-namespace:Hured"
         mc:Ignorable="d"
-        Title="Выдать отпуск" Height="200" Width="550" ResizeMode="CanMinimize">
+        Title="Выдать отпуск" Height="240" Width="550" ResizeMode="CanMinimize">
     <Border>
         <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
@@ -22,19 +23,26 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
-                <Label>Период С</Label>
+                <Label Content="С"/>
                 <DatePicker x:Name="dpBegin"></DatePicker>
                 <Label>по</Label>
                 <DatePicker x:Name="dpEnd"></DatePicker>
             </StackPanel>
 
-            <RadioButton x:Name="rbEveryYear" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" GroupName="Type">Ежегодный</RadioButton>
-            <RadioButton x:Name="rbOnce" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" GroupName="Type">Единоразовый</RadioButton>
-            <RadioButton x:Name="rbOther" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" GroupName="Type">Другое</RadioButton>
+            <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+                <Label Content="За период работы с"/>
+                <DatePicker x:Name="dpПериодРаботыНачало"></DatePicker>
+                <Label>по</Label>
+                <DatePicker x:Name="dpПериодРаботыКонец"></DatePicker>
+            </StackPanel>
+            
+            <RadioButton x:Name="rbEveryYear" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" GroupName="Type">Ежегодный</RadioButton>
+            <RadioButton x:Name="rbOnce" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" GroupName="Type">Единоразовый</RadioButton>
+            <RadioButton x:Name="rbOther" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" GroupName="Type">Другое</RadioButton>
 
-            <TextBox x:Name="tbДругое" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left"></TextBox>
+            <TextBox x:Name="tbДругое" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left"></TextBox>
 
-            <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal">
+            <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal">
                 <Button x:Name="bOk" Click="bOk_Click">Оформить</Button>
                 <Button x:Name="bCancel" Click="bCancel_Click">Отмена</Button>
             </StackPanel>

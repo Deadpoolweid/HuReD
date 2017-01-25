@@ -28,7 +28,6 @@
                             <GridViewColumn Header="Номер" Width="Auto" DisplayMemberBinding="{Binding Номер}"></GridViewColumn>
                             <GridViewColumn Header="Ф.И.О." Width="Auto" DisplayMemberBinding="{Binding ФИО}"></GridViewColumn>
                             <GridViewColumn Header="Тип" Width="Auto" DisplayMemberBinding="{Binding Тип}"></GridViewColumn>
-                            <GridViewColumn Header="Файл" Width="Auto" DisplayMemberBinding="{Binding Файл}"></GridViewColumn>
                         </GridView.Columns>
                     </GridView>
                 </ListView.View>
@@ -38,6 +37,7 @@
                 <Button x:Name="bAdd" Click="bAdd_Click">Добавить</Button>
                 <Button x:Name="bChange" Click="bChange_Click">Изменить</Button>
                 <Button x:Name="bOpen" Click="BOpen_OnClick">Открыть</Button>
+                <Button x:Name="bSave" Click="BSave_OnClick">Сохранить</Button>
                 <Button x:Name="bPrint" Click="BPrint_OnClick">Печать</Button>
                 <Button x:Name="bRemove" Click="bRemove_Click">Удалить</Button>
             </StackPanel>

@@ -8,48 +8,48 @@
         xmlns:local="clr-namespace:Hured"
         mc:Ignorable="d"
         Title="Справочник должностей" Height="Auto" Width="Auto" ResizeMode="CanResize">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="2*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
+    <Border>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Row="0" Grid.Column="0" VerticalAlignment="Top">
-            <Label>Подразделения</Label>
-            <ListView Name="lvUnits" SelectionChanged="LvUnits_OnSelectionChanged">
+            <StackPanel Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" VerticalAlignment="Top">
+                <Label>Подразделения</Label>
+                <ListBox Name="lbUnits">
+                </ListBox>
+            </StackPanel>
+
+            <GridSplitter Grid.Row="0" Grid.RowSpan="3" Grid.Column="1"
+                          ResizeBehavior="PreviousAndNext" ResizeDirection="Columns" ShowsPreview="True"
+                      VerticalAlignment="Stretch" Width="5"></GridSplitter>
+            
+            <ListView Grid.Row="0" Grid.Column="2" Name="lvPositions">
                 <ListView.View>
                     <GridView>
                         <GridView.Columns>
-                            <GridViewColumn Header="Название" ></GridViewColumn>
+                            <GridViewColumn Header="Название" DisplayMemberBinding="{Binding Название}"></GridViewColumn>
+                            <GridViewColumn Header="Расписание" DisplayMemberBinding="{Binding Расписание}"></GridViewColumn>
                         </GridView.Columns>
                     </GridView>
                 </ListView.View>
             </ListView>
-        </StackPanel>
-        
 
-        <ListView Grid.Row="0" Grid.Column="1" Name="lvPositions">
-            <ListView.View>
-                <GridView>
-                    <GridView.Columns>
-                        <GridViewColumn Header="Название" DisplayMemberBinding="{Binding Название}"></GridViewColumn>
-                        <GridViewColumn Header="Расписание" DisplayMemberBinding="{Binding Расписание}"></GridViewColumn>
-                    </GridView.Columns>
-                </GridView>
-            </ListView.View>
-        </ListView>
-        
-        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
-            <Button x:Name="bAdd" Click="bAdd_Click">Добавить</Button>
-            <Button x:Name="bChange" Click="bChange_Click">Изменить</Button>
-            <Button x:Name="bRemove" Click="bRemove_Click">Удалить</Button>
-        </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal">
+                <Button x:Name="bAdd" Click="bAdd_Click">Добавить</Button>
+                <Button x:Name="bChange" Click="bChange_Click">Изменить</Button>
+                <Button x:Name="bRemove" Click="bRemove_Click">Удалить</Button>
+            </StackPanel>
 
-        <Button x:Name="bClose"  Grid.Row="2" Grid.Column="1" Width="60" IsDefault="True" Click="bClose_Click">Закрыть</Button>
-    </Grid>
+            <Button x:Name="bClose"  Grid.Row="2" Grid.Column="2" IsDefault="True" HorizontalAlignment="Right" Click="bClose_Click">Закрыть</Button>
+        </Grid>
+    </Border>
 </controls:MetroWindow>

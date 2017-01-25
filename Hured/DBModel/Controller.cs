@@ -139,5 +139,11 @@ namespace Hured.DBModel
 
             return table.Where(predicate)?.ToList();
         }
+
+        public static bool Exists<T>(T type, Expression<Func<T, bool>> predicate) where  T : class
+        {
+            var result = Find(type, predicate);
+            return result != null;
+        }
     }
 }

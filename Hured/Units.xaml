@@ -9,33 +9,29 @@
         mc:Ignorable="d"
         Title="Список подразделений" Height="250" Width="300" ResizeMode="CanMinimize">
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
+    <Border>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
 
             <TextBox Name="tbNewUnit" Grid.Column="0" Grid.Row="0" Width="Auto" Height="Auto">Новое подразделение</TextBox>
-            <ListView Name="lvUnits" Height="Auto" Width="Auto"  Grid.Column="0" Grid.Row="1" >
-                <ListView.View>
-                    <GridView>
-                        <GridView.Columns>
-                            <GridViewColumn Header="Название" ></GridViewColumn>
-                        </GridView.Columns>
-                    </GridView>
-                </ListView.View>
-            </ListView>
+
+            <ListBox Name="lbUnits" Grid.Column="0" Grid.Row="1">
+            </ListBox>
 
 
-        <StackPanel Grid.Row="0" Grid.RowSpan="2"  Grid.Column="1">
-            <Button x:Name="bAdd" Click="bAdd_Click">Добавить</Button>
-            <Button x:Name="bChange" Click="bChange_Click">Изменить</Button>
-            <Button x:Name="bRemove" Click="bRemove_Click">Удалить</Button>
-            <Button x:Name="bClose" Click="bClose_Click">Закрыть</Button>
-        </StackPanel>
-    </Grid>
+            <StackPanel Grid.Row="0" Grid.RowSpan="2"  Grid.Column="1">
+                <Button x:Name="bAdd" Click="bAdd_Click">Добавить</Button>
+                <Button x:Name="bChange" Click="bChange_Click">Изменить</Button>
+                <Button x:Name="bRemove" Click="bRemove_Click">Удалить</Button>
+                <Button x:Name="bClose" Click="bClose_Click">Закрыть</Button>
+            </StackPanel>
+        </Grid>
+    </Border>
 </controls:MetroWindow>

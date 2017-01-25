@@ -28,16 +28,14 @@ namespace Hured
             if (order != null)
             {
                 tbМесто.Text = order.Место;
-                dpBegin.Text = order.НачалоКомандировки.ToString();
-                dpEnd.Text = order.КонецКомандировки.ToString();
+                dpBegin.Text = order.НачалоКомандировки.ToShortDateString();
+                dpEnd.Text = order.КонецКомандировки.ToShortDateString();
                 tbЦель.Text = order.Цель;
                 tbЗаСчёт.Text = order.ЗаСчёт;
                 tbОснование.Text = order.Основание;
-                filePath = order.Файл;
             }
         }
 
-        private string filePath;
 
         private void bCancel_Click(object sender, RoutedEventArgs e)
         {
@@ -51,12 +49,11 @@ namespace Hured
             var order = new ПриказКомандировка()
             {
                 Место = tbМесто.Text,
-                НачалоКомандировки = dpBegin.DisplayDate,
-                КонецКомандировки = dpEnd.DisplayDate,
+                НачалоКомандировки = DateTime.Parse(dpBegin.Text),
+                КонецКомандировки = DateTime.Parse(dpEnd.Text),
                 Цель = tbЦель.Text,
                 ЗаСчёт = tbЗаСчёт.Text,
                 Основание = tbОснование.Text,
-                Файл = filePath
             };
             Tag = order;
 

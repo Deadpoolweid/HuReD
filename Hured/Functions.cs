@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Printing;
@@ -6,6 +7,7 @@ using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security;
@@ -32,11 +34,12 @@ namespace Hured
             var units = Controller.Select(new Подразделение(), e => e != null);
             Controller.CloseConnection();
 
-            var stringUnits = units.Select((подразделение) => подразделение.Название);
-
-            foreach (var unit in stringUnits)
+            foreach (var unit in units)
             {
-                lvUnits.Items.Add(unit);
+                ListViewItem newItem = new ListViewItem();
+                newItem.Content = unit;
+                newItem.Tag = unit.ПодразделениеId;
+                lvUnits.Items.Add(newItem);
             }
         }
 
@@ -46,26 +49,42 @@ namespace Hured
             var units = Controller.Select(new Подразделение(), e => e != null);
             Controller.CloseConnection();
 
-            var stringUnits = units.Select((подразделение) => подразделение.Название);
-
-            foreach (var unit in stringUnits)
+            foreach (var unit in units)
             {
-                cbUnits.Items.Add(unit);
+                var newItem = new ComboBoxItem();
+                newItem.Content = unit;
+                newItem.Tag = unit.ПодразделениеId;
+                cbUnits.Items.Add(newItem);
             }
         }
 
-        public static List<Должность> GetPositionsForUnit(string unit)
+        public static void AddUnitsFromDB(ref ListBox lbUnits)
         {
             Controller.OpenConnection();
-            var positions = Controller.Select(new Должность(), e => e.Подразделение.Название == unit);
+            var units = Controller.Select(new Подразделение(), e => e != null);
+            Controller.CloseConnection();
+
+            foreach (var unit in units)
+            {
+                var newItem = new ListBoxItem();
+                newItem.Content = unit;
+                newItem.Tag = unit.ПодразделениеId;
+                lbUnits.Items.Add(newItem);
+            }
+        }
+
+        public static List<Должность> GetPositionsForUnit(int unitId)
+        {
+            Controller.OpenConnection();
+            var positions = Controller.Select(new Должность(), e => e.Подразделение.ПодразделениеId == unitId);
             Controller.CloseConnection();
             return positions;
         }
 
-        public static void AddPositionsFromDB(ref ListView lvPositions, string unit = "")
+        public static void AddPositionsFromDB(ref ListView lvPositions, int unitId = -1)
         {
             List<Должность> positions = new List<Должность>();
-            if (unit == "")
+            if (unitId == -1)
             {
                 Controller.OpenConnection();
                 positions = Controller.Select(new Должность(), e => e != null);
@@ -74,7 +93,7 @@ namespace Hured
             }
             else
             {
-                positions = GetPositionsForUnit(unit);
+                positions = GetPositionsForUnit(unitId);
             }
             foreach (var должность in positions)
             {
@@ -82,10 +101,10 @@ namespace Hured
             }
         }
 
-        public static void AddPositionsFromDB(ref ComboBox cbPositions, string unit = "")
+        public static void AddPositionsFromDB(ref ComboBox cbPositions, int unitId = -1)
         {
             List<Должность> positions = new List<Должность>();
-            if (unit == "")
+            if (unitId == -1)
             {
                 Controller.OpenConnection();
                 positions = Controller.Select(new Должность(), e => e != null);
@@ -94,11 +113,14 @@ namespace Hured
             }
             else
             {
-                positions = GetPositionsForUnit(unit);
+                positions = GetPositionsForUnit(unitId);
             }
             foreach (var должность in positions)
             {
-                cbPositions.Items.Add(должность.Название);
+                ComboBoxItem newItem = new ComboBoxItem();
+                newItem.Content = должность.Название;
+                newItem.Tag = должность.ДолжностьId;
+                cbPositions.Items.Add(newItem);
             }
         }
 
@@ -109,13 +131,13 @@ namespace Hured
         /// <param name="orderType">Тип приказа</param>
         /// <param name="_order">Приказ</param>
         /// <returns></returns>
-        public static string CreateOrder<T>(OrderType orderType, T _order)
+        public static WordDocument CreateOrder<T>(OrderType orderType, T _order)
         {
             // TODO Перенести в инициализацию
             Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\Documents");
 
             Dictionary<string, string> bookmarks = new Dictionary<string, string>();
-            string openPath, initialDirectory;
+            string openPath;
 
             var РасшифровкаПодписи = GetAppSettings().РуководительОрганизации;
             РасшифровкаПодписи = РасшифровкаПодписи.Split(' ')[0] + " " +
@@ -137,8 +159,14 @@ namespace Hured
                     bookmarks.Add("Подразделение", order.Должность.Подразделение.Название);
                     bookmarks.Add("Должность", order.Должность.Название);
                     bookmarks.Add("Примечание", order.Примечания);
-                    bookmarks.Add("Оклад", order.Оклад);
-                    bookmarks.Add("Надбавка", order.Надбавка);
+
+                    var оклад = order.Оклад.Split(new[] {'.', ','}, StringSplitOptions.RemoveEmptyEntries);
+                    bookmarks.Add("ОкладРубли", оклад[0]);
+                    bookmarks.Add("ОкладКопейки", оклад.Count()>1 ? оклад[1] : "00");
+
+                    var надбавка = order.Надбавка.Split(new[] {'.', ','}, StringSplitOptions.RemoveEmptyEntries);
+                    bookmarks.Add("НадбавкаРубли", надбавка[0]);
+                    bookmarks.Add("НадбавкаКопейки", надбавка.Count() > 1 ? надбавка[1] : "00");
                     bookmarks.Add("ДатаТрудовогоДоговораЧисло", order.ДатаТрудовогоДоговора.Day.ToString());
                     bookmarks.Add("ДатаТрудовогоДоговораМесяц", order.ДатаТрудовогоДоговора.Month.ToString());
                     bookmarks.Add("ДатаТрудовогоДоговораГод", order.ДатаТрудовогоДоговора.Year.ToString().Substring(2));
@@ -151,7 +179,6 @@ namespace Hured
                         bookmarks.Add("ИспытательныйСрокДлительность", order.ИспытательныйСрокДлительность);
                     }
                     openPath = Directory.GetCurrentDirectory() + @"\Templates\Recruitment.dotx";
-                    initialDirectory = order.Файл;
                     break;
                 case OrderType.Dismissal:
                     var oDismissal = _order as ПриказУвольнение;
@@ -164,7 +191,7 @@ namespace Hured
                     bookmarks.Add("Подразделение",
                         oDismissal.Сотрудник.ОсновнаяИнформация.Должность.Подразделение.Название);
                     bookmarks.Add("Должность", oDismissal.Сотрудник.ОсновнаяИнформация.Должность.Название);
-                    bookmarks.Add("Примечание", oDismissal.Примечание);
+                    bookmarks.Add("ОсновнаиеДокумент", oDismissal.ОснованиеДокумент);
                     bookmarks.Add("ДатаУвольненияЧисло", oDismissal.ДатаУвольнения.Day.ToString());
                     bookmarks.Add("ДатаУвольненияМесяц", oDismissal.ДатаУвольнения.Month.ToString());
                     bookmarks.Add("ДатаУвольненияГод", oDismissal.ДатаУвольнения.Year.ToString().Substring(2));
@@ -177,7 +204,6 @@ namespace Hured
                     bookmarks.Add("НазваниеОрганизации", GetAppSettings().НазваниеОрганизации);
                     bookmarks.Add("РасшифровкаПодписи", РасшифровкаПодписи);
                     openPath = Directory.GetCurrentDirectory() + @"\Templates\Dismissal.dotx";
-                    initialDirectory = oDismissal.Файл;
                     break;
                 case OrderType.Vacation:
                     var oVacation = _order as ПриказОтпуск;
@@ -190,6 +216,14 @@ namespace Hured
                     bookmarks.Add("Подразделение",
                         oVacation.Сотрудник.ОсновнаяИнформация.Должность.Подразделение.Название);
                     bookmarks.Add("Должность", oVacation.Сотрудник.ОсновнаяИнформация.Должность.Название);
+
+                    bookmarks.Add("ПериодРаботыНачалоДень", oVacation.ПериодРаботыНачало.Day.ToString());
+                    bookmarks.Add("ПериодРаботыНачалоМесяц", oVacation.ПериодРаботыНачало.Month.ToString());
+                    bookmarks.Add("ПериодРаботыНачалоГод", oVacation.ПериодРаботыНачало.Year.ToString());
+                    bookmarks.Add("ПериодРаботыКонецДень", oVacation.ПериодРаботыНачало.Day.ToString());
+                    bookmarks.Add("ПериодРаботыКонецМесяц", oVacation.ПериодРаботыНачало.Month.ToString());
+                    bookmarks.Add("ПериодРаботыКонецГод", oVacation.ПериодРаботыНачало.Year.ToString());
+
 
                     if (oVacation.Вид == "Ежегодный")
                     {
@@ -229,7 +263,6 @@ namespace Hured
                     bookmarks.Add("НазваниеОрганизации", GetAppSettings().НазваниеОрганизации);
                     bookmarks.Add("РасшифровкаПодписи", РасшифровкаПодписи);
                     openPath = Directory.GetCurrentDirectory() + @"\Templates\Vacation.dotx";
-                    initialDirectory = oVacation.Файл;
 
                     break;
                 case OrderType.BusinessTrip:
@@ -258,37 +291,22 @@ namespace Hured
                     bookmarks.Add("НазваниеОрганизации", GetAppSettings().НазваниеОрганизации);
                     bookmarks.Add("РасшифровкаПодписи", РасшифровкаПодписи);
                     openPath = Directory.GetCurrentDirectory() + @"\Templates\BusinessTrip.dotx";
-                    initialDirectory = oBusinessTrip.Файл;
 
                     break;
                 default:
-                    openPath = initialDirectory = null;
+                    openPath = null;
                     break;
             }
-
-            var sfd = new SaveFileDialog()
-            {
-                InitialDirectory =
-                    initialDirectory == null
-                        ? Directory.GetCurrentDirectory() + @"\Documents"
-                        : Path.GetDirectoryName(initialDirectory),
-                Filter = "Word Document | *.docx | Все файлы (*.*)|*.*",
-                FileName = "Новый приказ"
-            };
-
-            sfd.ShowDialog();
 
             WordDocument document = new WordDocument(openPath);
             document.Open();
             document.SetTemplate(bookmarks);
-            document.Save(sfd.FileName);
-
-            document.Close();
-            return sfd.FileName;
+            return document;
         }
 
         public static void FillTreeView(ref TreeView tv)
         {
+
             Controller.OpenConnection();
             var Подразделения = Controller.Select(new Подразделение(), e => e != null);
 
@@ -297,27 +315,31 @@ namespace Hured
             item.Header = "Все подразделения";
             foreach (var должность in Controller.Select(new Должность(), e => e != null))
             {
-                item.Items.Add(должность.Название);
+                item.Items.Add(new TreeViewItem() {
+                    Header = должность.Название,
+                    Tag = должность.ДолжностьId});
             }
             tv.Items.Add(item);
+
 
             foreach (var подразделение in Подразделения)
             {
                 item = new TreeViewItem();
-                item.Tag = подразделение;
+                item.Tag = подразделение.ПодразделениеId;
                 item.Header = подразделение.Название;
-                foreach (
-                    var должность in
-                        Controller.Select(new Должность(),
-                            e => e.Подразделение.ПодразделениеId == подразделение.ПодразделениеId))
+                List<TreeViewItem> subItems = Controller.Select(new Должность(), 
+                    e => e.Подразделение.ПодразделениеId == подразделение.ПодразделениеId).Select(должность => new TreeViewItem
                 {
-                    item.Items.Add(должность.Название);
-                }
+                    Header = должность.Название, Tag = должность.ДолжностьId
+                }).ToList();
+                item.ItemsSource = subItems;
                 tv.Items.Add(item);
 
             }
             Controller.CloseConnection();
         }
+
+
 
         public static string GetRTBText(RichTextBox rtb)
         {
@@ -333,13 +355,6 @@ namespace Hured
             document.Blocks.Add(paragraph);
             rtb.Document = document;
         }
-
-        //public static void OnTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        //{
-        //    TreeView tv = sender as TreeView;
-
-
-        //}
 
         public static AppSettings GetAppSettings()
         {
@@ -463,10 +478,15 @@ namespace Hured
         /// Сохраняет документ в указанном месте
         /// </summary>
         /// <param name="path">Место для сохранения документа</param>
-        public void Save(string path)
+        public void Save(string path, bool withAlert = true)
         {
-
+            if (withAlert = false)
+            {
+                _wordApp.DisplayAlerts = Word.WdAlertLevel.wdAlertsNone;
+            }
             _document.SaveAs(FileName: path);
+
+            _wordApp.DisplayAlerts = Word.WdAlertLevel.wdAlertsAll;
         }
 
         /// <summary>

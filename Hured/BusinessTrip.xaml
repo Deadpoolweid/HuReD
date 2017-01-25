@@ -7,7 +7,7 @@
         
         xmlns:local="clr-namespace:Hured"
         mc:Ignorable="d"
-        Title="Оформление командировки" Height="250" Width="500" ResizeMode="CanMinimize">
+        Title="Оформление командировки" Height="250" Width="400" ResizeMode="CanMinimize">
 
     <Border>
         <Grid>

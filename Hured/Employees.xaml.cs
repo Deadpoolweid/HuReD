@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using Hured.DBModel;
 using Hured.Tables_templates;
 using MahApps.Metro.Controls;
+using MessageBox = Xceed.Wpf.Toolkit.MessageBox;
 
 namespace Hured
 {
@@ -32,15 +33,21 @@ namespace Hured
             // TODO Фильтрация сотрудников по должностям и подразделениям
         }
 
+
         private List<int> employeesId = new List<int>();
 
-        void SyncEmployeesList()
+        void SyncEmployeesList(List<Сотрудник> Сотрудники = null)
         {
             lvEmployees.Items.Clear();
             employeesId.Clear();
-            Controller.OpenConnection();
-            List<Сотрудник> Сотрудники = Controller.Select(new Сотрудник(), e => e != null);
-            Controller.CloseConnection();
+
+            if (Сотрудники == null)
+            {
+                Controller.OpenConnection();
+                Сотрудники = Controller.Select(new Сотрудник(), e => e != null);
+                Controller.CloseConnection();
+            }
+
 
             foreach (var сотрудник in Сотрудники)
             {
@@ -116,6 +123,37 @@ namespace Hured
         private void bClose_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void TvUnits_OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            var tvUnits = sender as TreeView;
+
+            List<Сотрудник> СписокСотрудников = null;
+
+            TreeViewItem item = tvUnits.SelectedItem as TreeViewItem;
+
+            Controller.OpenConnection();
+            
+            //Выбрано подразделение
+            if (tvUnits.Items.Contains(tvUnits.SelectedItem))
+            {
+                if (item.Header.ToString() != "Все подразделения")
+                {
+                    var unitId = (int) item.Tag;
+                    СписокСотрудников = Controller.Select(new Сотрудник(),
+                        q => q.ОсновнаяИнформация.Должность.Подразделение.ПодразделениеId == unitId);
+                }
+            } // Выбрана должность
+            else
+            {
+                var positionId = (int)item.Tag;
+                СписокСотрудников = Controller.Select(new Сотрудник(),
+                    q => q.ОсновнаяИнформация.Должность.ДолжностьId == positionId);
+            }
+
+            Controller.CloseConnection();
+            SyncEmployeesList(СписокСотрудников);
         }
     }
 }

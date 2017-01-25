@@ -18,10 +18,6 @@ namespace Hured
 
         public string ДолжностьРуководителя { get; set; }
 
-        public string ИнтервалХраненияДокументов { get; set; }
-
-        public string ИнтервалХраненияОтчётов { get; set; }
-
         public static bool operator==(AppSettings a, AppSettings b)
         {
             var properties = typeof (AppSettings).GetProperties();

@@ -17,20 +17,24 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0">Место работы</Label>
-            <TreeView x:Name="tvUnits" Grid.Column="0" Grid.Row="1">
+            <TreeView x:Name="tvUnits" Grid.Column="0" Grid.Row="1" Grid.RowSpan="3"
+                      SelectedItemChanged="TvUnits_OnSelectedItemChanged">
             </TreeView>
+            
+            <GridSplitter Grid.Row="0" Grid.RowSpan="3" Grid.Column="1"
+                          ResizeBehavior="PreviousAndNext" ResizeDirection="Columns" ShowsPreview="True"
+                      VerticalAlignment="Stretch" Width="5"></GridSplitter>
 
-            <DataGrid Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Name="dgTimeSheet"
-                      BeginningEdit="DgTimeSheet_OnBeginningEdit"
-                      >
-                
+            <DataGrid Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" Name="dgTimeSheet"
+                      BeginningEdit="DgTimeSheet_OnBeginningEdit" Margin="3">
             </DataGrid>
 
-            <Button x:Name="bClose" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" IsDefault="True" Click="bClose_Click">Закрыть</Button>
+            <Button x:Name="bClose" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" IsDefault="True" Click="bClose_Click">Закрыть</Button>
         </Grid>
     </Border>
 </controls:MetroWindow>

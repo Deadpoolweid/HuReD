@@ -21,15 +21,12 @@ namespace Hured.Tables_templates
 
         public string Основание { get; set; }
 
-        public string Примечание { get; set; }
+        public string ОснованиеДокумент { get; set; }
 
         public string НомерТрудовогоДоговора { get; set; }
 
         public DateTime ДатаТрудовогоДоговора { get; set; }
 
         public DateTime ДатаУвольнения { get; set; }
-
-        public string Файл { get; set; }
-
     }
 }

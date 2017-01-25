@@ -7,11 +7,10 @@
         
         xmlns:local="clr-namespace:Hured"
         mc:Ignorable="d"
-        Title="Оформить увольнение" Height="400" Width="600" ResizeMode="CanMinimize">
+        Title="Оформить увольнение" Height="250" Width="500" ResizeMode="CanMinimize">
     <Border>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
@@ -40,11 +39,11 @@
             <Label Grid.Row="3" Grid.Column="0">Основание</Label>
             <TextBox x:Name="tbОснование" Grid.Row="3" Grid.Column="1"></TextBox>
 
-            <Label Grid.Row="4" Grid.Column="0">Примечание</Label>
+            <Label Grid.Row="4" Grid.Column="0">Основание(Документ, номер, дата)</Label>
+            <TextBox x:Name="tbОснованиеДокумент" Grid.Row="4" Grid.Column="1"></TextBox>
+            
 
-            <RichTextBox x:Name="rtbПримечание" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"></RichTextBox>
-
-            <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal">
+            <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal">
                 <Button x:Name="bOk" IsDefault="True" Click="bOk_Click">Оформить</Button>
                 <Button x:Name="bCancel" IsCancel="True" Click="bCancel_Click">Отмена</Button>
             </StackPanel>

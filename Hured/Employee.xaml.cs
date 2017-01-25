@@ -46,7 +46,7 @@ namespace Hured
                     employee.ОсновнаяИнформация.Отчество;
                 cbUnit.SelectedItem = employee.ОсновнаяИнформация.Должность.Подразделение.Название;
                 cbPosition.SelectedItem = employee.ОсновнаяИнформация.Должность.Название;
-                dpCurrentDate.Text = employee.ОсновнаяИнформация.ДатаПриема.ToString();
+                dpCurrentDate.Text = employee.ОсновнаяИнформация.ДатаПриема.ToShortDateString();
                 tbДомашний.Text = employee.ОсновнаяИнформация.ДомашнийТелефон;
                 tbИНН.Text = employee.ОсновнаяИнформация.ИНН;
                 tbМобильный.Text = employee.ОсновнаяИнформация.МобильныйТелефон;
@@ -64,9 +64,9 @@ namespace Hured
                 var img = Functions.ByteArrayToImage(employee.ОсновнаяИнформация.Фото);
                 iAvatar.Source = Functions.GetImageStream(img);
 
-                dpДатаРождения.Text = employee.УдостоверениеЛичности.ДатаРождения.ToString();
+                dpДатаРождения.Text = employee.УдостоверениеЛичности.ДатаРождения.ToShortDateString();
                 tbКем.Text = employee.УдостоверениеЛичности.КемВыдан;
-                dpКогдаВыдан.Text = employee.УдостоверениеЛичности.КогдаВыдан.ToString();
+                dpКогдаВыдан.Text = employee.УдостоверениеЛичности.КогдаВыдан.ToShortDateString();
                 tbМестоРождения.Text = employee.УдостоверениеЛичности.МестоРождения;
                 tbСерия.Text = employee.УдостоверениеЛичности.Серия;
                 tbномер.Text = employee.УдостоверениеЛичности.Номер;
@@ -147,8 +147,9 @@ namespace Hured
             byte[] xByte = Functions.ImageSourceToBytes(new PngBitmapEncoder(), iAvatar.Source);
 
             Controller.OpenConnection();
+            var positionId = (int) (cbPosition.SelectedItem as ComboBoxItem).Tag;
             var chosenPosition = Controller.Select(new Должность(),
-                q => q.Название == cbPosition.SelectedValue.ToString()).FirstOrDefault();
+                q => q.ДолжностьId == positionId).FirstOrDefault();
 
             Сотрудник EmployeeToAdd = new Сотрудник
             {
@@ -158,7 +159,7 @@ namespace Hured
                     Имя = tbФИО.Text.Split(' ')[1],
                     Отчество = tbФИО.Text.Split(' ')[2],
                     Должность = chosenPosition,
-                    ДатаПриема = dpCurrentDate.DisplayDate,
+                    ДатаПриема = DateTime.Parse(dpCurrentDate.Text),
                     ДомашнийТелефон = tbДомашний.Text,
                     ИНН = tbИНН.Text,
                     МобильныйТелефон = tbМобильный.Text,
@@ -169,9 +170,9 @@ namespace Hured
                 },
                 УдостоверениеЛичности = new УдостоверениеЛичности()
                 {
-                    ДатаРождения = dpДатаРождения.DisplayDate,
+                    ДатаРождения = DateTime.Parse(dpДатаРождения.Text),
                     КемВыдан = tbКем.Text,
-                    КогдаВыдан = dpКогдаВыдан.DisplayDate,
+                    КогдаВыдан = DateTime.Parse(dpКогдаВыдан.Text),
                     МестоРождения = tbМестоРождения.Text,
                     Серия = tbСерия.Text,
                     Номер = tbномер.Text,
@@ -278,7 +279,7 @@ namespace Hured
         private void CbUnit_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             cbPosition.Items.Clear();
-            Functions.AddPositionsFromDB(ref cbPosition, cbUnit.SelectedValue.ToString());
+            Functions.AddPositionsFromDB(ref cbPosition, (int)(cbUnit.SelectedItem as ComboBoxItem).Tag);
             cbPosition.SelectedIndex = 0;
         }
     }

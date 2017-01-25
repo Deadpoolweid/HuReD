@@ -43,13 +43,11 @@ namespace Hured
                 tbНомерДоговора.Text = order.НомерТрудовогоДоговора;
                 dpДатаДоговора.Text = order.ДатаТрудовогоДоговора.ToShortDateString();
 
-                filePath = order.Файл;
             }
 
             tbИспытательныйСрокДлительность.IsEnabled = false;
         }
 
-        private string filePath;
 
         private void bCancel_Click(object sender, RoutedEventArgs e)
         {
@@ -62,28 +60,29 @@ namespace Hured
 
             Controller.OpenConnection();
 
-            var unit = Controller.Find(new Подразделение(),
-                q => q.Название == cbUnit.SelectedValue.ToString());
+            var unitId = (int) (cbUnit.SelectedItem as ComboBoxItem).Tag;
 
-            var positionName = cbPosition.SelectedValue.ToString();
+            var unit = Controller.Find(new Подразделение(),
+                q => q.ПодразделениеId == unitId);
+
+            var positionId = (int)(cbPosition.SelectedItem as ComboBoxItem).Tag;
 
             var position = Controller.Find(new Должность(),
                 q => q.Подразделение.ПодразделениеId == unit.ПодразделениеId
-                && q.Название == positionName);
+                && q.ДолжностьId == positionId);
 
             var приём = new ПриказПриём()
             {
-                НачалоРаботы = dpBegin.DisplayDate,
-                КонецРаботы = dpEnd.DisplayDate,
+                НачалоРаботы = DateTime.Parse(dpBegin.Text),
+                КонецРаботы = DateTime.Parse(dpEnd.Text),
                 ИспытательныйСрок = chIsTraineship.IsChecked.Value,
                 Должность = position,
                 Оклад = tbОклад.Text,
                 Надбавка = tbНадбавка.Text,
                 Примечания = Functions.GetRTBText(rtbПримечание),
                 НомерТрудовогоДоговора = tbНомерДоговора.Text,
-                ДатаТрудовогоДоговора = dpДатаДоговора.DisplayDate,
+                ДатаТрудовогоДоговора = DateTime.Parse(dpДатаДоговора.Text),
                 ИспытательныйСрокДлительность = tbИспытательныйСрокДлительность.Text,
-                Файл = filePath
             };
             Tag = приём;
 
@@ -94,7 +93,7 @@ namespace Hured
         private void CbUnit_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             cbPosition.Items.Clear();
-            Functions.AddPositionsFromDB(ref cbPosition, cbUnit.SelectedValue.ToString());
+            Functions.AddPositionsFromDB(ref cbPosition, (int)(cbUnit.SelectedItem as ComboBoxItem).Tag);
             cbPosition.SelectedIndex = 0;
         }
 

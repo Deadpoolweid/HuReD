@@ -16,7 +16,7 @@
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="80"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
@@ -63,7 +63,7 @@
                 <TextBox x:Name="tbНадбавка"></TextBox>
             </StackPanel>
 
-            <Label Grid.Row="4" Grid.Column="0">Примечание</Label>
+            <Label Grid.Row="4" Grid.Column="0">Условия приём на работу, характер работы</Label>
 
             <RichTextBox x:Name="rtbПримечание" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"></RichTextBox>
 
