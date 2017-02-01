@@ -12,15 +12,20 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using Hured.DBModel;
 using Hured.Tables_templates;
 using Microsoft.Win32;
+using Brushes = System.Windows.Media.Brushes;
 using Image = System.Drawing.Image;
 using Word = Microsoft.Office.Interop.Word;
 
@@ -160,11 +165,11 @@ namespace Hured
                     bookmarks.Add("Должность", order.Должность.Название);
                     bookmarks.Add("Примечание", order.Примечания);
 
-                    var оклад = order.Оклад.Split(new[] {'.', ','}, StringSplitOptions.RemoveEmptyEntries);
+                    var оклад = order.Оклад.Split(new[] { '.', ',' }, StringSplitOptions.RemoveEmptyEntries);
                     bookmarks.Add("ОкладРубли", оклад[0]);
-                    bookmarks.Add("ОкладКопейки", оклад.Count()>1 ? оклад[1] : "00");
+                    bookmarks.Add("ОкладКопейки", оклад.Count() > 1 ? оклад[1] : "00");
 
-                    var надбавка = order.Надбавка.Split(new[] {'.', ','}, StringSplitOptions.RemoveEmptyEntries);
+                    var надбавка = order.Надбавка.Split(new[] { '.', ',' }, StringSplitOptions.RemoveEmptyEntries);
                     bookmarks.Add("НадбавкаРубли", надбавка[0]);
                     bookmarks.Add("НадбавкаКопейки", надбавка.Count() > 1 ? надбавка[1] : "00");
                     bookmarks.Add("ДатаТрудовогоДоговораЧисло", order.ДатаТрудовогоДоговора.Day.ToString());
@@ -315,9 +320,11 @@ namespace Hured
             item.Header = "Все подразделения";
             foreach (var должность in Controller.Select(new Должность(), e => e != null))
             {
-                item.Items.Add(new TreeViewItem() {
+                item.Items.Add(new TreeViewItem()
+                {
                     Header = должность.Название,
-                    Tag = должность.ДолжностьId});
+                    Tag = должность.ДолжностьId
+                });
             }
             tv.Items.Add(item);
 
@@ -327,11 +334,12 @@ namespace Hured
                 item = new TreeViewItem();
                 item.Tag = подразделение.ПодразделениеId;
                 item.Header = подразделение.Название;
-                List<TreeViewItem> subItems = Controller.Select(new Должность(), 
+                List<TreeViewItem> subItems = Controller.Select(new Должность(),
                     e => e.Подразделение.ПодразделениеId == подразделение.ПодразделениеId).Select(должность => new TreeViewItem
-                {
-                    Header = должность.Название, Tag = должность.ДолжностьId
-                }).ToList();
+                    {
+                        Header = должность.Название,
+                        Tag = должность.ДолжностьId
+                    }).ToList();
                 item.ItemsSource = subItems;
                 tv.Items.Add(item);
 
@@ -339,7 +347,31 @@ namespace Hured
             Controller.CloseConnection();
         }
 
+        public static bool IsEmpty(TextBox textbox)
+        {
+            var text = textbox.Text;
+            if (text == "")
+            {
+                ShowPopup(textbox,"Заполните это поле.");
+                textbox.BorderBrush = Brushes.Red;
+                return true;
+            }
+            textbox.BorderBrush = Brushes.Black;
+            return false;
+        }
 
+        public static bool IsNumber(TextBox textbox)
+        {
+            var text = textbox.Text;
+            if (Regex.IsMatch(text,"\\D"))
+            {
+                ShowPopup(textbox,"Допускаются только цифры.");
+                textbox.BorderBrush = Brushes.Red;
+                return false;
+            }
+            textbox.BorderBrush = Brushes.Black;
+            return true;
+        }
 
         public static string GetRTBText(RichTextBox rtb)
         {
@@ -427,6 +459,38 @@ namespace Hured
 
             return bytes;
         }
+
+        public static void ShowPopup(UIElement element, string message)
+        {
+            var popup = new Popup()
+            {
+                StaysOpen = false,
+                PlacementTarget = element,
+                PopupAnimation = PopupAnimation.Fade,
+                AllowsTransparency = true,
+                Child = new Label()
+                {
+                    Background = Brushes.AliceBlue,
+                    Content = "Заполните это поле.",
+                    BorderBrush = Brushes.Red
+                },
+            };
+            popup.Opened += (o, args) =>
+            {
+                Timer timer = new Timer(2000);
+                timer.Elapsed += (sender1, eventArgs) =>
+                {
+
+                    popup.Dispatcher.Invoke(() =>
+                    {
+                        popup.IsOpen = false;
+                    });
+
+                };
+                timer.Start();
+            };
+            popup.IsOpen = true;
+        }
     }
 
     public enum OrderType
@@ -480,7 +544,7 @@ namespace Hured
         /// <param name="path">Место для сохранения документа</param>
         public void Save(string path, bool withAlert = true)
         {
-            if (withAlert = false)
+            if (withAlert == false)
             {
                 _wordApp.DisplayAlerts = Word.WdAlertLevel.wdAlertsNone;
             }

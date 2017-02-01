@@ -46,6 +46,11 @@ namespace Hured
 
         private void bOk_Click(object sender, RoutedEventArgs e)
         {
+            if (Functions.IsEmpty(tbName))
+            {
+                return;
+            }
+
             Controller.OpenConnection();
 
 

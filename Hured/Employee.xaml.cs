@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -18,6 +19,7 @@ using Hured.DBModel;
 using Hured.Tables_templates;
 using MahApps.Metro.Controls;
 using Microsoft.Win32;
+using Brushes = System.Windows.Media.Brushes;
 using Image = System.Drawing.Image;
 
 namespace Hured
@@ -142,7 +144,33 @@ namespace Hured
 
         private void bOk_Click(object sender, RoutedEventArgs e)
         {
-            // TODO Не отображается дата в режиме редактирования
+            if (this.FindChildren<TextBox>().Any(Functions.IsEmpty))
+            {
+                return;
+            }
+
+            if (tbФИО.Text.Split(' ').Count()<3)
+            {
+                Functions.ShowPopup(tbФИО, "Введите фамилию, имя и отчество через пробел.");
+                return;
+            }
+
+            List<TextBox> numericTextboxex = new List<TextBox>()
+            {
+                tbДомашний,
+                tbИНН,
+                tbМобильный,
+                tbПИндекс,
+                tbСерия,
+                tbФИндекс,
+                tbТабельныйНомер,
+                tbномер
+            };
+
+            if (numericTextboxex.Any(textBox => !Functions.IsNumber(textBox)))
+            {
+                return;
+            }
 
             byte[] xByte = Functions.ImageSourceToBytes(new PngBitmapEncoder(), iAvatar.Source);
 
@@ -255,7 +283,7 @@ namespace Hured
 
         private void bAddEducation_Click(object sender, RoutedEventArgs e)
         {
-            this.IsEnabled = false;
+            this.IsHitTestVisible = false;
 
             Education w = new Education();
             w.ShowDialog();
@@ -266,7 +294,7 @@ namespace Hured
             }
 
 
-            this.IsEnabled = true;
+            this.IsHitTestVisible = true;
             SyncEducationList();
         }
 

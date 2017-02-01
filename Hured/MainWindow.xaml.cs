@@ -27,40 +27,47 @@ namespace Hured
         {
             InitializeComponent();
             // TODO Инициализация приложения, первичная настройка
-            Controller.InitDB();
-            MainWindow w = this;
+            if (Properties.Settings.Default.IsFirstLaunch)
+            {
+                Wizard w = new Wizard();
+                w.ShowDialog();
+
+                Controller.InitDB();
+                Properties.Settings.Default.IsFirstLaunch = false;
+            }
+
         }
 
-        private void BEmployees_OnClick(object sender, RoutedEventArgs e)
+        public void BEmployees_OnClick(object sender, RoutedEventArgs e)
         {
-            this.IsManipulationEnabled = false;
+            IsHitTestVisible = false;
             Employees w = new Employees();
             w.ShowDialog();
-            IsManipulationEnabled = true;
+            IsHitTestVisible = true;
         }
 
-        private void bOrders_Click(object sender, RoutedEventArgs e)
+        public void bOrders_Click(object sender, RoutedEventArgs e)
         {
-            this.IsManipulationEnabled = false;
+            this.IsHitTestVisible = false;
             Orders w = new Orders();
             w.ShowDialog();
-            IsManipulationEnabled = true;
+            IsHitTestVisible = true;
         }
 
-        private void bTimesheet_Click(object sender, RoutedEventArgs e)
+        public void bTimesheet_Click(object sender, RoutedEventArgs e)
         {
-            this.IsManipulationEnabled = false;
+            this.IsHitTestVisible = false;
             Timesheet w = new Timesheet();
             w.ShowDialog();
-            IsManipulationEnabled = true;
+            IsHitTestVisible = true;
         }
 
         private void bSettings_Click(object sender, RoutedEventArgs e)
         {
-            this.IsManipulationEnabled = false;
+            this.IsHitTestVisible = false;
             Settings w = new Settings();
             w.ShowDialog();
-            IsManipulationEnabled = true;
+            IsHitTestVisible = true;
         }
     }
 }

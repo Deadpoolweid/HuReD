@@ -20,7 +20,6 @@
                 <controls:MetroAnimatedTabControl Grid.Row="0"
                     Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=controls:MetroWindow}, Path=ActualWidth}"
                    >
-
                     <controls:MetroTabItem Header="Основное">
                         <Border>
                             <Grid>

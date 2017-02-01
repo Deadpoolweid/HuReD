@@ -71,6 +71,8 @@ namespace Hured
             SyncStatuses();
         }
 
+        TransactionResult tResult = new TransactionResult();
+
         List<int> StatusesId = new List<int>();
 
         public List<ItemVM> Items { get; set; }
@@ -109,19 +111,20 @@ namespace Hured
 
         private void bAdd_Click(object sender, RoutedEventArgs e)
         {
-            IsEnabled = false;
+            IsHitTestVisible = false;
 
             var w = new Status();
             w.ShowDialog();
 
+            tResult.RecordsAdded++;
 
             SyncStatuses();
-            IsEnabled = true;
+            IsHitTestVisible = true;
         }
 
         private void bChange_Click(object sender, RoutedEventArgs e)
         {
-            IsEnabled = false;
+            IsHitTestVisible = false;
 
             int id = StatusesId[lvStatuses.SelectedIndex];
             Controller.OpenConnection();
@@ -130,8 +133,10 @@ namespace Hured
             Controller.CloseConnection();
             w.ShowDialog();
 
+            tResult.RecordsChanged++;
+
             SyncStatuses();
-            IsEnabled = true;
+            IsHitTestVisible = true;
         }
 
         private void bRemove_Click(object sender, RoutedEventArgs e)
@@ -142,11 +147,17 @@ namespace Hured
                 q => q.СтатусId == id);
             Controller.CloseConnection();
 
+            tResult.RecordsDeleted++;
+
             SyncStatuses();
         }
 
         private void bClose_Click(object sender, RoutedEventArgs e)
         {
+            Controller.OpenConnection();
+            tResult.RecordsCount = Controller.RecordsCount<Статус>();
+            Controller.CloseConnection();
+            Tag = tResult;
             Close();
         }
     }

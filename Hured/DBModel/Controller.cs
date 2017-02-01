@@ -145,5 +145,13 @@ namespace Hured.DBModel
             var result = Find(type, predicate);
             return result != null;
         }
+
+        public static int RecordsCount<T>() where T : class 
+        {
+            var table = context.Set<T>();
+
+            var result = table.Count();
+            return result;
+        }
     }
 }

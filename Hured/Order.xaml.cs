@@ -55,9 +55,9 @@ namespace Hured
 
                 dpДатаПриказа.Text = orderInfo.Дата.ToString();
                 cbOrderType.SelectedItem = orderInfo.Тип;
-                cbOrderType.IsEnabled = false;
+                cbOrderType.IsHitTestVisible = false;
                 cbEmployee.SelectedItem = orderInfo.ФИО;
-                tbНомерПриказа.IsEnabled = false;
+                tbНомерПриказа.IsHitTestVisible = false;
             }
 
             Controller.CloseConnection();
@@ -101,25 +101,16 @@ namespace Hured
 
         private void bOk_Click(object sender, RoutedEventArgs e)
         {
+            if (Functions.IsEmpty(tbНомерПриказа))
+            {
+                return;
+            }
+
             if (!IsEditMode)
             {
                 if (IsNumberExists(int.Parse(tbНомерПриказа.Text), (OrderType)cbOrderType.SelectedIndex))
                 {
-                    var popup = new Popup()
-                    {
-                        StaysOpen = false,
-                        Placement = PlacementMode.Mouse,
-                        PopupAnimation = PopupAnimation.Fade,
-                        AllowsTransparency = true,
-                        Child = new Label()
-                        {
-                            Content = "Номер приказа для своего типа должен быть уникальным."
-                        },
-
-                    };
-
-                    popup.IsOpen = true;
-
+                    Functions.ShowPopup(tbНомерПриказа, "Номер приказа для своего типа должен быть уникальным.");
                     return;
                 }
             }

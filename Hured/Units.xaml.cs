@@ -27,6 +27,8 @@ namespace Hured
             InitializeComponent();
 
             Functions.AddUnitsFromDB(ref lbUnits);
+
+            tResult = new TransactionResult();
         }
 
         private void bAdd_Click(object sender, RoutedEventArgs e)
@@ -35,7 +37,10 @@ namespace Hured
             Controller.OpenConnection();
             Controller.Insert(new Подразделение() {Название = tbNewUnit.Text});
             Controller.CloseConnection();
+            tResult.RecordsAdded++;
         }
+
+        private TransactionResult tResult;
 
         private bool EditModeEnabled = false;
 
@@ -46,8 +51,8 @@ namespace Hured
             if (!EditModeEnabled)
             {
                 tbNewUnit.Text = (lbUnits.SelectedItem as ListBoxItem).Content.ToString();
-                lbUnits.IsEnabled = bAdd.IsEnabled = bRemove.IsEnabled =
-                    bClose.IsEnabled = false;
+                lbUnits.IsHitTestVisible = bAdd.IsHitTestVisible = bRemove.IsHitTestVisible =
+                    bClose.IsHitTestVisible = false;
                 oldValue = tbNewUnit.Text;
                 bChange.Content = "Ok";
             }
@@ -62,9 +67,11 @@ namespace Hured
                     Content = tbNewUnit.Text,
                     Tag = (lbUnits.Items[lbUnits.SelectedIndex] as ListBoxItem).Tag
                 };
-                lbUnits.IsEnabled = bAdd.IsEnabled = bRemove.IsEnabled =
-                    bClose.IsEnabled = true;
+                lbUnits.IsHitTestVisible = bAdd.IsHitTestVisible = bRemove.IsHitTestVisible =
+                    bClose.IsHitTestVisible = true;
                 bChange.Content = "Изменить";
+
+                tResult.RecordsChanged++;
             }
             EditModeEnabled = !EditModeEnabled;
         }
@@ -80,11 +87,18 @@ namespace Hured
             Controller.CloseConnection();
             lbUnits.Items.RemoveAt(lbUnits.SelectedIndex);
 
+            tResult.RecordsDeleted++;
         }
 
         private void bClose_Click(object sender, RoutedEventArgs e)
         {
             Close();
+
+            Controller.OpenConnection();
+            tResult.RecordsCount = Controller.RecordsCount<Подразделение>();
+            Controller.CloseConnection();
+
+            Tag = tResult;
         }
     }
 }

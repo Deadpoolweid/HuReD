@@ -34,6 +34,11 @@ namespace Hured
 
         private void bOk_Click(object sender, RoutedEventArgs e)
         {
+            if (this.FindChildren<TextBox>().Any(Functions.IsEmpty))
+            {
+                return;
+            }
+
             Образование education = new Образование()
             {
                 Документ = tbДокумент.Text,

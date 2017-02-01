@@ -40,28 +40,28 @@ namespace Hured
 
         private AppSettings LoadedSettings;
 
-        private void bUnits_Click(object sender, RoutedEventArgs e)
+        public void bUnits_Click(object sender, RoutedEventArgs e)
         {
-            this.IsManipulationEnabled = false;
+            this.IsHitTestVisible = false;
             Units w = new Units();
             w.ShowDialog();
-            IsManipulationEnabled = true;
+            IsHitTestVisible = true;
         }
 
-        private void bPositions_Click(object sender, RoutedEventArgs e)
+        public void bPositions_Click(object sender, RoutedEventArgs e)
         {
-            this.IsManipulationEnabled = false;
+            this.IsHitTestVisible = false;
             Positions w = new Positions();
             w.ShowDialog();
-            IsManipulationEnabled = true;
+            IsHitTestVisible = true;
         }
 
-        private void bStatuses_Click(object sender, RoutedEventArgs e)
+        public void bStatuses_Click(object sender, RoutedEventArgs e)
         {
-            this.IsManipulationEnabled = false;
+            this.IsHitTestVisible = false;
             Statuses w = new Statuses();
             w.ShowDialog();
-            IsManipulationEnabled = true;
+            IsHitTestVisible = true;
         }
 
         private void bPrintSettings_Click(object sender, RoutedEventArgs e)
@@ -101,7 +101,12 @@ namespace Hured
 
             if (result == MessageDialogResult.Affirmative)
             {
-                
+                if (this.FindChildren<TextBox>().Any(Functions.IsEmpty))
+                {
+                    return;
+                }
+
+
                 var formatter = new BinaryFormatter();
                 // Сохранить объект в локальном файле.
                 using (Stream fStream = new FileStream("settings.dat",

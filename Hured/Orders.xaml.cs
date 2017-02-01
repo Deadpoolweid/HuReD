@@ -123,19 +123,19 @@ namespace Hured
 
         private void bAdd_Click(object sender, RoutedEventArgs e)
         {
-            IsEnabled = false;
+            IsHitTestVisible = false;
 
             Order w = new Order();
             w.ShowDialog();
 
-            IsEnabled = true;
+            IsHitTestVisible = true;
 
             SyncOrders();
         }
 
         private void bChange_Click(object sender, RoutedEventArgs e)
         {
-            IsEnabled = false;
+            IsHitTestVisible = false;
 
 
             var item = lvOrders.SelectedItem as OrderInfo;
@@ -145,7 +145,7 @@ namespace Hured
                 w.ShowDialog();
             }
 
-            IsEnabled = true;
+            IsHitTestVisible = true;
 
             SyncOrders();
         }
@@ -277,7 +277,7 @@ namespace Hured
 
         private void bRemove_Click(object sender, RoutedEventArgs e)
         {
-            IsEnabled = false;
+            IsHitTestVisible = false;
 
 
             var item = lvOrders.SelectedItem as OrderInfo;
@@ -309,7 +309,7 @@ namespace Hured
                 }
             }
 
-            IsEnabled = true;
+            IsHitTestVisible = true;
 
             SyncOrders();
         }

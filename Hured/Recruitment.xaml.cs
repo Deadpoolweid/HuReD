@@ -45,7 +45,7 @@ namespace Hured
 
             }
 
-            tbИспытательныйСрокДлительность.IsEnabled = false;
+            tbИспытательныйСрокДлительность.IsHitTestVisible = false;
         }
 
 
@@ -57,6 +57,13 @@ namespace Hured
 
         private void bOk_Click(object sender, RoutedEventArgs e)
         {
+            if (this.FindChildren<TextBox>().Where(
+                textbox => textbox.Name != "tbИспытательныйСрокДлительность" || 
+                chIsTraineship.IsChecked != false).Any(Functions.IsEmpty))
+            {
+                return;
+            }
+
 
             Controller.OpenConnection();
 
@@ -99,7 +106,7 @@ namespace Hured
 
         private void ChIsTraineship_OnChecked(object sender, RoutedEventArgs e)
         {
-            tbИспытательныйСрокДлительность.IsEnabled = chIsTraineship.IsChecked.Value;
+            tbИспытательныйСрокДлительность.IsHitTestVisible = chIsTraineship.IsChecked.Value;
         }
     }
 }

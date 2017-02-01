@@ -29,31 +29,39 @@ namespace Hured
             lbUnits.SelectedIndex = 0;
         }
 
+        private TransactionResult tResult = new TransactionResult();
+
         private void bAdd_Click(object sender, RoutedEventArgs e)
         {
-            IsEnabled = false;
+            IsHitTestVisible = false;
 
             Position w = new Position();
             w.ShowDialog();
 
-            IsEnabled = true;
+            IsHitTestVisible = true;
+
+            tResult.RecordsAdded++;
+
             SyncPositions();
         }
 
         private void bChange_Click(object sender, RoutedEventArgs e)
         {
-            IsEnabled = false;
+            IsHitTestVisible = false;
 
             Position w = new Position(lvPositions.SelectedItem as Должность);
             w.ShowDialog();
 
-            IsEnabled = true;
+            IsHitTestVisible = true;
+
+            tResult.RecordsChanged++;
+
             SyncPositions();
         }
 
         private void bRemove_Click(object sender, RoutedEventArgs e)
         {
-            IsEnabled = false;
+            IsHitTestVisible = false;
 
             Controller.OpenConnection();
 
@@ -64,12 +72,20 @@ namespace Hured
                 q => q.Название == НазваниеДолжности);
             Controller.CloseConnection();
 
-            IsEnabled = true;
+            tResult.RecordsDeleted++;
+
+            IsHitTestVisible = true;
             SyncPositions();
         }
 
         private void bClose_Click(object sender, RoutedEventArgs e)
         {
+            Controller.OpenConnection();
+            tResult.RecordsCount = Controller.RecordsCount<Должность>();
+            Controller.CloseConnection();
+
+
+            Tag = tResult;
             Close();
         }
 

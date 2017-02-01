@@ -182,11 +182,15 @@
     <Compile Include="TimesheetEntry.xaml.cs">
       <DependentUpon>TimesheetEntry.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TransactionResult.cs" />
     <Compile Include="Units.xaml.cs">
       <DependentUpon>Units.xaml</DependentUpon>
     </Compile>
     <Compile Include="Vacation.xaml.cs">
       <DependentUpon>Vacation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizard.xaml.cs">
+      <DependentUpon>Wizard.xaml</DependentUpon>
     </Compile>
     <Page Include="BusinessTrip.xaml">
       <SubType>Designer</SubType>
@@ -318,6 +322,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Vacation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Wizard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -30,9 +30,9 @@ namespace Hured
 
             SyncEmployeesList();
             Functions.FillTreeView(ref tvUnits);
-            // TODO Фильтрация сотрудников по должностям и подразделениям
         }
 
+        TransactionResult tResult = new TransactionResult();
 
         private List<int> employeesId = new List<int>();
 
@@ -58,18 +58,20 @@ namespace Hured
 
         private void bAdd_OnClick(object sender, RoutedEventArgs e)
         {
-            IsManipulationEnabled = false;
+            IsHitTestVisible = false;
             Employee w = new Employee();
             w.ShowDialog();
 
+            tResult.RecordsAdded++;
+
             SyncEmployeesList();
 
-            IsManipulationEnabled = true;
+            IsHitTestVisible = true;
         }
 
         private void BChange_OnClick(object sender, RoutedEventArgs e)
         {
-            IsManipulationEnabled = false;
+            IsHitTestVisible = false;
             int index = employeesId[lvEmployees.SelectedIndex];
             Controller.OpenConnection();
             var employee = Controller.Select(new Сотрудник(),
@@ -78,9 +80,11 @@ namespace Hured
 
             Employee w = new Employee(employee);
 
+            tResult.RecordsChanged++;
+
             w.ShowDialog();
 
-            IsManipulationEnabled = true;
+            IsHitTestVisible = true;
             SyncEmployeesList();
         }
 
@@ -117,11 +121,18 @@ namespace Hured
 
 
             Controller.CloseConnection();
+
+            tResult.RecordsDeleted++;
             SyncEmployeesList();
         }
 
         private void bClose_Click(object sender, RoutedEventArgs e)
         {
+            Controller.OpenConnection();
+            tResult.RecordsCount = Controller.RecordsCount<Сотрудник>();
+            Controller.CloseConnection();
+
+            Tag = tResult;
             Close();
         }
 
