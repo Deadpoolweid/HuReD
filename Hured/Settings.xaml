@@ -4,51 +4,49 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-        
-        xmlns:local="clr-namespace:Hured"
-        mc:Ignorable="d"
+
+                      mc:Ignorable="d"
         Title="Настройки" Height="410" Width="450" ResizeMode="CanMinimize">
     <Border>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition ></ColumnDefinition>
-                <ColumnDefinition ></ColumnDefinition>
+                <ColumnDefinition />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0">Норма рабочего дня</Label>
             <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
-                <TextBox x:Name="tbНормаРабочегоДня"></TextBox>
+                <TextBox x:Name="TbНормаРабочегоДня" />
                 <Label>часов</Label>
             </StackPanel>
 
             <Label Grid.Row="1" Grid.Column="0">Название организации</Label>
-            <TextBox x:Name="tbНазваниеОрганизации" Grid.Row="1" Grid.Column="1"></TextBox>
+            <TextBox x:Name="TbНазваниеОрганизации" Grid.Row="1" Grid.Column="1" />
 
             <Label Grid.Row="2" Grid.Column="0">Руководитель</Label>
-            <TextBox x:Name="tbРуководитель" Grid.Row="2" Grid.Column="1"></TextBox>
+            <TextBox x:Name="TbРуководитель" Grid.Row="2" Grid.Column="1" />
 
             <Label Grid.Row="3" Grid.Column="0">Должность руководителя</Label>
-            <TextBox x:Name="tbДолжностьРуководителя" Grid.Row="3" Grid.Column="1"></TextBox>
+            <TextBox x:Name="TbДолжностьРуководителя" Grid.Row="3" Grid.Column="1" />
 
-            <Button x:Name="bUnits" Grid.Row="7" Grid.Column="0" Click="bUnits_Click">Подразделения</Button>
-            <Button x:Name="bPositions" Grid.Row="7" Grid.Column="1" Click="bPositions_Click">Должности</Button>
+            <Button x:Name="BUnits" Grid.Row="7" Grid.Column="0" Click="bUnits_Click">Подразделения</Button>
+            <Button x:Name="BPositions" Grid.Row="7" Grid.Column="1" Click="bPositions_Click">Должности</Button>
 
-            <Button x:Name="bStatuses" Grid.Row="8" Grid.Column="0" Click="bStatuses_Click">Статусы</Button>
-            <Button x:Name="bPrintSettings" Grid.Row="8" Grid.Column="1" Click="bPrintSettings_Click">Настройки печати</Button>
+            <Button x:Name="BStatuses" Grid.Row="8" Grid.Column="0" Click="bStatuses_Click">Статусы</Button>
 
-            <Button x:Name="bClose" Grid.Row="9" Grid.Column="1" Click="bClose_Click">Закрыть</Button>
+            <Button x:Name="BClose" Grid.Row="9" Grid.Column="1" Click="bClose_Click">Закрыть</Button>
         </Grid>
     </Border>
 </controls:MetroWindow>

@@ -4,44 +4,43 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-        
-        xmlns:local="clr-namespace:Hured"
-        mc:Ignorable="d"
+
+                      mc:Ignorable="d"
         Title="Редактирование табельной записи" Height="260" Width="650" ResizeMode="CanMinimize">
 
     <Border>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" Name="lDate">Дата</Label>
-            <Label Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" Name="lName">Сотрудник</Label>
+            <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" Name="LDate">Дата</Label>
+            <Label Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" Name="LName">Сотрудник</Label>
 
             <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
                 <Label>Состояние</Label>
-                <ComboBox x:Name="cbStatus"></ComboBox>
+                <ComboBox x:Name="CbStatus" />
             </StackPanel>
             <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
                 <Label>Отработанные часы</Label>
-                <TextBox x:Name="tbОтработанныеЧасы"></TextBox>
+                <TextBox x:Name="TbОтработанныеЧасы" />
             </StackPanel>
 
             <Label Grid.Row="2" Grid.Column="0">Примечание</Label>
 
-            <RichTextBox x:Name="rtbпримечание" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"></RichTextBox>
+            <RichTextBox x:Name="Rtbпримечание" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" />
 
             <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal">
-                <Button x:Name="bOk" IsDefault="True" Click="bOk_Click">OK</Button>
-                <Button x:Name="bCancel" IsCancel="True" Click="bCancel_Click">Отмена</Button>
+                <Button x:Name="BOk" IsDefault="True" Click="bOk_Click">OK</Button>
+                <Button x:Name="BCancel" IsCancel="True" Click="bCancel_Click">Отмена</Button>
             </StackPanel>
         </Grid>
     </Border>

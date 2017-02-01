@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using System.Windows;
-using System.Windows.Documents;
-using MahApps.Metro;
 using MahApps.Metro.Controls;
 
 namespace Hured
@@ -14,7 +7,7 @@ namespace Hured
     /// <summary>
     /// Логика взаимодействия для App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App
     {
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -28,16 +21,11 @@ namespace Hured
                 && typeof(MetroWindow) != d
                 && !d.IsAbstract).ToList();
 
-            ResourceDictionary testDictionary = new ResourceDictionary
-            {
-                {"SomeString", "SomeValue"}
-            };
-
             foreach (var type in filteredTypes)
             {
-                var defaultStyle = this.Resources.MergedDictionaries.FirstOrDefault(
-                    q => q.Source.OriginalString == "ResourcesDictionary.xaml")[typeof(MetroWindow)];
-                this.Resources.Add(type, defaultStyle);
+                var defaultStyle = Resources.MergedDictionaries.FirstOrDefault(
+                    q => q.Source.OriginalString == "ResourcesDictionary.xaml")?[typeof(MetroWindow)];
+                Resources.Add(type, defaultStyle);
             }
 
             base.OnStartup(e);

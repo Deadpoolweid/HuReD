@@ -4,63 +4,62 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-        
-        xmlns:local="clr-namespace:Hured"
-        mc:Ignorable="d"
+
+                      mc:Ignorable="d"
         Title="Добавить образование">
     <Border>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition ></RowDefinition>
-                <RowDefinition ></RowDefinition>
-                <RowDefinition ></RowDefinition>
-                <RowDefinition ></RowDefinition>
-                <RowDefinition ></RowDefinition>
-                <RowDefinition ></RowDefinition>
-                <RowDefinition ></RowDefinition>
-                <RowDefinition ></RowDefinition>
-                <RowDefinition ></RowDefinition>
-                <RowDefinition ></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0">Тип</Label>
-            <TextBox x:Name="tbТип" Grid.Row="0" Grid.Column="1"></TextBox>
+            <TextBox x:Name="TbТип" Grid.Row="0" Grid.Column="1" />
 
             <Label Grid.Row="1" Grid.Column="0">Учреждение</Label>
-            <TextBox x:Name="tbУчреждение" Grid.Row="1" Grid.Column="1"></TextBox>
+            <TextBox x:Name="TbУчреждение" Grid.Row="1" Grid.Column="1" />
 
             <Label Grid.Row="2" Grid.Column="0">Документ</Label>
-            <TextBox x:Name="tbДокумент" Grid.Row="2" Grid.Column="1"></TextBox>
+            <TextBox x:Name="TbДокумент" Grid.Row="2" Grid.Column="1" />
 
             <Label Grid.Row="3" Grid.Column="0">Серия</Label>
-            <TextBox x:Name="tbСерия" Grid.Row="3" Grid.Column="1"></TextBox>
+            <TextBox x:Name="TbСерия" Grid.Row="3" Grid.Column="1" />
 
             <Label Grid.Row="4" Grid.Column="0">Номер</Label>
-            <TextBox x:Name="tbНомер" Grid.Row="4" Grid.Column="1"></TextBox>
+            <TextBox x:Name="TbНомер" Grid.Row="4" Grid.Column="1" />
 
             <Label Grid.Row="5" Grid.Column="0">Начало обучения</Label>
-            <DatePicker x:Name="dpBegin" Grid.Row="5" Grid.Column="1"></DatePicker>
+            <DatePicker x:Name="DpBegin" Grid.Row="5" Grid.Column="1" />
 
             <Label Grid.Row="6" Grid.Column="0">Конец обучения</Label>
-            <DatePicker x:Name="dpEnd" Grid.Row="6" Grid.Column="1"></DatePicker>
+            <DatePicker x:Name="DpEnd" Grid.Row="6" Grid.Column="1" />
 
             <Label Grid.Row="7" Grid.Column="0">Специальность</Label>
-            <TextBox x:Name="tbСпециальность" Grid.Row="7" Grid.Column="1"></TextBox>
+            <TextBox x:Name="TbСпециальность" Grid.Row="7" Grid.Column="1" />
 
             <Label Grid.Row="8" Grid.Column="0">Квалификация</Label>
-            <TextBox x:Name="tbКвалификация" Grid.Row="8" Grid.Column="1"></TextBox>
+            <TextBox x:Name="TbКвалификация" Grid.Row="8" Grid.Column="1" />
 
             <Label Grid.Row="9" Grid.Column="0">Дополнительно</Label>
-            <TextBox x:Name="tbДополнительно" Grid.Row="9" Grid.Column="1"></TextBox>
+            <TextBox x:Name="TbДополнительно" Grid.Row="9" Grid.Column="1" />
 
             <StackPanel Grid.Row="10" Grid.Column="1" Orientation="Horizontal">
-                <Button x:Name="bOk" IsDefault="True" Click="bOk_Click">OK</Button>
-                <Button x:Name="bCancel" IsCancel="True" Click="bCancel_Click">Отмена</Button>
+                <Button x:Name="BOk" IsDefault="True" Click="bOk_Click">OK</Button>
+                <Button x:Name="BCancel" IsCancel="True" Click="bCancel_Click">Отмена</Button>
             </StackPanel>
 
         </Grid>

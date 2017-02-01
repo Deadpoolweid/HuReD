@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Common;
+﻿using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Migrations;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Hured.Tables_templates;
 using MySql.Data.Entity;
 
@@ -39,14 +35,13 @@ namespace Hured.DBModel
 
         public DbSet<ПриказКомандировка> ПриказыКомандировка { get; set; }
 
-        public DbSet<ТабельнаяЗапись> ТабельныеЗаписи { get; set; } 
+        public DbSet<ТабельнаяЗапись> ТабельныеЗаписи { get; set; }
 
-        public DbSet<Статус> Статусы { get; set; } 
+        public DbSet<Статус> Статусы { get; set; }
 
-        public DbSet<ДополнительнаяИнформация> СписокДополнительнойИнформации { get; set; } 
+        public DbSet<ДополнительнаяИнформация> СписокДополнительнойИнформации { get; set; }
 
         public Hured()
-          : base()
         {
             Database.SetInitializer(new MySqlInitializer());
         }
@@ -72,9 +67,7 @@ namespace Hured.DBModel
             {
                 // query to check if MigrationHistory table is present in the database 
                 var migrationHistoryTableExists = ((IObjectContextAdapter)context).ObjectContext.ExecuteStoreQuery<int>(
-                string.Format(
-                  "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = '{0}' AND table_name = '__MigrationHistory'",
-                  "helpcontext"));
+                    $"SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = '{"helpcontext"}' AND table_name = '__MigrationHistory'");
 
                 // if MigrationHistory table is not there (which is the case first time we run) - create it
                 if (migrationHistoryTableExists.FirstOrDefault() == 0)

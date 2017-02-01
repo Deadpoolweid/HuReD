@@ -4,18 +4,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-        
-        xmlns:local="clr-namespace:Hured"
-        mc:Ignorable="d"
+
+                      mc:Ignorable="d"
         Title="Статусы сотрудников" Height="300" Width="250" ResizeMode="CanMinimize">
     <Border>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <ListView Grid.Column="0" Name="lvStatuses" ItemsSource="{Binding Items}">
+            <ListView Grid.Column="0" Name="LvStatuses" ItemsSource="{Binding Items}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Text}">
@@ -29,10 +28,10 @@
 
 
             <StackPanel Grid.Column="1">
-                <Button x:Name="bAdd" Click="bAdd_Click" >Добавить</Button>
-                <Button x:Name="bChange" Click="bChange_Click">Изменить</Button>
-                <Button x:Name="bRemove" Click="bRemove_Click">Удалить</Button>
-                <Button x:Name="bClose" Click="bClose_Click" IsDefault="True">Закрыть</Button>
+                <Button x:Name="BAdd" Click="bAdd_Click" >Добавить</Button>
+                <Button x:Name="BChange" Click="bChange_Click">Изменить</Button>
+                <Button x:Name="BRemove" Click="bRemove_Click">Удалить</Button>
+                <Button x:Name="BClose" Click="bClose_Click" IsDefault="True">Закрыть</Button>
             </StackPanel>
         </Grid>
     </Border>

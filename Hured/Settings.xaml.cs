@@ -1,78 +1,59 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing.Printing;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
-using Xceed.Wpf.Toolkit;
-using MessageBox = Xceed.Wpf.Toolkit.MessageBox;
 
 namespace Hured
 {
     /// <summary>
     /// Логика взаимодействия для Settings.xaml
     /// </summary>
-    public partial class Settings : MetroWindow
+    public partial class Settings
     {
         public Settings()
         {
             InitializeComponent();
 
-            LoadedSettings = Functions.GetAppSettings() ?? new AppSettings();
-            tbРуководитель.Text = LoadedSettings.РуководительОрганизации;
-            tbДолжностьРуководителя.Text = LoadedSettings.ДолжностьРуководителя;
-            tbНазваниеОрганизации.Text = LoadedSettings.НазваниеОрганизации;
-            tbНормаРабочегоДня.Text = LoadedSettings.НормаРабочегоДня;
-                
+            _loadedSettings = Functions.GetAppSettings() ?? new AppSettings();
+            TbРуководитель.Text = _loadedSettings.РуководительОрганизации;
+            TbДолжностьРуководителя.Text = _loadedSettings.ДолжностьРуководителя;
+            TbНазваниеОрганизации.Text = _loadedSettings.НазваниеОрганизации;
+            TbНормаРабочегоДня.Text = _loadedSettings.НормаРабочегоДня;
+
         }
 
-        private AppSettings LoadedSettings;
+        private readonly AppSettings _loadedSettings;
 
         public void bUnits_Click(object sender, RoutedEventArgs e)
         {
-            this.IsHitTestVisible = false;
-            Units w = new Units();
+            IsHitTestVisible = false;
+            var w = new Units();
             w.ShowDialog();
             IsHitTestVisible = true;
         }
 
         public void bPositions_Click(object sender, RoutedEventArgs e)
         {
-            this.IsHitTestVisible = false;
-            Positions w = new Positions();
+            IsHitTestVisible = false;
+            var w = new Positions();
             w.ShowDialog();
             IsHitTestVisible = true;
         }
 
         public void bStatuses_Click(object sender, RoutedEventArgs e)
         {
-            this.IsHitTestVisible = false;
-            Statuses w = new Statuses();
+            IsHitTestVisible = false;
+            var w = new Statuses();
             w.ShowDialog();
             IsHitTestVisible = true;
         }
 
-        private void bPrintSettings_Click(object sender, RoutedEventArgs e)
-        {
-            // TODO Окно настройки печати
-            
-        }
-
         private async void bClose_Click(object sender, RoutedEventArgs e)
         {
-            var mySettings = new MetroDialogSettings()
+            var mySettings = new MetroDialogSettings
             {
                 AffirmativeButtonText = "Да",
                 NegativeButtonText = "Нет",
@@ -80,23 +61,23 @@ namespace Hured
                 AnimateHide = false
             };
 
-            AppSettings s = new AppSettings()
+            var s = new AppSettings
             {
-                ДолжностьРуководителя = tbДолжностьРуководителя.Text,
-                НазваниеОрганизации = tbНазваниеОрганизации.Text,
-                РуководительОрганизации = tbРуководитель.Text,
-                НормаРабочегоДня = tbНормаРабочегоДня.Text,
+                ДолжностьРуководителя = TbДолжностьРуководителя.Text,
+                НазваниеОрганизации = TbНазваниеОрганизации.Text,
+                РуководительОрганизации = TbРуководитель.Text,
+                НормаРабочегоДня = TbНормаРабочегоДня.Text
             };
 
-            if (!Equals(LoadedSettings,null))
+            if (!Equals(_loadedSettings, null))
             {
-                if (s == LoadedSettings)
+                if (s == _loadedSettings)
                 {
                     Close();
                 }
             }
 
-            MessageDialogResult result = await this.ShowMessageAsync("Предупреждение","Сохранить настройки?", 
+            var result = await this.ShowMessageAsync("Предупреждение", "Сохранить настройки?",
                 MessageDialogStyle.AffirmativeAndNegative, mySettings);
 
             if (result == MessageDialogResult.Affirmative)
@@ -115,7 +96,7 @@ namespace Hured
                     formatter.Serialize(fStream, s);
                 }
             }
-            
+
             Close();
         }
     }

@@ -4,35 +4,34 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-        
-        xmlns:local="clr-namespace:Hured"
-        mc:Ignorable="d"
+
+                      mc:Ignorable="d"
         Title="Добавить должность" Height="200" Width="300" ResizeMode="CanMinimize">
     <Border>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0">Название</Label>
-            <TextBox x:Name="tbName" Grid.Row="0" Grid.Column="1" Text="Новая должность"></TextBox>
+            <TextBox x:Name="TbName" Grid.Row="0" Grid.Column="1" Text="Новая должность" />
 
             <Label Grid.Row="1" Grid.Column="0">Подразделение</Label>
-            <ComboBox x:Name="cbUnit" Grid.Row="1" Grid.Column="1"></ComboBox>
+            <ComboBox x:Name="CbUnit" Grid.Row="1" Grid.Column="1" />
 
             <Label Grid.Row="2" Grid.Column="0">Расписание</Label>
-            <TextBox x:Name="tbРасписание" Grid.Row="2" Grid.Column="1" Text="5/2"></TextBox>
+            <TextBox x:Name="TbРасписание" Grid.Row="2" Grid.Column="1" Text="5/2" />
 
             <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button x:Name="bOk" IsDefault="True" Click="bOk_Click">OK</Button>
-                <Button x:Name="bCancel" IsCancel="True" Click="bCancel_Click">Отмена</Button>
+                <Button x:Name="BOk" IsDefault="True" Click="bOk_Click">OK</Button>
+                <Button x:Name="BCancel" IsCancel="True" Click="bCancel_Click">Отмена</Button>
             </StackPanel>
 
 

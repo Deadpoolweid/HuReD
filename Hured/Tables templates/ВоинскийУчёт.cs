@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Hured.DBModel
+namespace Hured.Tables_templates
 {
     [Table("СписокВоинскогоУчёта")]
     public class ВоинскийУчёт
@@ -19,7 +13,7 @@ namespace Hured.DBModel
 
         public string Профиль { get; set; }
 
-        public string КодВУС { get; set; }
+        public string КодВус { get; set; }
 
         public string КатегорияГодности { get; set; }
 

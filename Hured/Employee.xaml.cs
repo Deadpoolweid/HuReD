@@ -1,122 +1,110 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Net.Mime;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
+using System.Windows.Interop;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Hured.DBModel;
 using Hured.Tables_templates;
 using MahApps.Metro.Controls;
 using Microsoft.Win32;
-using Brushes = System.Windows.Media.Brushes;
-using Image = System.Drawing.Image;
 
 namespace Hured
 {
     /// <summary>
     /// Логика взаимодействия для Employee.xaml
     /// </summary>
-    public partial class Employee : MetroWindow
+    public partial class Employee
     {
         public Employee(Сотрудник employee = null)
         {
             InitializeComponent();
 
-            Functions.AddUnitsFromDB(ref cbUnit);
+            Functions.AddUnitsFromDB(ref CbUnit);
 
-            cbUnit.SelectedIndex = 0;
-            cbPosition.SelectedIndex = 0;
+            CbUnit.SelectedIndex = 0;
+            CbPosition.SelectedIndex = 0;
 
             if (employee != null)
             {
                 Tag = employee.СотрудникId;
 
-                IsEditMode = true;
-                tbФИО.Text = employee.ОсновнаяИнформация.Фамилия + " " +
+                _isEditMode = true;
+                TbФио.Text = employee.ОсновнаяИнформация.Фамилия + " " +
                     employee.ОсновнаяИнформация.Имя + " " +
                     employee.ОсновнаяИнформация.Отчество;
-                cbUnit.SelectedItem = employee.ОсновнаяИнформация.Должность.Подразделение.Название;
-                cbPosition.SelectedItem = employee.ОсновнаяИнформация.Должность.Название;
-                dpCurrentDate.Text = employee.ОсновнаяИнформация.ДатаПриема.ToShortDateString();
-                tbДомашний.Text = employee.ОсновнаяИнформация.ДомашнийТелефон;
-                tbИНН.Text = employee.ОсновнаяИнформация.ИНН;
-                tbМобильный.Text = employee.ОсновнаяИнформация.МобильныйТелефон;
+                CbUnit.SelectedItem = employee.ОсновнаяИнформация.Должность.Подразделение.Название;
+                CbPosition.SelectedItem = employee.ОсновнаяИнформация.Должность.Название;
+                DpCurrentDate.Text = employee.ОсновнаяИнформация.ДатаПриема.ToShortDateString();
+                TbДомашний.Text = employee.ОсновнаяИнформация.ДомашнийТелефон;
+                TbИнн.Text = employee.ОсновнаяИнформация.Инн;
+                TbМобильный.Text = employee.ОсновнаяИнформация.МобильныйТелефон;
                 if (employee.ОсновнаяИнформация.Пол == "Мужской")
                 {
-                    rbM.IsChecked = true;
+                    RbM.IsChecked = true;
                 }
                 else if (employee.ОсновнаяИнформация.Пол == "Женский")
                 {
-                    rbW.IsChecked = true;
+                    RbW.IsChecked = true;
                 }
-                tbДополнительно.Text = employee.ОсновнаяИнформация.Дополнительно;
-                tbТабельныйНомер.Text = employee.ОсновнаяИнформация.ТабельныйНомер;
+                TbДополнительно.Text = employee.ОсновнаяИнформация.Дополнительно;
+                TbТабельныйНомер.Text = employee.ОсновнаяИнформация.ТабельныйНомер;
 
                 var img = Functions.ByteArrayToImage(employee.ОсновнаяИнформация.Фото);
-                iAvatar.Source = Functions.GetImageStream(img);
+                IAvatar.Source = Functions.GetImageStream(img);
 
-                dpДатаРождения.Text = employee.УдостоверениеЛичности.ДатаРождения.ToShortDateString();
-                tbКем.Text = employee.УдостоверениеЛичности.КемВыдан;
-                dpКогдаВыдан.Text = employee.УдостоверениеЛичности.КогдаВыдан.ToShortDateString();
-                tbМестоРождения.Text = employee.УдостоверениеЛичности.МестоРождения;
-                tbСерия.Text = employee.УдостоверениеЛичности.Серия;
-                tbномер.Text = employee.УдостоверениеЛичности.Номер;
-                tbПНаселённыйПункт.Text = employee.УдостоверениеЛичности.Прописка.НаселённыйПункт;
-                tbПИндекс.Text = employee.УдостоверениеЛичности.Прописка.Индекс;
-                tbПУлица.Text = employee.УдостоверениеЛичности.Прописка.Улица;
-                tbПДом.Text = employee.УдостоверениеЛичности.Прописка.Дом;
-                tbПКвартира.Text = employee.УдостоверениеЛичности.Прописка.Квартира;
-                tbФНаселённыйПункт.Text = employee.УдостоверениеЛичности.ФактическоеМестоЖительства.НаселённыйПункт;
-                tbФИндекс.Text = employee.УдостоверениеЛичности.ФактическоеМестоЖительства.Индекс;
-                tbФУлица.Text = employee.УдостоверениеЛичности.ФактическоеМестоЖительства.Улица;
-                tbФДом.Text = employee.УдостоверениеЛичности.ФактическоеМестоЖительства.Дом;
-                tbФКвартира.Text = employee.УдостоверениеЛичности.ФактическоеМестоЖительства.Квартира;
+                DpДатаРождения.Text = employee.УдостоверениеЛичности.ДатаРождения.ToShortDateString();
+                TbКем.Text = employee.УдостоверениеЛичности.КемВыдан;
+                DpКогдаВыдан.Text = employee.УдостоверениеЛичности.КогдаВыдан.ToShortDateString();
+                TbМестоРождения.Text = employee.УдостоверениеЛичности.МестоРождения;
+                TbСерия.Text = employee.УдостоверениеЛичности.Серия;
+                Tbномер.Text = employee.УдостоверениеЛичности.Номер;
+                TbПНаселённыйПункт.Text = employee.УдостоверениеЛичности.Прописка.НаселённыйПункт;
+                TbПИндекс.Text = employee.УдостоверениеЛичности.Прописка.Индекс;
+                TbПУлица.Text = employee.УдостоверениеЛичности.Прописка.Улица;
+                TbПДом.Text = employee.УдостоверениеЛичности.Прописка.Дом;
+                TbПКвартира.Text = employee.УдостоверениеЛичности.Прописка.Квартира;
+                TbФНаселённыйПункт.Text = employee.УдостоверениеЛичности.ФактическоеМестоЖительства.НаселённыйПункт;
+                TbФИндекс.Text = employee.УдостоверениеЛичности.ФактическоеМестоЖительства.Индекс;
+                TbФУлица.Text = employee.УдостоверениеЛичности.ФактическоеМестоЖительства.Улица;
+                TbФДом.Text = employee.УдостоверениеЛичности.ФактическоеМестоЖительства.Дом;
+                TbФКвартира.Text = employee.УдостоверениеЛичности.ФактическоеМестоЖительства.Квартира;
 
-                tbЗвание.Text = employee.ВоинскийУчёт.Звание;
-                tbКатегорияГодности.Text = employee.ВоинскийУчёт.КатегорияГодности;
-                tbКатегорияЗапаса.Text = employee.ВоинскийУчёт.КатегорияЗапаса;
-                tbКодВУС.Text = employee.ВоинскийУчёт.КодВУС;
-                tbНаименованиеВоенкомата.Text = employee.ВоинскийУчёт.НаименованиеВоенкомата;
-                tbПрофиль.Text = employee.ВоинскийУчёт.Профиль;
-                tbСостоитНаУчёте.Text = employee.ВоинскийУчёт.СостоитНаУчете;
+                TbЗвание.Text = employee.ВоинскийУчёт.Звание;
+                TbКатегорияГодности.Text = employee.ВоинскийУчёт.КатегорияГодности;
+                TbКатегорияЗапаса.Text = employee.ВоинскийУчёт.КатегорияЗапаса;
+                TbКодВус.Text = employee.ВоинскийУчёт.КодВус;
+                TbНаименованиеВоенкомата.Text = employee.ВоинскийУчёт.НаименованиеВоенкомата;
+                TbПрофиль.Text = employee.ВоинскийУчёт.Профиль;
+                TbСостоитНаУчёте.Text = employee.ВоинскийУчёт.СостоитНаУчете;
 
-                Educations = employee.Образование.ToList();
+                _educations = employee.Образование.ToList();
                 SyncEducationList();
 
-                tbEMail.Text = employee.ДополнительнаяИнформация.EMail;
-                tbSkype.Text = employee.ДополнительнаяИнформация.Skype;
+                TbEMail.Text = employee.ДополнительнаяИнформация.EMail;
+                TbSkype.Text = employee.ДополнительнаяИнформация.Skype;
             }
         }
 
-        private bool IsEditMode = false;
+        private readonly bool _isEditMode;
 
         private void SyncEducationList()
         {
-            lvEducations.Items.Clear();
+            LvEducations.Items.Clear();
 
-            foreach (var education in Educations)
+            foreach (var education in _educations)
             {
-                lvEducations.Items.Add(education);
+                LvEducations.Items.Add(education);
             }
         }
 
         private void bChooseImage_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();// создаем диалоговое окно
+            var ofd = new OpenFileDialog();// создаем диалоговое окно
             if (ofd.ShowDialog() == true)
             {
-                iAvatar.Source = new BitmapImage(new Uri(ofd.FileName));
+                IAvatar.Source = new BitmapImage(new Uri(ofd.FileName));
 
             }// открываем окно
 
@@ -124,12 +112,12 @@ namespace Hured
 
         private void bDeleteImage_Click(object sender, RoutedEventArgs e)
         {
-            iAvatar.Source = null;
+            IAvatar.Source = null;
         }
 
         private void bSetStandartImage_Click(object sender, RoutedEventArgs e)
         {
-            iAvatar.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+            IAvatar.Source = Imaging.CreateBitmapSourceFromHBitmap(
                       Properties.Resources.avatar.GetHbitmap(),
                       IntPtr.Zero,
                       Int32Rect.Empty,
@@ -149,22 +137,22 @@ namespace Hured
                 return;
             }
 
-            if (tbФИО.Text.Split(' ').Count()<3)
+            if (TbФио.Text.Split(' ').Length < 3)
             {
-                Functions.ShowPopup(tbФИО, "Введите фамилию, имя и отчество через пробел.");
+                Functions.ShowPopup(TbФио, "Введите фамилию, имя и отчество через пробел.");
                 return;
             }
 
-            List<TextBox> numericTextboxex = new List<TextBox>()
+            var numericTextboxex = new List<TextBox>
             {
-                tbДомашний,
-                tbИНН,
-                tbМобильный,
-                tbПИндекс,
-                tbСерия,
-                tbФИндекс,
-                tbТабельныйНомер,
-                tbномер
+                TbДомашний,
+                TbИнн,
+                TbМобильный,
+                TbПИндекс,
+                TbСерия,
+                TbФИндекс,
+                TbТабельныйНомер,
+                Tbномер
             };
 
             if (numericTextboxex.Any(textBox => !Functions.IsNumber(textBox)))
@@ -172,143 +160,149 @@ namespace Hured
                 return;
             }
 
-            byte[] xByte = Functions.ImageSourceToBytes(new PngBitmapEncoder(), iAvatar.Source);
+            var xByte = Functions.ImageSourceToBytes(new PngBitmapEncoder(), IAvatar.Source);
 
             Controller.OpenConnection();
-            var positionId = (int) (cbPosition.SelectedItem as ComboBoxItem).Tag;
-            var chosenPosition = Controller.Select(new Должность(),
-                q => q.ДолжностьId == positionId).FirstOrDefault();
-
-            Сотрудник EmployeeToAdd = new Сотрудник
+            var tag = (CbPosition.SelectedItem as ComboBoxItem)?.Tag;
+            if (tag != null)
             {
-                ОсновнаяИнформация = new ОсновнаяИнформация()
+                var positionId = (int)tag;
+                var chosenPosition = Controller.Select(new Должность(),
+                    q => q.ДолжностьId == positionId).FirstOrDefault();
+
+                var employeeToAdd = new Сотрудник
                 {
-                    Фамилия = tbФИО.Text.Split(' ')[0],
-                    Имя = tbФИО.Text.Split(' ')[1],
-                    Отчество = tbФИО.Text.Split(' ')[2],
-                    Должность = chosenPosition,
-                    ДатаПриема = DateTime.Parse(dpCurrentDate.Text),
-                    ДомашнийТелефон = tbДомашний.Text,
-                    ИНН = tbИНН.Text,
-                    МобильныйТелефон = tbМобильный.Text,
-                    Пол = rbM.IsChecked == true ? "Мужской" : "Женский",
-                    Дополнительно = tbДополнительно.Text,
-                    ТабельныйНомер = tbТабельныйНомер.Text,
-                    Фото = xByte
-                },
-                УдостоверениеЛичности = new УдостоверениеЛичности()
-                {
-                    ДатаРождения = DateTime.Parse(dpДатаРождения.Text),
-                    КемВыдан = tbКем.Text,
-                    КогдаВыдан = DateTime.Parse(dpКогдаВыдан.Text),
-                    МестоРождения = tbМестоРождения.Text,
-                    Серия = tbСерия.Text,
-                    Номер = tbномер.Text,
-                    Прописка = new Адрес()
+                    ОсновнаяИнформация = new ОсновнаяИнформация
                     {
-                        НаселённыйПункт = tbПНаселённыйПункт.Text,
-                        Индекс = tbПИндекс.Text,
-                        Улица = tbПУлица.Text,
-                        Дом = tbПДом.Text,
-                        Корпус = tbПКорпус.Text,
-                        Квартира = tbПКвартира.Text
+                        Фамилия = TbФио.Text.Split(' ')[0],
+                        Имя = TbФио.Text.Split(' ')[1],
+                        Отчество = TbФио.Text.Split(' ')[2],
+                        Должность = chosenPosition,
+                        ДатаПриема = DateTime.Parse(DpCurrentDate.Text),
+                        ДомашнийТелефон = TbДомашний.Text,
+                        Инн = TbИнн.Text,
+                        МобильныйТелефон = TbМобильный.Text,
+                        Пол = RbM.IsChecked == true ? "Мужской" : "Женский",
+                        Дополнительно = TbДополнительно.Text,
+                        ТабельныйНомер = TbТабельныйНомер.Text,
+                        Фото = xByte
                     },
-                    ФактическоеМестоЖительства = new Адрес()
+                    УдостоверениеЛичности = new УдостоверениеЛичности
                     {
-                        НаселённыйПункт = tbФНаселённыйПункт.Text,
-                        Индекс = tbФИндекс.Text,
-                        Улица = tbФУлица.Text,
-                        Дом = tbФДом.Text,
-                        Корпус = tbФКорпус.Text,
-                        Квартира = tbФКвартира.Text
-                    }
-                },
-                ВоинскийУчёт = new ВоинскийУчёт()
+                        ДатаРождения = DateTime.Parse(DpДатаРождения.Text),
+                        КемВыдан = TbКем.Text,
+                        КогдаВыдан = DateTime.Parse(DpКогдаВыдан.Text),
+                        МестоРождения = TbМестоРождения.Text,
+                        Серия = TbСерия.Text,
+                        Номер = Tbномер.Text,
+                        Прописка = new Адрес
+                        {
+                            НаселённыйПункт = TbПНаселённыйПункт.Text,
+                            Индекс = TbПИндекс.Text,
+                            Улица = TbПУлица.Text,
+                            Дом = TbПДом.Text,
+                            Корпус = TbПКорпус.Text,
+                            Квартира = TbПКвартира.Text
+                        },
+                        ФактическоеМестоЖительства = new Адрес
+                        {
+                            НаселённыйПункт = TbФНаселённыйПункт.Text,
+                            Индекс = TbФИндекс.Text,
+                            Улица = TbФУлица.Text,
+                            Дом = TbФДом.Text,
+                            Корпус = TbФКорпус.Text,
+                            Квартира = TbФКвартира.Text
+                        }
+                    },
+                    ВоинскийУчёт = new ВоинскийУчёт
+                    {
+                        Звание = TbЗвание.Text,
+                        КатегорияГодности = TbКатегорияГодности.Text,
+                        КатегорияЗапаса = TbКатегорияЗапаса.Text,
+                        КодВус = TbКодВус.Text,
+                        НаименованиеВоенкомата = TbНаименованиеВоенкомата.Text,
+                        Профиль = TbПрофиль.Text,
+                        СостоитНаУчете = TbСостоитНаУчёте.Text
+                    },
+                    ДополнительнаяИнформация = new ДополнительнаяИнформация
+                    {
+                        Skype = TbSkype.Text,
+                        EMail = TbEMail.Text
+                    },
+                    Образование = _educations
+                };
+
+                if (_isEditMode)
                 {
-                    Звание = tbЗвание.Text,
-                    КатегорияГодности = tbКатегорияГодности.Text,
-                    КатегорияЗапаса = tbКатегорияЗапаса.Text,
-                    КодВУС = tbКодВУС.Text,
-                    НаименованиеВоенкомата = tbНаименованиеВоенкомата.Text,
-                    Профиль = tbПрофиль.Text,
-                    СостоитНаУчете = tbСостоитНаУчёте.Text
-                },
-                ДополнительнаяИнформация = new ДополнительнаяИнформация()
+                    Controller.Edit(q => q.СотрудникId == (int)Tag, employeeToAdd);
+                }
+                else
                 {
-                    Skype = tbSkype.Text,
-                    EMail = tbEMail.Text
-                },
-                Образование = Educations
-            };
+                    Controller.Insert(employeeToAdd);
 
-            if (IsEditMode)
-            {
-                Controller.Edit(q => q.СотрудникId == (int)Tag, EmployeeToAdd);
+                }
+                Controller.CloseConnection();
+
+                Tag = employeeToAdd.СотрудникId;
             }
-            else
-            {
-                Controller.Insert(EmployeeToAdd);
-
-            }
-            Controller.CloseConnection();
-
-            Tag = EmployeeToAdd.СотрудникId;
             DialogResult = true;
             Close();
         }
 
         private void chbSameAsRegistration_Changed(object sender, RoutedEventArgs e)
         {
-            if (chbSameAsRegistration.IsChecked == true)
+            if (ChbSameAsRegistration.IsChecked == true)
             {
-                tbФДом.Text = tbПДом.Text;
-                tbФИндекс.Text = tbПИндекс.Text;
-                tbФКвартира.Text = tbПКвартира.Text;
-                tbФКорпус.Text = tbПКорпус.Text;
-                tbФНаселённыйПункт.Text = tbПНаселённыйПункт.Text;
-                tbФУлица.Text = tbПУлица.Text;
+                TbФДом.Text = TbПДом.Text;
+                TbФИндекс.Text = TbПИндекс.Text;
+                TbФКвартира.Text = TbПКвартира.Text;
+                TbФКорпус.Text = TbПКорпус.Text;
+                TbФНаселённыйПункт.Text = TbПНаселённыйПункт.Text;
+                TbФУлица.Text = TbПУлица.Text;
             }
             else
             {
-                tbФДом.Text = "";
-                tbФИндекс.Text = "";
-                tbФКвартира.Text = "";
-                tbФКорпус.Text = "";
-                tbФНаселённыйПункт.Text = "";
-                tbФУлица.Text = "";
+                TbФДом.Text = "";
+                TbФИндекс.Text = "";
+                TbФКвартира.Text = "";
+                TbФКорпус.Text = "";
+                TbФНаселённыйПункт.Text = "";
+                TbФУлица.Text = "";
             }
         }
 
-        List<Образование> Educations = new List<Образование>();
+        readonly List<Образование> _educations = new List<Образование>();
 
         private void bAddEducation_Click(object sender, RoutedEventArgs e)
         {
-            this.IsHitTestVisible = false;
+            IsHitTestVisible = false;
 
-            Education w = new Education();
+            var w = new Education();
             w.ShowDialog();
 
             if (w.DialogResult == true)
             {
-                Educations.Add(w.Tag as Образование);
+                _educations.Add(w.Tag as Образование);
             }
 
 
-            this.IsHitTestVisible = true;
+            IsHitTestVisible = true;
             SyncEducationList();
         }
 
         private void bRemoveEducation_Click(object sender, RoutedEventArgs e)
         {
-            Educations.Remove(lvEducations.SelectedItem as Образование);
+            _educations.Remove(LvEducations.SelectedItem as Образование);
             SyncEducationList();
         }
 
         private void CbUnit_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            cbPosition.Items.Clear();
-            Functions.AddPositionsFromDB(ref cbPosition, (int)(cbUnit.SelectedItem as ComboBoxItem).Tag);
-            cbPosition.SelectedIndex = 0;
+            CbPosition.Items.Clear();
+            var comboBoxItem = CbUnit.SelectedItem as ComboBoxItem;
+            if (comboBoxItem != null)
+                Functions.AddPositionsFromDB(ref CbPosition, (int)comboBoxItem.Tag);
+            CbPosition.SelectedIndex = 0;
         }
     }
 }

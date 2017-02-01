@@ -1,30 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Hured.DBModel;
 using Hured.Tables_templates;
-using MahApps.Metro.Controls;
 
 namespace Hured
 {
-    public class ItemVM : INotifyPropertyChanged
+    public class ItemVm : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            var handler = PropertyChanged;
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         protected bool SetField<T>(ref T field, T value, string propertyName)
         {
@@ -34,79 +24,75 @@ namespace Hured
             return true;
         }
 
-        public ItemVM(string text, Color color)
+        public ItemVm(string text, Color color)
         {
             Text = text;
             BackgroundColor = color;
         }
 
-        private string text;
-        private Color backgroundColor;
+        private string _text;
+        private Color _backgroundColor;
 
         public string Text
         {
-            set { SetField(ref text, value, "Text"); }
-            get { return text; }
+            set { SetField(ref _text, value, "Text"); }
+            get { return _text; }
         }
 
         public Color BackgroundColor
         {
-            set { SetField(ref backgroundColor, value, "BackgroundColor"); }
-            get { return backgroundColor; }
+            set { SetField(ref _backgroundColor, value, "BackgroundColor"); }
+            get { return _backgroundColor; }
         }
     }
 
     /// <summary>
     /// Логика взаимодействия для Statuses.xaml
     /// </summary>
-    public partial class Statuses : MetroWindow
+    public partial class Statuses
     {
         public Statuses()
         {
             InitializeComponent();
-            Items = new List<ItemVM>();
+            Items = new List<ItemVm>();
 
-            lvStatuses.ItemsSource = Items;
+            LvStatuses.ItemsSource = Items;
 
             SyncStatuses();
         }
 
-        TransactionResult tResult = new TransactionResult();
+        readonly TransactionResult _tResult = new TransactionResult();
 
-        List<int> StatusesId = new List<int>();
+        readonly List<int> _statusesId = new List<int>();
 
-        public List<ItemVM> Items { get; set; }
+        public List<ItemVm> Items { get; set; }
 
         void SyncStatuses()
         {
             Items.Clear();
-            StatusesId.Clear();
+            _statusesId.Clear();
 
             Controller.OpenConnection();
 
             var statuses = Controller.Select(new Статус(), q => q != null);
 
-            var i = 0;
-
             foreach (var status in statuses)
             {
-                StatusesId.Add(status.СтатусId);
+                _statusesId.Add(status.СтатусId);
 
 
-                byte r = Convert.ToByte(status.Цвет.Split(' ')[0]);
-                byte g = Convert.ToByte(status.Цвет.Split(' ')[1]);
-                byte b = Convert.ToByte(status.Цвет.Split(' ')[2]);
+                var r = Convert.ToByte(status.Цвет.Split(' ')[0]);
+                var g = Convert.ToByte(status.Цвет.Split(' ')[1]);
+                var b = Convert.ToByte(status.Цвет.Split(' ')[2]);
 
 
-                Items.Add(new ItemVM(status.Название, Color.FromRgb(r, g, b)));
+                Items.Add(new ItemVm(status.Название, Color.FromRgb(r, g, b)));
 
-
-                i++;
             }
 
             Controller.CloseConnection();
 
-            lvStatuses.Items.Refresh();
+            LvStatuses.Items.Refresh();
         }
 
         private void bAdd_Click(object sender, RoutedEventArgs e)
@@ -116,7 +102,7 @@ namespace Hured
             var w = new Status();
             w.ShowDialog();
 
-            tResult.RecordsAdded++;
+            _tResult.RecordsAdded++;
 
             SyncStatuses();
             IsHitTestVisible = true;
@@ -126,14 +112,14 @@ namespace Hured
         {
             IsHitTestVisible = false;
 
-            int id = StatusesId[lvStatuses.SelectedIndex];
+            var id = _statusesId[LvStatuses.SelectedIndex];
             Controller.OpenConnection();
             var w = new Status(Controller.Find(new Статус(),
     q => q.СтатусId == id));
             Controller.CloseConnection();
             w.ShowDialog();
 
-            tResult.RecordsChanged++;
+            _tResult.RecordsChanged++;
 
             SyncStatuses();
             IsHitTestVisible = true;
@@ -142,12 +128,12 @@ namespace Hured
         private void bRemove_Click(object sender, RoutedEventArgs e)
         {
             Controller.OpenConnection();
-            int id = StatusesId[lvStatuses.SelectedIndex];
+            var id = _statusesId[LvStatuses.SelectedIndex];
             Controller.Remove(new Статус(),
                 q => q.СтатусId == id);
             Controller.CloseConnection();
 
-            tResult.RecordsDeleted++;
+            _tResult.RecordsDeleted++;
 
             SyncStatuses();
         }
@@ -155,9 +141,9 @@ namespace Hured
         private void bClose_Click(object sender, RoutedEventArgs e)
         {
             Controller.OpenConnection();
-            tResult.RecordsCount = Controller.RecordsCount<Статус>();
+            _tResult.RecordsCount = Controller.RecordsCount<Статус>();
             Controller.CloseConnection();
-            Tag = tResult;
+            Tag = _tResult;
             Close();
         }
     }

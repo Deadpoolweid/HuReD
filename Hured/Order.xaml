@@ -4,39 +4,38 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-        
-        xmlns:local="clr-namespace:Hured"
-        mc:Ignorable="d"
+
+                      mc:Ignorable="d"
         Title="Создать приказ" Height="180" Width="450" ResizeMode="CanMinimize">
     <Border>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
                 <Label>Приказ №</Label>
-                <TextBox x:Name="tbНомерПриказа"></TextBox>
+                <TextBox x:Name="TbНомерПриказа" />
                 <Label>от</Label>
-                <DatePicker x:Name="dpДатаПриказа"></DatePicker>
+                <DatePicker x:Name="DpДатаПриказа" />
             </StackPanel>
 
             <Label Grid.Row="1" Grid.Column="0">Сотрудник</Label>
-            <ComboBox x:Name="cbEmployee" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left"></ComboBox>
+            <ComboBox x:Name="CbEmployee" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" />
 
             <Label Grid.Row="2" Grid.Column="0">Тип приказа</Label>
-            <ComboBox x:Name="cbOrderType" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left"></ComboBox>
+            <ComboBox x:Name="CbOrderType" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" />
 
             <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
-                <Button x:Name="bOk" IsDefault="True" Click="bOk_Click">Ок</Button>
-                <Button x:Name="bCancel" IsCancel="True" Click="bCancel_Click">Отмена</Button>
+                <Button x:Name="BOk" IsDefault="True" Click="bOk_Click">Ок</Button>
+                <Button x:Name="BCancel" IsCancel="True" Click="bCancel_Click">Отмена</Button>
             </StackPanel>
 
         </Grid>

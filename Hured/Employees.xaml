@@ -3,56 +3,54 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Hured"
-        xmlns:dbModel="clr-namespace:Hured.DBModel"
-        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+                      xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
   
         mc:Ignorable="d"
         Title="Справочник сотрудников" Height="Auto" Width="Auto">
     <Border>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0">Место работы</Label>
-            <TreeView x:Name="tvUnits" Grid.Column="0" Grid.Row="1" Grid.RowSpan="3"
-                      SelectedItemChanged="TvUnits_OnSelectedItemChanged">
-            </TreeView>
+            <TreeView x:Name="TvUnits" Grid.Column="0" Grid.Row="1" Grid.RowSpan="3"
+                      SelectedItemChanged="TvUnits_OnSelectedItemChanged" />
 
             <GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" 
                       ResizeBehavior="PreviousAndNext" ResizeDirection="Columns" ShowsPreview="True"
-                      VerticalAlignment="Stretch" Width="5"></GridSplitter>
+                      VerticalAlignment="Stretch" Width="5" />
 
             <Label Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center">Сотрудники</Label>
-            <ListView x:Name="lvEmployees" Grid.Row="1" Grid.Column="2" >
+            <ListView x:Name="LvEmployees" Grid.Row="1" Grid.Column="2" >
                 <ListView.View >
                     <GridView>
                         <GridView.Columns>
-                            <GridViewColumn Header="Фамилия" DisplayMemberBinding="{Binding Фамилия}"></GridViewColumn>
-                            <GridViewColumn Header="Имя" DisplayMemberBinding="{Binding Имя}"></GridViewColumn>
-                            <GridViewColumn Header="Отчество" DisplayMemberBinding="{Binding Отчество}"></GridViewColumn>
+                            <GridViewColumn Header="Фамилия" DisplayMemberBinding="{Binding Фамилия}" />
+                            <GridViewColumn Header="Имя" DisplayMemberBinding="{Binding Имя}" />
+                            <GridViewColumn Header="Отчество" DisplayMemberBinding="{Binding Отчество}" />
                         </GridView.Columns>
                     </GridView>
                 </ListView.View>
             </ListView>
 
             <StackPanel Grid.Row="1" Grid.Column="3">
-                <Button Name="bAdd" Click="bAdd_OnClick">Добавить</Button>
-                <Button Name="bChange" Click="BChange_OnClick">Изменить</Button>
-                <Button x:Name="bRemove" Click="bRemove_Click">Удалить</Button>
+                <Button Name="BAdd" Click="bAdd_OnClick">Добавить</Button>
+                <Button Name="BChange" Click="BChange_OnClick">Изменить</Button>
+                <Button x:Name="BRemove" Click="bRemove_Click">Удалить</Button>
             </StackPanel>
 
-            <Button x:Name="bClose" Grid.Row="2" Grid.Column="3" Click="bClose_Click">Закрыть</Button>
+            <Button x:Name="BClose" Grid.Row="2" Grid.Column="3" Click="bClose_Click">Закрыть</Button>
 
         </Grid>
     </Border>

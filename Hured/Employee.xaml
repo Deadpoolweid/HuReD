@@ -4,90 +4,89 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-        
-        xmlns:local="clr-namespace:Hured"
-        mc:Ignorable="d"
+
+                      mc:Ignorable="d"
         Title="Сотрудник" Height="Auto" Width="Auto">
     <Border>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
                          >
-                <controls:MetroAnimatedTabControl Grid.Row="0"
+                <controls:MetroAnimatedTabControl
                     Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=controls:MetroWindow}, Path=ActualWidth}"
                    >
                     <controls:MetroTabItem Header="Основное">
                         <Border>
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
 
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
                                 <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center">Ф.И.О.</Label>
-                                <TextBox x:Name="tbФИО"  Grid.Row="1" Grid.Column="0" ></TextBox>
+                                <TextBox x:Name="TbФио"  Grid.Row="1" Grid.Column="0" />
 
                                 <Label Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center">Подразделение</Label>
-                                <ComboBox x:Name="cbUnit" Grid.Row="1" Grid.Column="1" SelectionChanged="CbUnit_OnSelectionChanged"></ComboBox>
+                                <ComboBox x:Name="CbUnit" Grid.Row="1" Grid.Column="1" SelectionChanged="CbUnit_OnSelectionChanged" />
 
                                 <Label Grid.Row="2" Grid.Column="0">Должность</Label>
-                                <ComboBox x:Name="cbPosition" Grid.Row="2" Grid.Column="1" ></ComboBox>
+                                <ComboBox x:Name="CbPosition" Grid.Row="2" Grid.Column="1" />
 
                                 <StackPanel Grid.Row="0" Grid.Column="2" Grid.RowSpan="11">
-                                    <Image x:Name="iAvatar"  Source="Resources/avatar.jpg" Width="Auto" Height="Auto"></Image>
+                                    <Image x:Name="IAvatar"  Source="Resources/avatar.jpg" Width="Auto" Height="Auto" />
 
-                                    <StackPanel Grid.Row="3" Grid.Column="2"  Orientation="Horizontal" HorizontalAlignment="Center">
-                                        <Button x:Name="bChooseImage" Click="bChooseImage_Click" >...</Button>
-                                        <Button x:Name="bDeleteImage" Click="bDeleteImage_Click">X</Button>
-                                        <Button x:Name="bSetStandartImage" Click="bSetStandartImage_Click">S</Button>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Button x:Name="BChooseImage" Click="bChooseImage_Click" >...</Button>
+                                        <Button x:Name="BDeleteImage" Click="bDeleteImage_Click">X</Button>
+                                        <Button x:Name="BSetStandartImage" Click="bSetStandartImage_Click">S</Button>
                                     </StackPanel>
                                 </StackPanel>
 
 
                                 <Label Grid.Row="3" Grid.Column="0">Дата приёма</Label>
-                                <DatePicker x:Name="dpCurrentDate" Grid.Row="3" Grid.Column="1"></DatePicker>
+                                <DatePicker x:Name="DpCurrentDate" Grid.Row="3" Grid.Column="1" />
 
                                 <StackPanel Grid.Row="4" Grid.Column="0">
                                     <Label HorizontalAlignment="Center">ИНН</Label>
-                                    <TextBox x:Name="tbИНН"></TextBox>
+                                    <TextBox x:Name="TbИнн" />
                                 </StackPanel>
                                 <StackPanel Grid.Row="4" Grid.Column="1">
                                     <Label HorizontalAlignment="Center">Табельный номер</Label>
-                                    <TextBox x:Name="tbТабельныйНомер"></TextBox>
+                                    <TextBox x:Name="TbТабельныйНомер" />
                                 </StackPanel>
 
                                 <Label Grid.Row="5" Grid.Column="0">Пол</Label>
                                 <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <RadioButton x:Name="rbM"  IsChecked="True" GroupName="Gender">М</RadioButton>
-                                    <RadioButton x:Name="rbW"  GroupName="Gender">Ж</RadioButton>
+                                    <RadioButton x:Name="RbM"  IsChecked="True" GroupName="Gender">М</RadioButton>
+                                    <RadioButton x:Name="RbW"  GroupName="Gender">Ж</RadioButton>
                                 </StackPanel>
 
                                 <Label Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center">Телефоны</Label>
                                 <Label Grid.Row="7" Grid.Column="0">Домашний</Label>
-                                <TextBox x:Name="tbДомашний" Grid.Row="7" Grid.Column="1"></TextBox>
+                                <TextBox x:Name="TbДомашний" Grid.Row="7" Grid.Column="1" />
                                 <Label Grid.Row="8" Grid.Column="0">Мобильный</Label>
-                                <TextBox x:Name="tbМобильный" Grid.Row="8" Grid.Column="1"></TextBox>
+                                <TextBox x:Name="TbМобильный" Grid.Row="8" Grid.Column="1" />
                                 <Label Grid.Row="9" Grid.Column="0" Content="Дополнительно"/>
-                                <TextBox x:Name="tbДополнительно" Grid.Row="9" Grid.Column="1"></TextBox>
+                                <TextBox x:Name="TbДополнительно" Grid.Row="9" Grid.Column="1" />
 
                             </Grid>
                         </Border>
@@ -96,88 +95,88 @@
                         <Border>
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
 
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <Label Grid.Row="0" Grid.Column="0">Гражданство</Label>
-                                <TextBox x:Name="tbгражданство" Grid.Row="0" Grid.Column="1"/>
+                                <TextBox x:Name="Tbгражданство" Grid.Row="0" Grid.Column="1"/>
 
                                 <Label Grid.Row="1" Grid.Column="0">Серия</Label>
-                                <TextBox x:Name="tbСерия" Grid.Row="2" Grid.Column="0"></TextBox>
+                                <TextBox x:Name="TbСерия" Grid.Row="2" Grid.Column="0" />
 
                                 <Label Grid.Row="1" Grid.Column="1">Номер</Label>
-                                <TextBox x:Name="tbномер" Grid.Row="2" Grid.Column="1"></TextBox>
+                                <TextBox x:Name="Tbномер" Grid.Row="2" Grid.Column="1" />
 
                                 <Label Grid.Row="1" Grid.Column="2">Дата рождения</Label>
-                                <DatePicker x:Name="dpДатаРождения" Grid.Row="2" Grid.Column="2"></DatePicker>
+                                <DatePicker x:Name="DpДатаРождения" Grid.Row="2" Grid.Column="2" />
 
                                 <Label Grid.Row="1" Grid.Column="3">Место рождения</Label>
-                                <TextBox x:Name="tbМестоРождения" Grid.Row="2" Grid.Column="3"></TextBox>
+                                <TextBox x:Name="TbМестоРождения" Grid.Row="2" Grid.Column="3" />
 
                                 <Label Grid.Row="3" Grid.Column="0">Выдан</Label>
-                                <TextBox x:Name="tbКем" Grid.Row="3" Grid.Column="1"></TextBox>
-                                <DatePicker x:Name="dpКогдаВыдан" Grid.Row="3" Grid.Column="2"></DatePicker>
+                                <TextBox x:Name="TbКем" Grid.Row="3" Grid.Column="1" />
+                                <DatePicker x:Name="DpКогдаВыдан" Grid.Row="3" Grid.Column="2" />
 
                                 <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">Прописка</Label>
 
                                 <Label Grid.Row="5" Grid.Column="0">Индекс</Label>
-                                <TextBox x:Name="tbПИндекс" Grid.Row="6" Grid.Column="0"></TextBox>
+                                <TextBox x:Name="TbПИндекс" Grid.Row="6" Grid.Column="0" />
 
                                 <Label Grid.Row="5" Grid.Column="1">Населённый пункт</Label>
-                                <TextBox x:Name="tbПНаселённыйПункт" Grid.Row="6" Grid.Column="1"></TextBox>
+                                <TextBox x:Name="TbПНаселённыйПункт" Grid.Row="6" Grid.Column="1" />
 
                                 <Label Grid.Row="7" Grid.Column="0">Улица</Label>
-                                <TextBox x:Name="tbПУлица" Grid.Row="8" Grid.Column="0"></TextBox>
+                                <TextBox x:Name="TbПУлица" Grid.Row="8" Grid.Column="0" />
 
                                 <Label Grid.Row="7" Grid.Column="1">Дом</Label>
-                                <TextBox x:Name="tbПДом" Grid.Row="8" Grid.Column="1"></TextBox>
+                                <TextBox x:Name="TbПДом" Grid.Row="8" Grid.Column="1" />
 
                                 <Label Grid.Row="7" Grid.Column="2">Корпус</Label>
-                                <TextBox x:Name="tbПКорпус" Grid.Row="8" Grid.Column="2"></TextBox>
+                                <TextBox x:Name="TbПКорпус" Grid.Row="8" Grid.Column="2" />
 
                                 <Label Grid.Row="7" Grid.Column="3">Квартира</Label>
-                                <TextBox x:Name="tbПКвартира" Grid.Row="8" Grid.Column="3"></TextBox>
+                                <TextBox x:Name="TbПКвартира" Grid.Row="8" Grid.Column="3" />
 
                                 <Label Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2">Фактическое место жительства</Label>
 
                                 <Label Grid.Row="10" Grid.Column="0">Индекс</Label>
-                                <TextBox x:Name="tbФИндекс" Grid.Row="11" Grid.Column="0"></TextBox>
+                                <TextBox x:Name="TbФИндекс" Grid.Row="11" Grid.Column="0" />
 
                                 <Label Grid.Row="10" Grid.Column="1">Населённый пункт</Label>
-                                <TextBox x:Name="tbФНаселённыйПункт" Grid.Row="11" Grid.Column="1"></TextBox>
+                                <TextBox x:Name="TbФНаселённыйПункт" Grid.Row="11" Grid.Column="1" />
 
-                                <CheckBox x:Name="chbSameAsRegistration" Grid.Row="9" Grid.Column="2" Checked="chbSameAsRegistration_Changed" Unchecked="chbSameAsRegistration_Changed">Аналогично прописке</CheckBox>
+                                <CheckBox x:Name="ChbSameAsRegistration" Grid.Row="9" Grid.Column="2" Checked="chbSameAsRegistration_Changed" Unchecked="chbSameAsRegistration_Changed">Аналогично прописке</CheckBox>
 
                                 <Label Grid.Row="12" Grid.Column="0">Улица</Label>
-                                <TextBox x:Name="tbФУлица" Grid.Row="13" Grid.Column="0"></TextBox>
+                                <TextBox x:Name="TbФУлица" Grid.Row="13" Grid.Column="0" />
 
                                 <Label Grid.Row="12" Grid.Column="1">Дом</Label>
-                                <TextBox x:Name="tbФДом" Grid.Row="13" Grid.Column="1"></TextBox>
+                                <TextBox x:Name="TbФДом" Grid.Row="13" Grid.Column="1" />
 
                                 <Label Grid.Row="12" Grid.Column="2">Корпус</Label>
-                                <TextBox x:Name="tbФКорпус" Grid.Row="13" Grid.Column="2"></TextBox>
+                                <TextBox x:Name="TbФКорпус" Grid.Row="13" Grid.Column="2" />
 
                                 <Label Grid.Row="12" Grid.Column="3">Квартира</Label>
-                                <TextBox x:Name="tbФКвартира" Grid.Row="13" Grid.Column="3"></TextBox>
+                                <TextBox x:Name="TbФКвартира" Grid.Row="13" Grid.Column="3" />
                             </Grid>
                         </Border>
                     </controls:MetroTabItem>
@@ -185,36 +184,36 @@
                         <Border>
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition></ColumnDefinition>
-                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
 
-                                <ListView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Name="lvEducations">
+                                <ListView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Name="LvEducations">
                                     <ListView.View>
                                         <GridView>
                                             <GridView.Columns>
-                                                <GridViewColumn Header="Тип" DisplayMemberBinding="{Binding Тип}"></GridViewColumn>
-                                                <GridViewColumn Header="Учреждение" DisplayMemberBinding="{Binding Учреждение}"></GridViewColumn>
-                                                <GridViewColumn Header="Документ" DisplayMemberBinding="{Binding Документ}"></GridViewColumn>
-                                                <GridViewColumn Header="Серия" DisplayMemberBinding="{Binding Серия}"></GridViewColumn>
-                                                <GridViewColumn Header="Номер" DisplayMemberBinding="{Binding Номер}"></GridViewColumn>
-                                                <GridViewColumn Header="Начало" DisplayMemberBinding="{Binding НачалоОбучения}"></GridViewColumn>
-                                                <GridViewColumn Header="Окончание" DisplayMemberBinding="{Binding КонецОбучения}"></GridViewColumn>
-                                                <GridViewColumn Header="Специальность" DisplayMemberBinding="{Binding Специальность}"></GridViewColumn>
-                                                <GridViewColumn Header="Квалификация" DisplayMemberBinding="{Binding Квалификация}"></GridViewColumn>
-                                                <GridViewColumn Header="Дополнительно" DisplayMemberBinding="{Binding Дополнительно}"></GridViewColumn>
+                                                <GridViewColumn Header="Тип" DisplayMemberBinding="{Binding Тип}" />
+                                                <GridViewColumn Header="Учреждение" DisplayMemberBinding="{Binding Учреждение}" />
+                                                <GridViewColumn Header="Документ" DisplayMemberBinding="{Binding Документ}" />
+                                                <GridViewColumn Header="Серия" DisplayMemberBinding="{Binding Серия}" />
+                                                <GridViewColumn Header="Номер" DisplayMemberBinding="{Binding Номер}" />
+                                                <GridViewColumn Header="Начало" DisplayMemberBinding="{Binding НачалоОбучения}" />
+                                                <GridViewColumn Header="Окончание" DisplayMemberBinding="{Binding КонецОбучения}" />
+                                                <GridViewColumn Header="Специальность" DisplayMemberBinding="{Binding Специальность}" />
+                                                <GridViewColumn Header="Квалификация" DisplayMemberBinding="{Binding Квалификация}" />
+                                                <GridViewColumn Header="Дополнительно" DisplayMemberBinding="{Binding Дополнительно}" />
                                             </GridView.Columns>
                                         </GridView>
                                     </ListView.View>
                                 </ListView>
 
                                 <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-                                    <Button x:Name="bAddEducation" Click="bAddEducation_Click">Добавить</Button>
-                                    <Button x:Name="bRemoveEducation" Click="bRemoveEducation_Click">Удалить</Button>
+                                    <Button x:Name="BAddEducation" Click="bAddEducation_Click">Добавить</Button>
+                                    <Button x:Name="BRemoveEducation" Click="bRemoveEducation_Click">Удалить</Button>
                                 </StackPanel>
 
                             </Grid>
@@ -224,41 +223,41 @@
                         <Border>
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
 
                                 <Label Grid.Row="0" Grid.Column="1">Категория запаса</Label>
-                                <TextBox x:Name="tbКатегорияЗапаса" Grid.Row="0" Grid.Column="2"></TextBox>
+                                <TextBox x:Name="TbКатегорияЗапаса" Grid.Row="0" Grid.Column="2" />
 
                                 <Label Grid.Row="1" Grid.Column="1">Звание</Label>
-                                <TextBox x:Name="tbЗвание" Grid.Row="1" Grid.Column="2"></TextBox>
+                                <TextBox x:Name="TbЗвание" Grid.Row="1" Grid.Column="2" />
 
                                 <Label Grid.Row="2" Grid.Column="1">Профиль</Label>
-                                <TextBox x:Name="tbПрофиль" Grid.Row="2" Grid.Column="2"></TextBox>
+                                <TextBox x:Name="TbПрофиль" Grid.Row="2" Grid.Column="2" />
 
                                 <Label Grid.Row="3" Grid.Column="1">Код ВУС</Label>
-                                <TextBox x:Name="tbКодВУС" Grid.Row="3" Grid.Column="2"></TextBox>
+                                <TextBox x:Name="TbКодВус" Grid.Row="3" Grid.Column="2" />
 
                                 <Label Grid.Row="4" Grid.Column="1">Категория годности</Label>
-                                <TextBox x:Name="tbКатегорияГодности" Grid.Row="4" Grid.Column="2"></TextBox>
+                                <TextBox x:Name="TbКатегорияГодности" Grid.Row="4" Grid.Column="2" />
 
                                 <Label Grid.Row="5" Grid.Column="1">Наименование военкомата</Label>
-                                <TextBox x:Name="tbНаименованиеВоенкомата" Grid.Row="5" Grid.Column="2"></TextBox>
+                                <TextBox x:Name="TbНаименованиеВоенкомата" Grid.Row="5" Grid.Column="2" />
 
                                 <Label Grid.Row="6" Grid.Column="1">Состоит на учёте</Label>
-                                <TextBox x:Name="tbСостоитНаУчёте" Grid.Row="6" Grid.Column="2"></TextBox>
+                                <TextBox x:Name="TbСостоитНаУчёте" Grid.Row="6" Grid.Column="2" />
                             </Grid>
                         </Border>
                     </controls:MetroTabItem>
@@ -266,22 +265,22 @@
                         <Border>
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition />
 
                                 </Grid.ColumnDefinitions>
 
                                 <Label Grid.Row="0" Grid.Column="1">E-mail</Label>
-                                <TextBox x:Name="tbEMail" Grid.Row="0" Grid.Column="2"></TextBox>
+                                <TextBox x:Name="TbEMail" Grid.Row="0" Grid.Column="2" />
 
                                 <Label Grid.Row="1" Grid.Column="1">Skype</Label>
-                                <TextBox x:Name="tbSkype" Grid.Row="1" Grid.Column="2"></TextBox>
+                                <TextBox x:Name="TbSkype" Grid.Row="1" Grid.Column="2" />
                             </Grid>
                         </Border>
                     </controls:MetroTabItem>
@@ -289,8 +288,8 @@
             </ScrollViewer>
 
             <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0">
-                <Button x:Name="bOk" IsDefault="True" Click="bOk_Click">OK</Button>
-                <Button x:Name="bCancel" IsCancel="True" Click="bCancel_Click">Отмена</Button>
+                <Button x:Name="BOk" IsDefault="True" Click="bOk_Click">OK</Button>
+                <Button x:Name="BCancel" IsCancel="True" Click="bCancel_Click">Отмена</Button>
             </StackPanel>
         </Grid>
     </Border>

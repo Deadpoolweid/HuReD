@@ -1,33 +1,29 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Printing;
-using System.Drawing.Text;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Security;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Threading;
 using Hured.DBModel;
 using Hured.Tables_templates;
-using Microsoft.Win32;
+using Microsoft.Office.Interop.Word;
+using Application = Microsoft.Office.Interop.Word.Application;
 using Brushes = System.Windows.Media.Brushes;
 using Image = System.Drawing.Image;
-using Word = Microsoft.Office.Interop.Word;
+using Paragraph = System.Windows.Documents.Paragraph;
 
 namespace Hured
 {
@@ -41,7 +37,7 @@ namespace Hured
 
             foreach (var unit in units)
             {
-                ListViewItem newItem = new ListViewItem();
+                var newItem = new ListViewItem();
                 newItem.Content = unit;
                 newItem.Tag = unit.ПодразделениеId;
                 lvUnits.Items.Add(newItem);
@@ -88,7 +84,7 @@ namespace Hured
 
         public static void AddPositionsFromDB(ref ListView lvPositions, int unitId = -1)
         {
-            List<Должность> positions = new List<Должность>();
+            List<Должность> positions;
             if (unitId == -1)
             {
                 Controller.OpenConnection();
@@ -108,7 +104,7 @@ namespace Hured
 
         public static void AddPositionsFromDB(ref ComboBox cbPositions, int unitId = -1)
         {
-            List<Должность> positions = new List<Должность>();
+            List<Должность> positions;
             if (unitId == -1)
             {
                 Controller.OpenConnection();
@@ -122,7 +118,7 @@ namespace Hured
             }
             foreach (var должность in positions)
             {
-                ComboBoxItem newItem = new ComboBoxItem();
+                var newItem = new ComboBoxItem();
                 newItem.Content = должность.Название;
                 newItem.Tag = должность.ДолжностьId;
                 cbPositions.Items.Add(newItem);
@@ -138,16 +134,17 @@ namespace Hured
         /// <returns></returns>
         public static WordDocument CreateOrder<T>(OrderType orderType, T _order)
         {
+            if (_order == null) throw new ArgumentNullException(nameof(_order));
             // TODO Перенести в инициализацию
             Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\Documents");
 
-            Dictionary<string, string> bookmarks = new Dictionary<string, string>();
+            var bookmarks = new Dictionary<string, string>();
             string openPath;
 
-            var РасшифровкаПодписи = GetAppSettings().РуководительОрганизации;
-            РасшифровкаПодписи = РасшифровкаПодписи.Split(' ')[0] + " " +
-                                 РасшифровкаПодписи.Split(' ')[1][0] + "." +
-                                 РасшифровкаПодписи.Split(' ')[2][0] + ".";
+            var расшифровкаПодписи = GetAppSettings().РуководительОрганизации;
+            расшифровкаПодписи = расшифровкаПодписи.Split(' ')[0] + " " +
+                                 расшифровкаПодписи.Split(' ')[1][0] + "." +
+                                 расшифровкаПодписи.Split(' ')[2][0] + ".";
 
             switch (orderType)
             {
@@ -167,18 +164,18 @@ namespace Hured
 
                     var оклад = order.Оклад.Split(new[] { '.', ',' }, StringSplitOptions.RemoveEmptyEntries);
                     bookmarks.Add("ОкладРубли", оклад[0]);
-                    bookmarks.Add("ОкладКопейки", оклад.Count() > 1 ? оклад[1] : "00");
+                    bookmarks.Add("ОкладКопейки", оклад.Length > 1 ? оклад[1] : "00");
 
                     var надбавка = order.Надбавка.Split(new[] { '.', ',' }, StringSplitOptions.RemoveEmptyEntries);
                     bookmarks.Add("НадбавкаРубли", надбавка[0]);
-                    bookmarks.Add("НадбавкаКопейки", надбавка.Count() > 1 ? надбавка[1] : "00");
+                    bookmarks.Add("НадбавкаКопейки", надбавка.Length > 1 ? надбавка[1] : "00");
                     bookmarks.Add("ДатаТрудовогоДоговораЧисло", order.ДатаТрудовогоДоговора.Day.ToString());
                     bookmarks.Add("ДатаТрудовогоДоговораМесяц", order.ДатаТрудовогоДоговора.Month.ToString());
                     bookmarks.Add("ДатаТрудовогоДоговораГод", order.ДатаТрудовогоДоговора.Year.ToString().Substring(2));
                     bookmarks.Add("НомерТрудовогоДоговора", order.НомерТрудовогоДоговора);
                     bookmarks.Add("ДолжностьРуководителя", GetAppSettings().ДолжностьРуководителя);
                     bookmarks.Add("НазваниеОрганизации", GetAppSettings().НазваниеОрганизации);
-                    bookmarks.Add("РасшифровкаПодписи", РасшифровкаПодписи);
+                    bookmarks.Add("РасшифровкаПодписи", расшифровкаПодписи);
                     if (order.ИспытательныйСрок)
                     {
                         bookmarks.Add("ИспытательныйСрокДлительность", order.ИспытательныйСрокДлительность);
@@ -207,7 +204,7 @@ namespace Hured
                     bookmarks.Add("НомерТрудовогоДоговора", oDismissal.НомерТрудовогоДоговора);
                     bookmarks.Add("ДолжностьРуководителя", GetAppSettings().ДолжностьРуководителя);
                     bookmarks.Add("НазваниеОрганизации", GetAppSettings().НазваниеОрганизации);
-                    bookmarks.Add("РасшифровкаПодписи", РасшифровкаПодписи);
+                    bookmarks.Add("РасшифровкаПодписи", расшифровкаПодписи);
                     openPath = Directory.GetCurrentDirectory() + @"\Templates\Dismissal.dotx";
                     break;
                 case OrderType.Vacation:
@@ -266,7 +263,7 @@ namespace Hured
                     }
                     bookmarks.Add("ДолжностьРуководителя", GetAppSettings().ДолжностьРуководителя);
                     bookmarks.Add("НазваниеОрганизации", GetAppSettings().НазваниеОрганизации);
-                    bookmarks.Add("РасшифровкаПодписи", РасшифровкаПодписи);
+                    bookmarks.Add("РасшифровкаПодписи", расшифровкаПодписи);
                     openPath = Directory.GetCurrentDirectory() + @"\Templates\Vacation.dotx";
 
                     break;
@@ -294,7 +291,7 @@ namespace Hured
                     bookmarks.Add("Основание", oBusinessTrip.Основание);
                     bookmarks.Add("ДолжностьРуководителя", GetAppSettings().ДолжностьРуководителя);
                     bookmarks.Add("НазваниеОрганизации", GetAppSettings().НазваниеОрганизации);
-                    bookmarks.Add("РасшифровкаПодписи", РасшифровкаПодписи);
+                    bookmarks.Add("РасшифровкаПодписи", расшифровкаПодписи);
                     openPath = Directory.GetCurrentDirectory() + @"\Templates\BusinessTrip.dotx";
 
                     break;
@@ -303,7 +300,7 @@ namespace Hured
                     break;
             }
 
-            WordDocument document = new WordDocument(openPath);
+            var document = new WordDocument(openPath);
             document.Open();
             document.SetTemplate(bookmarks);
             return document;
@@ -313,14 +310,14 @@ namespace Hured
         {
 
             Controller.OpenConnection();
-            var Подразделения = Controller.Select(new Подразделение(), e => e != null);
+            var подразделения = Controller.Select(new Подразделение(), e => e != null);
 
-            TreeViewItem item = new TreeViewItem();
+            var item = new TreeViewItem();
 
             item.Header = "Все подразделения";
             foreach (var должность in Controller.Select(new Должность(), e => e != null))
             {
-                item.Items.Add(new TreeViewItem()
+                item.Items.Add(new TreeViewItem
                 {
                     Header = должность.Название,
                     Tag = должность.ДолжностьId
@@ -329,12 +326,12 @@ namespace Hured
             tv.Items.Add(item);
 
 
-            foreach (var подразделение in Подразделения)
+            foreach (var подразделение in подразделения)
             {
                 item = new TreeViewItem();
                 item.Tag = подразделение.ПодразделениеId;
                 item.Header = подразделение.Название;
-                List<TreeViewItem> subItems = Controller.Select(new Должность(),
+                var subItems = Controller.Select(new Должность(),
                     e => e.Подразделение.ПодразделениеId == подразделение.ПодразделениеId).Select(должность => new TreeViewItem
                     {
                         Header = должность.Название,
@@ -373,16 +370,16 @@ namespace Hured
             return true;
         }
 
-        public static string GetRTBText(RichTextBox rtb)
+        public static string GetRtbText(RichTextBox rtb)
         {
             var textRange = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd);
             return textRange.Text;
         }
 
-        public static void SetRTBText(RichTextBox rtb, string text)
+        public static void SetRtbText(RichTextBox rtb, string text)
         {
-            FlowDocument document = new FlowDocument();
-            Paragraph paragraph = new Paragraph();
+            var document = new FlowDocument();
+            var paragraph = new Paragraph();
             paragraph.Inlines.Add(new Bold(new Run(text)));
             document.Blocks.Add(paragraph);
             rtb.Document = document;
@@ -399,32 +396,29 @@ namespace Hured
                     return formatter.Deserialize(fStream) as AppSettings;
                 }
             }
-            else
-            {
-                return null;
-            }
+            return null;
         }
 
-        static public byte[] ImageToByteArray(System.Drawing.Image imageIn)
+        static public byte[] ImageToByteArray(Image imageIn)
         {
-            MemoryStream ms = new MemoryStream();
-            imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Gif);
+            var ms = new MemoryStream();
+            imageIn.Save(ms, ImageFormat.Gif);
             return ms.ToArray();
         }
 
         static public Image ByteArrayToImage(byte[] byteArrayIn)
         {
-            MemoryStream ms = new MemoryStream(byteArrayIn);
-            Image returnImage = Image.FromStream(ms);
+            var ms = new MemoryStream(byteArrayIn);
+            var returnImage = Image.FromStream(ms);
             return returnImage;
         }
 
         public static BitmapSource GetImageStream(Image myImage)
         {
             var bitmap = new Bitmap(myImage);
-            IntPtr bmpPt = bitmap.GetHbitmap();
-            BitmapSource bitmapSource =
-             System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+            var bmpPt = bitmap.GetHbitmap();
+            var bitmapSource =
+             Imaging.CreateBitmapSourceFromHBitmap(
                    bmpPt,
                    IntPtr.Zero,
                    Int32Rect.Empty,
@@ -462,22 +456,22 @@ namespace Hured
 
         public static void ShowPopup(UIElement element, string message)
         {
-            var popup = new Popup()
+            var popup = new Popup
             {
                 StaysOpen = false,
                 PlacementTarget = element,
                 PopupAnimation = PopupAnimation.Fade,
                 AllowsTransparency = true,
-                Child = new Label()
+                Child = new Label
                 {
                     Background = Brushes.AliceBlue,
                     Content = "Заполните это поле.",
                     BorderBrush = Brushes.Red
-                },
+                }
             };
             popup.Opened += (o, args) =>
             {
-                Timer timer = new Timer(2000);
+                var timer = new Timer(2000);
                 timer.Elapsed += (sender1, eventArgs) =>
                 {
 
@@ -517,16 +511,16 @@ namespace Hured
             Path = path;
         }
 
-        private Word._Application _wordApp;
+        private _Application _wordApp;
 
-        private Word._Document _document;
+        private _Document _document;
 
         /// <summary>
         /// Открывает фоновое приложение MS Word и документ
         /// </summary>
         public void Open()
         {
-            _wordApp = new Word.Application();
+            _wordApp = new Application();
             _document = _wordApp.Documents.Add(Path);
         }
 
@@ -535,22 +529,23 @@ namespace Hured
         /// </summary>
         public void OpenWithWord()
         {
-            System.Diagnostics.Process.Start(Path);
+            Process.Start(Path);
         }
 
         /// <summary>
         /// Сохраняет документ в указанном месте
         /// </summary>
         /// <param name="path">Место для сохранения документа</param>
+        /// <param name="withAlert">Показывать предупреждение, если файл уже существует</param>
         public void Save(string path, bool withAlert = true)
         {
             if (withAlert == false)
             {
-                _wordApp.DisplayAlerts = Word.WdAlertLevel.wdAlertsNone;
+                _wordApp.DisplayAlerts = WdAlertLevel.wdAlertsNone;
             }
-            _document.SaveAs(FileName: path);
+            _document.SaveAs(path);
 
-            _wordApp.DisplayAlerts = Word.WdAlertLevel.wdAlertsAll;
+            _wordApp.DisplayAlerts = WdAlertLevel.wdAlertsAll;
         }
 
         /// <summary>
@@ -571,7 +566,7 @@ namespace Hured
 
             doc.Activate();
             _wordApp.Visible = false;
-            int dialogResult = _wordApp.Dialogs[Word.WdWordDialog.wdDialogFilePrint].Show(ref nullobj);
+            var dialogResult = _wordApp.Dialogs[WdWordDialog.wdDialogFilePrint].Show(ref nullobj);
 
             if (dialogResult == 1)
             {

@@ -1,52 +1,38 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Hured.Tables_templates;
-using MahApps.Metro.Controls;
 
 namespace Hured
 {
     /// <summary>
     /// Логика взаимодействия для Vacation.xaml
     /// </summary>
-    public partial class Vacation : MetroWindow
+    public partial class Vacation
     {
         public Vacation(ПриказОтпуск order = null)
         {
             InitializeComponent();
 
-            rbEveryYear.IsChecked = true;
+            RbEveryYear.IsChecked = true;
 
-            if (order != null)
+            if (order == null) return;
+            DpBegin.Text = order.НачалоОтпуска.ToShortDateString();
+            DpEnd.Text = order.КонецОтпуска.ToShortDateString();
+            DpПериодРаботыНачало.Text = order.ПериодРаботыНачало.ToShortDateString();
+            DpПериодРаботыКонец.Text = order.ПериодРаботыКонец.ToShortDateString();
+
+            switch (order.Вид)
             {
-                dpBegin.Text = order.НачалоОтпуска.ToShortDateString();
-                dpEnd.Text = order.КонецОтпуска.ToShortDateString();
-                dpПериодРаботыНачало.Text = order.ПериодРаботыНачало.ToShortDateString();
-                dpПериодРаботыКонец.Text = order.ПериодРаботыКонец.ToShortDateString();
-
-                if (order.Вид == "Ежегодный")
-                {
-                    rbEveryYear.IsChecked = true;
-                }
-                else if (order.Вид == "Единоразовый")
-                {
-                    rbOnce.IsChecked = true;
-                }
-                else
-                {
-                    rbOther.IsChecked = true;
-                    tbДругое.Text = order.Вид;
-                }
+                case "Ежегодный":
+                    RbEveryYear.IsChecked = true;
+                    break;
+                case "Единоразовый":
+                    RbOnce.IsChecked = true;
+                    break;
+                default:
+                    RbOther.IsChecked = true;
+                    TbДругое.Text = order.Вид;
+                    break;
             }
         }
 
@@ -59,27 +45,27 @@ namespace Hured
 
         private void bOk_Click(object sender, RoutedEventArgs e)
         {
-            string vacationType = "";
-            if (rbEveryYear.IsChecked == true)
+            var vacationType = "";
+            if (RbEveryYear.IsChecked == true)
             {
-                vacationType = rbEveryYear.Content.ToString();
+                vacationType = RbEveryYear.Content.ToString();
             }
-            else if (rbOnce.IsChecked == true)
+            else if (RbOnce.IsChecked == true)
             {
-                vacationType = rbOnce.Content.ToString();
+                vacationType = RbOnce.Content.ToString();
             }
-            else if (rbOther.IsChecked == true)
+            else if (RbOther.IsChecked == true)
             {
-                vacationType = tbДругое.Text;
+                vacationType = TbДругое.Text;
             }
 
-            var order = new ПриказОтпуск()
+            var order = new ПриказОтпуск
             {
-                НачалоОтпуска = DateTime.Parse(dpBegin.Text),
-                КонецОтпуска = DateTime.Parse(dpEnd.Text),
+                НачалоОтпуска = DateTime.Parse(DpBegin.Text),
+                КонецОтпуска = DateTime.Parse(DpEnd.Text),
                 Вид = vacationType,
-                ПериодРаботыНачало = DateTime.Parse(dpПериодРаботыНачало.Text),
-                ПериодРаботыКонец = DateTime.Parse(dpПериодРаботыКонец.Text),
+                ПериодРаботыНачало = DateTime.Parse(DpПериодРаботыНачало.Text),
+                ПериодРаботыКонец = DateTime.Parse(DpПериодРаботыКонец.Text)
             };
             Tag = order;
 

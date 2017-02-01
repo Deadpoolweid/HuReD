@@ -1,16 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Hured.Tables_templates;
 using MahApps.Metro.Controls;
 
@@ -19,7 +10,7 @@ namespace Hured
     /// <summary>
     /// Логика взаимодействия для BusinessTrip.xaml
     /// </summary>
-    public partial class BusinessTrip : MetroWindow
+    public partial class BusinessTrip
     {
         public BusinessTrip(ПриказКомандировка order = null)
         {
@@ -27,12 +18,12 @@ namespace Hured
 
             if (order != null)
             {
-                tbМесто.Text = order.Место;
-                dpBegin.Text = order.НачалоКомандировки.ToShortDateString();
-                dpEnd.Text = order.КонецКомандировки.ToShortDateString();
-                tbЦель.Text = order.Цель;
-                tbЗаСчёт.Text = order.ЗаСчёт;
-                tbОснование.Text = order.Основание;
+                TbМесто.Text = order.Место;
+                DpBegin.Text = order.НачалоКомандировки.ToShortDateString();
+                DpEnd.Text = order.КонецКомандировки.ToShortDateString();
+                TbЦель.Text = order.Цель;
+                TbЗаСчёт.Text = order.ЗаСчёт;
+                TbОснование.Text = order.Основание;
             }
         }
 
@@ -51,14 +42,14 @@ namespace Hured
             }
 
 
-            var order = new ПриказКомандировка()
+            var order = new ПриказКомандировка
             {
-                Место = tbМесто.Text,
-                НачалоКомандировки = DateTime.Parse(dpBegin.Text),
-                КонецКомандировки = DateTime.Parse(dpEnd.Text),
-                Цель = tbЦель.Text,
-                ЗаСчёт = tbЗаСчёт.Text,
-                Основание = tbОснование.Text,
+                Место = TbМесто.Text,
+                НачалоКомандировки = DateTime.Parse(DpBegin.Text),
+                КонецКомандировки = DateTime.Parse(DpEnd.Text),
+                Цель = TbЦель.Text,
+                ЗаСчёт = TbЗаСчёт.Text,
+                Основание = TbОснование.Text
             };
             Tag = order;
 

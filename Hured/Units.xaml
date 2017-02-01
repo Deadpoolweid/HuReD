@@ -4,33 +4,31 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-        
-        xmlns:local="clr-namespace:Hured"
-        mc:Ignorable="d"
+
+                      mc:Ignorable="d"
         Title="Список подразделений" Height="250" Width="300" ResizeMode="CanMinimize">
 
     <Border>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition></RowDefinition>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <TextBox Name="tbNewUnit" Grid.Column="0" Grid.Row="0" Width="Auto" Height="Auto">Новое подразделение</TextBox>
+            <TextBox Name="TbNewUnit" Grid.Column="0" Grid.Row="0" Width="Auto" Height="Auto">Новое подразделение</TextBox>
 
-            <ListBox Name="lbUnits" Grid.Column="0" Grid.Row="1">
-            </ListBox>
+            <ListBox Name="LbUnits" Grid.Column="0" Grid.Row="1" />
 
 
             <StackPanel Grid.Row="0" Grid.RowSpan="2"  Grid.Column="1">
-                <Button x:Name="bAdd" Click="bAdd_Click">Добавить</Button>
-                <Button x:Name="bChange" Click="bChange_Click">Изменить</Button>
-                <Button x:Name="bRemove" Click="bRemove_Click">Удалить</Button>
-                <Button x:Name="bClose" Click="bClose_Click">Закрыть</Button>
+                <Button x:Name="BAdd" Click="bAdd_Click">Добавить</Button>
+                <Button x:Name="BChange" Click="bChange_Click">Изменить</Button>
+                <Button x:Name="BRemove" Click="bRemove_Click">Удалить</Button>
+                <Button x:Name="BClose" Click="bClose_Click">Закрыть</Button>
             </StackPanel>
         </Grid>
     </Border>

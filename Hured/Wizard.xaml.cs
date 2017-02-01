@@ -1,18 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using MahApps.Metro.Controls;
 using Xceed.Wpf.Toolkit.Core;
 
@@ -21,54 +12,54 @@ namespace Hured
     /// <summary>
     /// Логика взаимодействия для Wizard.xaml
     /// </summary>
-    public partial class Wizard : MetroWindow
+    public partial class Wizard
     {
         public Wizard()
         {
             InitializeComponent();
-            MetroWindow w = new MetroWindow();
-            bUnits.Click += (sender, args) =>
+            var w = new MetroWindow();
+            BUnits.Click += (sender, args) =>
             {
-                this.IsHitTestVisible = false;
+                IsHitTestVisible = false;
                 w = new Units();
                 w.ShowDialog();
                 IsRecordsAdded = HasOneRecord(w.Tag);
                 IsHitTestVisible = true;
             };
-            bPositions.Click += (sender, args) =>
+            BPositions.Click += (sender, args) =>
             {
-                this.IsHitTestVisible = false;
+                IsHitTestVisible = false;
                 w = new Positions();
                 w.ShowDialog();
                 IsRecordsAdded = HasOneRecord(w.Tag);
                 IsHitTestVisible = true;
             };
-            bEmployees.Click += (sender, args) =>
+            BEmployees.Click += (sender, args) =>
             {
-                this.IsHitTestVisible = false;
+                IsHitTestVisible = false;
                 w = new Employees();
                 w.ShowDialog();
                 IsRecordsAdded = HasOneRecord(w.Tag);
                 IsHitTestVisible = true;
             };
-            bStatuses.Click += (sender, args) =>
+            BStatuses.Click += (sender, args) =>
             {
-                this.IsHitTestVisible = false;
+                IsHitTestVisible = false;
                 w = new Statuses();
                 w.ShowDialog();
                 IsRecordsAdded = HasOneRecord(w.Tag);
                 IsHitTestVisible = true;
             };
-            bOrders.Click += (sender, args) =>
+            BOrders.Click += (sender, args) =>
             {
-                this.IsHitTestVisible = false;
+                IsHitTestVisible = false;
                 w = new Orders();
                 w.ShowDialog();
                 IsHitTestVisible = true;
             };
-            bTimeSheet.Click += (sender, args) =>
+            BTimeSheet.Click += (sender, args) =>
             {
-                this.IsHitTestVisible = false;
+                IsHitTestVisible = false;
                 w = new Timesheet();
                 w.ShowDialog();
                 IsHitTestVisible = true;
@@ -87,6 +78,9 @@ namespace Hured
         private bool HasOneRecord(object windowTag)
         {
             var tResult = windowTag as TransactionResult;
+
+            Debug.Assert(tResult != null, "tResult != null");
+
             if (tResult.RecordsCount < 1)
             {
                 Functions.ShowPopup(this,"Добавьте хотя бы одну запись.");
@@ -102,12 +96,12 @@ namespace Hured
         {
             get
             {
-                return (bool)this.GetValue(IsTextBoxesFilledProperty);
+                return (bool)GetValue(IsTextBoxesFilledProperty);
             }
             set
             {
                 _contentLoaded = value;
-                this.SetValue(IsTextBoxesFilledProperty, !this.FindChildren<TextBox>().Any(Functions.IsEmpty));
+                SetValue(IsTextBoxesFilledProperty, !this.FindChildren<TextBox>().Any(Functions.IsEmpty));
             }
         }
 
@@ -126,50 +120,46 @@ namespace Hured
 
         private void WInit_OnNext(object sender, CancelRoutedEventArgs e)
         {
-            var currentPage = wInit.CurrentPage;
+            var currentPage = WInit.CurrentPage;
 
             int currentNumber;
-            bool isContains = false;
+            var isContains = false;
             // 7 - Количестов страниц
             for (currentNumber = 1; currentNumber < 7; currentNumber++)
             {
-                if (currentPage.Name.Contains($"{currentNumber}"))
-                {
-                    isContains = true;
-                    break;
-                }
+                if (!currentPage.Name.Contains($"{currentNumber}")) continue;
+                isContains = true;
+                break;
             }
 
 
-            if (isContains)
+            if (!isContains) return;
+            switch (currentNumber)
             {
-                if (currentNumber == 1)
-                {
-                    AppSettings s = new AppSettings()
+                case 1:
+                    var s = new AppSettings
                     {
-                        ДолжностьРуководителя = tbДолжностьРуководителя.Text,
-                        НазваниеОрганизации = tbНазваниеОрганизации.Text,
-                        РуководительОрганизации = tbРуководитель.Text,
-                        НормаРабочегоДня = tbНормаРабочегоДня.Text,
+                        ДолжностьРуководителя = TbДолжностьРуководителя.Text,
+                        НазваниеОрганизации = TbНазваниеОрганизации.Text,
+                        РуководительОрганизации = TbРуководитель.Text,
+                        НормаРабочегоДня = TbНормаРабочегоДня.Text
                     };
 
                     var formatter = new BinaryFormatter();
                     // Сохранить объект в локальном файле.
                     using (Stream fStream = new FileStream("settings.dat",
-                       FileMode.Create, FileAccess.Write, FileShare.None))
+                        FileMode.Create, FileAccess.Write, FileShare.None))
                     {
                         formatter.Serialize(fStream, s);
                     }
-                }
-                else if (currentNumber == 7 || currentNumber == 5)
-                {
+                    break;
+                case 7:
+                case 5:
                     currentPage.CanSelectNextPage = true;
-                }
-                else
-                {
-
+                    break;
+                default:
                     IsRecordsAdded = false;
-                } 
+                    break;
             }
         }
     }

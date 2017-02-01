@@ -1,26 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
+using System.Windows.Forms;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Hured.DBModel;
 using Hured.Tables_templates;
-using MahApps.Metro.Controls;
 
 namespace Hured
 {
     /// <summary>
     /// Логика взаимодействия для Status.xaml
     /// </summary>
-    public partial class Status : MetroWindow
+    public partial class Status
     {
         public Status(Статус status = null)
         {
@@ -28,25 +18,25 @@ namespace Hured
 
             if (status != null)
             {
-                IsEditMode = true;
-                tbName.Text = status.Название;
-                byte r = Convert.ToByte(status.Цвет.Split(' ')[0]);
-                byte g = Convert.ToByte(status.Цвет.Split(' ')[1]);
-                byte b = Convert.ToByte(status.Цвет.Split(' ')[2]);
+                _isEditMode = true;
+                TbName.Text = status.Название;
+                var r = Convert.ToByte(status.Цвет.Split(' ')[0]);
+                var g = Convert.ToByte(status.Цвет.Split(' ')[1]);
+                var b = Convert.ToByte(status.Цвет.Split(' ')[2]);
 
 
                 _selectedColor = Color.FromRgb(r, g, b);
                 Tag = status.СтатусId;
             }
 
-            bColor.Background = new SolidColorBrush(_selectedColor);
+            BColor.Background = new SolidColorBrush(_selectedColor);
         }
 
-        private bool IsEditMode = false;
+        private readonly bool _isEditMode;
 
         private void bOk_Click(object sender, RoutedEventArgs e)
         {
-            if (Functions.IsEmpty(tbName))
+            if (Functions.IsEmpty(TbName))
             {
                 return;
             }
@@ -54,17 +44,17 @@ namespace Hured
             Controller.OpenConnection();
 
 
-            var status = new Статус()
+            var status = new Статус
             {
-                Название = tbName.Text,
-                Цвет = _selectedColor.R.ToString() + " " +
-                    _selectedColor.G.ToString() + " " +
-                    _selectedColor.B.ToString()
+                Название = TbName.Text,
+                Цвет = _selectedColor.R + " " +
+                    _selectedColor.G + " " +
+                    _selectedColor.B
             };
 
-            if (IsEditMode)
+            if (_isEditMode)
             {
-                int id = (int) Tag;
+                var id = (int)Tag;
                 Controller.Edit(q => q.СтатусId == id, status);
             }
             else
@@ -89,14 +79,14 @@ namespace Hured
 
         private void BColor_OnClick(object sender, RoutedEventArgs e)
         {
-            System.Windows.Forms.ColorDialog colorDialog = new System.Windows.Forms.ColorDialog();
+            var colorDialog = new ColorDialog();
             colorDialog.ShowDialog();
-            System.Drawing.Color color = colorDialog.Color;
+            var color = colorDialog.Color;
             _selectedColor.A = color.A;
             _selectedColor.R = color.R;
             _selectedColor.G = color.G;
             _selectedColor.B = color.B;
-            bColor.Background = new SolidColorBrush(_selectedColor);
+            BColor.Background = new SolidColorBrush(_selectedColor);
         }
     }
 }

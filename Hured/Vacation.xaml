@@ -4,47 +4,46 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-        xmlns:local="clr-namespace:Hured"
-        mc:Ignorable="d"
+                      mc:Ignorable="d"
         Title="Выдать отпуск" Height="240" Width="550" ResizeMode="CanMinimize">
     <Border>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
                 <Label Content="С"/>
-                <DatePicker x:Name="dpBegin"></DatePicker>
+                <DatePicker x:Name="DpBegin" />
                 <Label>по</Label>
-                <DatePicker x:Name="dpEnd"></DatePicker>
+                <DatePicker x:Name="DpEnd" />
             </StackPanel>
 
             <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
                 <Label Content="За период работы с"/>
-                <DatePicker x:Name="dpПериодРаботыНачало"></DatePicker>
+                <DatePicker x:Name="DpПериодРаботыНачало" />
                 <Label>по</Label>
-                <DatePicker x:Name="dpПериодРаботыКонец"></DatePicker>
+                <DatePicker x:Name="DpПериодРаботыКонец" />
             </StackPanel>
-            
-            <RadioButton x:Name="rbEveryYear" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" GroupName="Type">Ежегодный</RadioButton>
-            <RadioButton x:Name="rbOnce" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" GroupName="Type">Единоразовый</RadioButton>
-            <RadioButton x:Name="rbOther" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" GroupName="Type">Другое</RadioButton>
 
-            <TextBox x:Name="tbДругое" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left"></TextBox>
+            <RadioButton x:Name="RbEveryYear" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" GroupName="Type">Ежегодный</RadioButton>
+            <RadioButton x:Name="RbOnce" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" GroupName="Type">Единоразовый</RadioButton>
+            <RadioButton x:Name="RbOther" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" GroupName="Type">Другое</RadioButton>
+
+            <TextBox x:Name="TbДругое" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" />
 
             <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal">
-                <Button x:Name="bOk" Click="bOk_Click">Оформить</Button>
-                <Button x:Name="bCancel" Click="bCancel_Click">Отмена</Button>
+                <Button x:Name="BOk" Click="bOk_Click">Оформить</Button>
+                <Button x:Name="BCancel" Click="bCancel_Click">Отмена</Button>
             </StackPanel>
         </Grid>
     </Border>

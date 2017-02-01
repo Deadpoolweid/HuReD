@@ -3,18 +3,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Hured"
-        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+                      xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
         Title="Отдел кадров - Главное меню" 
-                      WindowStartupLocation="CenterScreen" WindowState="Maximized">
+                      WindowStartupLocation="CenterScreen">
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
         </Grid.RowDefinitions>
 
         <!--<controls:Tile Title="Сотрудники" 
@@ -27,10 +26,10 @@
                        >-->
         <!--</controls:Tile>-->
 
-        <Button Grid.Row="0" Name="bEmployees" Click="BEmployees_OnClick">Сотрудники</Button>
-        <Button x:Name="bOrders" Grid.Row="1" Click="bOrders_Click">Приказы</Button>
-        <Button x:Name="bTimesheet" Grid.Row="2" Click="bTimesheet_Click">Табель посещаемости</Button>
-        <Button x:Name="bSettings" Grid.Row="3" Click="bSettings_Click">Настройки</Button>
+        <Button Grid.Row="0" Name="BEmployees" Click="BEmployees_OnClick">Сотрудники</Button>
+        <Button x:Name="BOrders" Grid.Row="1" Click="bOrders_Click">Приказы</Button>
+        <Button x:Name="BTimesheet" Grid.Row="2" Click="bTimesheet_Click">Табель посещаемости</Button>
+        <Button x:Name="BSettings" Grid.Row="3" Click="bSettings_Click">Настройки</Button>
 
     </Grid>
 </controls:MetroWindow>

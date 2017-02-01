@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 
 namespace Hured.DBModel
@@ -12,110 +10,111 @@ namespace Hured.DBModel
 
     internal class Controller
     {
-        private static string connectionString =
+        private static readonly string ConnectionString =
             "server=localhost;port=3306;database=Hured;uid=deadpoolweid;password=HERETIC23;persistsecurityinfo=True";
 
-        private static MySqlConnection connection;
+        private static MySqlConnection _connection;
 
         public static void OpenConnection()
         {
-            connection = new MySqlConnection(connectionString);
-            context = new Hured(connection, false);
-            connection.Open();
-            transaction = connection.BeginTransaction();
+            _connection = new MySqlConnection(ConnectionString);
+            Context = new Hured(_connection, false);
+            _connection.Open();
+            _transaction = _connection.BeginTransaction();
 
             // Interception/SQL logging
             //context.Database.Log = (string message) => { Console.WriteLine(message + "\n====================================\n"); };
-            context.Database.Log = (string message) =>
+            Context.Database.Log = message =>
             {
-                using (System.IO.StreamWriter file = new StreamWriter(@"EFlog.txt", true))
+                using (var file = new StreamWriter(@"EFlog.txt", true))
                 {
                     file.WriteLine(DateTime.Now + message + "\n====================================\n");
                 }
             };
 
             // Passing an existing transaction to the context
-            context.Database.UseTransaction(transaction);
+            Context.Database.UseTransaction(_transaction);
 
-            context.Configuration.LazyLoadingEnabled = true;
+            Context.Configuration.LazyLoadingEnabled = true;
         }
 
-        static private MySqlTransaction transaction;
+        static private MySqlTransaction _transaction;
 
         public static void CloseConnection()
         {
-            context.SaveChanges();
-            transaction.Commit();
+            Context.SaveChanges();
+            _transaction.Commit();
 
-            connection.Close();
-            context = null;
+            _connection.Close();
+            Context = null;
         }
 
 
-        public static Hured context;
+        public static Hured Context;
 
         public static void ExecuteExample()
         {
-            
+
         }
 
-        public static void InitDB(string connectionString = null)
+        public static void InitDb(string connectionString = null)
         {
-            connectionString =
-                "server=localhost;port=3306;database=Hured;uid=deadpoolweid;password=HERETIC23;persistsecurityinfo=True";
-
+            if (connectionString == null)
+            {
+                connectionString =
+                    "server=localhost;port=3306;database=Hured;uid=deadpoolweid;password=HERETIC23;persistsecurityinfo=True";
+            }
             using (var connection = new MySqlConnection(connectionString))
             {
-                using (var contextDB = new Hured(connection, false))
+                using (var contextDb = new Hured(connection, false))
                 {
-                    contextDB.Database.CreateIfNotExists();
+                    contextDb.Database.CreateIfNotExists();
                 }
             }
         }
 
 
-        public static void Insert<T>(T Item) where T : class
+        public static void Insert<T>(T item) where T : class
         {
 
-            var table = context.Set<T>();
+            var table = Context.Set<T>();
 
-            table.Add(Item);
+            table.Add(item);
 
 
         }
 
-        public static void Insert<T>(List<T> Items) where T : class
+        public static void Insert<T>(List<T> items) where T : class
         {
-            var table = context.Set<T>();
+            var table = Context.Set<T>();
 
-            table.AddRange(Items);
+            table.AddRange(items);
         }
 
         public static T Find<T>(T type, Expression<Func<T, bool>> predicate) where T : class
         {
 
 
-            var table = context.Set<T>();
+            var table = Context.Set<T>();
 
-            T result = table.FirstOrDefault(predicate);
+            var result = table.FirstOrDefault(predicate);
 
 
             return result;
 
         }
 
-        public static void Edit<T>(Expression<Func<T, bool>> predicate, T NewItem) where T : class
+        public static void Edit<T>(Expression<Func<T, bool>> predicate, T newItem) where T : class
         {
-            var table = context.Set<T>();
+            var table = Context.Set<T>();
 
             var item = table.FirstOrDefault(predicate);
 
             foreach (var property in typeof(T).GetProperties())
             {
-                var value = NewItem.GetType().GetProperty(property.Name).GetValue(NewItem);
+                var value = newItem.GetType().GetProperty(property.Name).GetValue(newItem);
 
-                var temp = property.GetValue(NewItem,null);
-                if (property.Name.Contains("Id") || Equals(property.GetValue(NewItem),null))
+                if (property.Name.Contains("Id") || Equals(property.GetValue(newItem), null))
                 {
                     continue;
                 }
@@ -126,29 +125,29 @@ namespace Hured.DBModel
 
         public static void Remove<T>(T type, Expression<Func<T, bool>> predicate) where T : class
         {
-            var table = context.Set<T>();
+            var table = Context.Set<T>();
 
-            T result = table.FirstOrDefault(predicate);
+            var result = table.FirstOrDefault(predicate);
 
             table.Remove(result);
         }
 
         public static List<T> Select<T>(T type, Expression<Func<T, bool>> predicate) where T : class
         {
-            var table = context.Set<T>();
+            var table = Context.Set<T>();
 
-            return table.Where(predicate)?.ToList();
+            return table.Where(predicate).ToList();
         }
 
-        public static bool Exists<T>(T type, Expression<Func<T, bool>> predicate) where  T : class
+        public static bool Exists<T>(T type, Expression<Func<T, bool>> predicate) where T : class
         {
             var result = Find(type, predicate);
             return result != null;
         }
 
-        public static int RecordsCount<T>() where T : class 
+        public static int RecordsCount<T>() where T : class
         {
-            var table = context.Set<T>();
+            var table = Context.Set<T>();
 
             var result = table.Count();
             return result;

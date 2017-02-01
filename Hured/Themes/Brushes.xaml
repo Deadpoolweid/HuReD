@@ -4,7 +4,7 @@
                     xmlns:controls="clr-namespace:System.Windows;assembly=PresentationFramework">
 
     <!-- Brushes -->
-    
+
     <SolidColorBrush x:Key="ControlForeground" Color="#FF32EBFB" />
     <SolidColorBrush x:Key="ControlForegroundWhite" Color="#FFEEEFFF" />
     <SolidColorBrush x:Key="BorderBrushVisual" Color="Transparent"/>
@@ -40,7 +40,7 @@
     <SolidColorBrush x:Key="DisabledForeground2" Color="#FFAAAAAA"/>
     <SolidColorBrush x:Key="ControlHighlight" Color="#80CCCCCC" />
     <SolidColorBrush x:Key="FocusVisualBrush" Color="#B6BBBBBB" />
-    
+
     <LinearGradientBrush x:Key="ControlBorderBrush" StartPoint="0,0.5" EndPoint="1,0.5">
         <GradientStop Color="#FF686868" Offset="0.204" />
         <GradientStop Color="#FF686868" Offset="0.864" />
@@ -50,7 +50,7 @@
         <GradientStop Color="#FF1D83BE" Offset="0.204" />
         <GradientStop Color="#FF1ECDA7" Offset="0.864" />
     </LinearGradientBrush>
-    
+
 
     <LinearGradientBrush x:Key="ToggleButtonHoverBrush" EndPoint="0,1" StartPoint="0,0">
         <GradientStop Color="#FF605F5F" Offset="0"/>
@@ -73,34 +73,34 @@
 
     <!-- Brush for ToggleButton Occupado-->
 
-    <RadialGradientBrush x:Key="ToggleButtonBorderBrush_forOccupado" GradientOrigin="0,0" RadiusX="0.8" RadiusY="0.8">
+    <RadialGradientBrush x:Key="ToggleButtonBorderBrushForOccupado" GradientOrigin="0,0" RadiusX="0.8" RadiusY="0.8">
         <GradientStop Color="#FF7D7D7D" Offset="1"/>
         <GradientStop Color="#FF535353" Offset="0"/>
     </RadialGradientBrush>
 
-    <LinearGradientBrush x:Key="ToggleButtonBackgroundON_forOccupado" EndPoint="0.5,1" StartPoint="0.5,0">
+    <LinearGradientBrush x:Key="ToggleButtonBackgroundOnForOccupado" EndPoint="0.5,1" StartPoint="0.5,0">
         <GradientStop Color="#FF21BABA" Offset="1"/>
         <GradientStop Color="#FF157676"/>
     </LinearGradientBrush>
 
-    <SolidColorBrush x:Key="ToggleButtonBorderBrushON_forOccupado" Color="#DE062525"/>
+    <SolidColorBrush x:Key="ToggleButtonBorderBrushOnForOccupado" Color="#DE062525"/>
 
-    <LinearGradientBrush x:Key="ToggleButtonBackgroundOFF_forOccupado" EndPoint="0.5,1" StartPoint="0.5,0">
+    <LinearGradientBrush x:Key="ToggleButtonBackgroundOffForOccupado" EndPoint="0.5,1" StartPoint="0.5,0">
         <GradientStop Color="#FF969696" Offset="0"/>
         <GradientStop Color="#FF767676" Offset="1"/>
     </LinearGradientBrush>
 
-    <LinearGradientBrush x:Key="ToggleButtonBorderBrushOFF_forOccupado" EndPoint="0.5,1" StartPoint="0.5,0">
+    <LinearGradientBrush x:Key="ToggleButtonBorderBrushOffForOccupado" EndPoint="0.5,1" StartPoint="0.5,0">
         <GradientStop Color="#FF888888" Offset="1"/>
         <GradientStop Color="#FF979797"/>
     </LinearGradientBrush>
 
-    <LinearGradientBrush x:Key="ToggleButtonBackBackground_forOccupado" EndPoint="0.5,1" StartPoint="0.5,0">
+    <LinearGradientBrush x:Key="ToggleButtonBackBackgroundForOccupado" EndPoint="0.5,1" StartPoint="0.5,0">
         <GradientStop Color="#FF434343" Offset="0"/>
         <GradientStop Color="#FF838383" Offset="1"/>
     </LinearGradientBrush>
 
-    <LinearGradientBrush x:Key="ToggleButtonBackBorderBrush_forOccupado" EndPoint="0.5,1" StartPoint="0.5,0">
+    <LinearGradientBrush x:Key="ToggleButtonBackBorderBrushForOccupado" EndPoint="0.5,1" StartPoint="0.5,0">
         <GradientStop Color="#FF353535" Offset="1"/>
         <GradientStop Color="#FF1B1B1B"/>
     </LinearGradientBrush>
@@ -170,8 +170,8 @@
     <SolidColorBrush x:Key="SelectedHeadermenu" Color="Black"/>
 
     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" x:Key="IconBackgroundMenuItem">
-        <GradientStop Color="#FF555555" Offset="0"></GradientStop>
-        <GradientStop Color="#FF474747" Offset="1"></GradientStop>
+        <GradientStop Color="#FF555555" Offset="0" />
+        <GradientStop Color="#FF474747" Offset="1" />
     </LinearGradientBrush>
 
     <LinearGradientBrush x:Key="BackgroundHoverMenu" StartPoint="0.5,0" EndPoint="0.5,1">
@@ -183,7 +183,7 @@
         <GradientStop Color="#bbacadad" Offset="0"/>
         <GradientStop Color="#bb7a7b7b" Offset="1"/>
     </LinearGradientBrush>
-    
+
     <!-- Expander -->
     <LinearGradientBrush x:Key="BackgroundExpanderLeft" EndPoint="1,0.5" StartPoint="0,0.5">
         <GradientStop Color="#FF878585" Offset="0"/>
@@ -201,7 +201,7 @@
     </LinearGradientBrush>
 
     <SolidColorBrush x:Key="SliderSelectRange" Color="#FF0A8FE4"/>
-    
+
     <!-- Calendar -->
     <LinearGradientBrush x:Key="HoverBackgroundCalendar" EndPoint="0,1" StartPoint="0,0">
         <GradientStop Color="#FFB7B7B7" Offset="0"/>
@@ -274,7 +274,7 @@
         </Setter>
     </Style>
 
-    <Style x:Key="FocusLine_Occupado">
+    <Style x:Key="FocusLineOccupado">
         <Setter Property="Control.Template">
             <Setter.Value>
                 <ControlTemplate>
@@ -286,8 +286,8 @@
 
     <!-- Const -->
 
-    <system:String x:Key="ToggleButtonGO">GO</system:String>
-    <system:String x:Key="ToggleButtonSTOP">STOP</system:String>
+    <system:String x:Key="ToggleButtonGo">GO</system:String>
+    <system:String x:Key="ToggleButtonStop">STOP</system:String>
     <controls:Thickness x:Key="BorderThicknessButton">0</controls:Thickness>
     <controls:Thickness x:Key="BorderThicknessButtonOutline">1,1,0,0</controls:Thickness>
     <controls:Thickness x:Key="ThicknessButtonVisual">0</controls:Thickness>
@@ -300,6 +300,6 @@
 
 
 
-   
+
 
 </ResourceDictionary>

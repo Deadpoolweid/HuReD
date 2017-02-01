@@ -1,108 +1,88 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Dynamic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Windows.Threading;
 using Hured.DBModel;
 using Hured.Tables_templates;
-using MahApps.Metro.Controls;
-using DataGridRowEventArgs = System.Windows.Controls.DataGridRowEventArgs;
 
 namespace Hured
 {
     /// <summary>
     /// Логика взаимодействия для Timesheet.xaml
     /// </summary>
-    public partial class Timesheet : MetroWindow
+    public partial class Timesheet
     {
         public Timesheet()
         {
             InitializeComponent();
 
-            Functions.FillTreeView(ref tvUnits);
+            Functions.FillTreeView(ref TvUnits);
 
-            dgTimeSheet.CanUserAddRows = false;
-            dgTimeSheet.CanUserSortColumns = false;
-            dgTimeSheet.GridLinesVisibility = DataGridGridLinesVisibility.All;
-            dgTimeSheet.SelectionUnit = DataGridSelectionUnit.Cell;
+            DgTimeSheet.CanUserAddRows = false;
+            DgTimeSheet.CanUserSortColumns = false;
+            DgTimeSheet.GridLinesVisibility = DataGridGridLinesVisibility.All;
+            DgTimeSheet.SelectionUnit = DataGridSelectionUnit.Cell;
 
+            _isGridCreated = false;
 
             SyncTimeSheet();
         }
 
-        List<int> EmployeesId = new List<int>();
+        readonly List<int> _employeesId = new List<int>();
 
-        private bool IsGridCreated = false;
+        private bool _isGridCreated;
 
-        int daysCount = 20;
+        private const int DaysCount = 20;
 
-        void SyncTimeSheet(List<Сотрудник> Сотрудники = null)
+        void SyncTimeSheet(List<Сотрудник> сотрудники = null)
         {
-            if (!IsGridCreated)
+            if (!_isGridCreated)
             {
-                var Name = new DataGridTextColumn();
-                //Name.Binding = new Binding("Name");
-                Name.Header = "Сотрудник";
-                //Name.ColumnName = Name.Caption;
+                var name = new DataGridTextColumn { Header = "Сотрудник" };
 
-                dgTimeSheet.Columns.Add(Name);
-                //dgTimeSheet.Columns.Add(Name);
+                DgTimeSheet.Columns.Add(name);
 
                 var now = DateTime.Now.Date;
 
-                for (int i = 0; i < daysCount; i++)
+                for (var i = 0; i < DaysCount; i++)
                 {
-                    var column = new DataGridTemplateColumn();
-                    //column.Binding = new Binding(now.ToShortDateString().Replace(".",""));
-                    column.Header = now.ToShortDateString();
-                    //column.ColumnName = column.Caption;
-                    dgTimeSheet.Columns.Add(column);
+                    var column = new DataGridTemplateColumn { Header = now.ToShortDateString() };
+
+                    DgTimeSheet.Columns.Add(column);
 
                     now = now.AddDays(1);
                 }
-                IsGridCreated = true;
+                _isGridCreated = true;
             }
 
-            dgTimeSheet.Items.Clear();
+            DgTimeSheet.Items.Clear();
 
             Controller.OpenConnection();
-            if (Сотрудники == null)
+            if (сотрудники == null)
             {
-                Сотрудники = Controller.Select(new Сотрудник(), q => q != null);
+                сотрудники = Controller.Select(new Сотрудник(), q => q != null);
             }
 
-            foreach (var employee in Сотрудники)
+            foreach (var employee in сотрудники)
             {
                 var entries = Controller.Select(new ТабельнаяЗапись(),
                     q => q.Сотрудник.СотрудникId == employee.СотрудникId);
                 entries = entries.OrderBy(q => q.Дата).ToList();
 
-                var sEntries = new object[dgTimeSheet.Columns.Count];
+                var sEntries = new object[DgTimeSheet.Columns.Count];
 
                 sEntries[0] = employee.ОсновнаяИнформация.Фамилия + " " +
                 employee.ОсновнаяИнформация.Имя + " " +
                 employee.ОсновнаяИнформация.Отчество + " ";
 
-                for (int i = 1; i < sEntries.Length; i++)
+                for (var i = 1; i < sEntries.Length; i++)
                 {
                     foreach (var entry in entries)
                     {
-                        if (dgTimeSheet.Columns[i].Header.ToString() == entry.Дата.ToShortDateString())
+                        if (DgTimeSheet.Columns[i].Header.ToString() == entry.Дата.ToShortDateString())
                         {
                             sEntries[i] = entry;
                             break;
@@ -110,35 +90,35 @@ namespace Hured
                     }
                 }
 
-                dgTimeSheet.Items.Add(sEntries);
-                EmployeesId.Add(employee.СотрудникId);
+                DgTimeSheet.Items.Add(sEntries);
+                _employeesId.Add(employee.СотрудникId);
             }
 
             Controller.CloseConnection();
 
 
-            dgTimeSheet.ItemContainerGenerator.StatusChanged += (sender, args) =>
+            DgTimeSheet.ItemContainerGenerator.StatusChanged += (sender, args) =>
             {
-                if (dgTimeSheet.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
+                if (DgTimeSheet.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
                 {
-                    for (int row = 0; row < dgTimeSheet.Items.Count; row++)
+                    for (var row = 0; row < DgTimeSheet.Items.Count; row++)
                     {
-                        var items = dgTimeSheet.Items[row] as Object[];
+                        var items = DgTimeSheet.Items[row] as Object[];
 
-                        for (int column = 0; column < dgTimeSheet.Columns.Count; column++)
+                        for (var column = 0; column < DgTimeSheet.Columns.Count; column++)
                         {
                             var cell = GetCell(row, column);
 
-                            if (items[column] == null)
+                            if (items != null && items[column] == null)
                             {
                                 cell.Tag = false;
                                 continue;
                             }
 
-                            var content = items[column] as ТабельнаяЗапись;
+                            var content = items?[column] as ТабельнаяЗапись;
                             if (content == null)
                             {
-                                cell.Content = items[column] as String;
+                                cell.Content = items?[column] as String;
                                 continue;
                             }
 
@@ -157,54 +137,57 @@ namespace Hured
         {
             var tvUnits = sender as TreeView;
 
-            List<Сотрудник> СписокСотрудников = null;
+            List<Сотрудник> списокСотрудников = null;
 
-            TreeViewItem item = tvUnits.SelectedItem as TreeViewItem;
+            var item = tvUnits?.SelectedItem as TreeViewItem;
 
             Controller.OpenConnection();
 
             //Выбрано подразделение
-            if (tvUnits.Items.Contains(tvUnits.SelectedItem))
+            if (tvUnits != null && tvUnits.Items.Contains(tvUnits.SelectedItem))
             {
-                if (item.Header.ToString() != "Все подразделения")
+                if (item != null && item.Header.ToString() != "Все подразделения")
                 {
                     var unitId = (int)item.Tag;
-                    СписокСотрудников = Controller.Select(new Сотрудник(),
+                    списокСотрудников = Controller.Select(new Сотрудник(),
                         q => q.ОсновнаяИнформация.Должность.Подразделение.ПодразделениеId == unitId);
                 }
             } // Выбрана должность
             else
             {
-                var positionId = (int)item.Tag;
-                СписокСотрудников = Controller.Select(new Сотрудник(),
-                    q => q.ОсновнаяИнформация.Должность.ДолжностьId == positionId);
+                if (item?.Tag != null)
+                {
+                    var positionId = (int)item.Tag;
+                    списокСотрудников = Controller.Select(new Сотрудник(),
+                        q => q.ОсновнаяИнформация.Должность.ДолжностьId == positionId);
+                }
             }
 
             Controller.CloseConnection();
-            SyncTimeSheet(СписокСотрудников);
+            SyncTimeSheet(списокСотрудников);
         }
 
         Brush GetColorFromString(string colorString)
         {
-            byte r = Convert.ToByte(colorString.Split(' ')[0]);
-            byte g = Convert.ToByte(colorString.Split(' ')[1]);
-            byte b = Convert.ToByte(colorString.Split(' ')[2]);
+            var r = Convert.ToByte(colorString.Split(' ')[0]);
+            var g = Convert.ToByte(colorString.Split(' ')[1]);
+            var b = Convert.ToByte(colorString.Split(' ')[2]);
 
             return new SolidColorBrush(Color.FromRgb(r, g, b));
         }
 
         public DataGridCell GetCell(int row, int column)
         {
-            DataGridRow rowContainer = GetRow(row);
+            var rowContainer = GetRow(row);
 
             if (rowContainer != null)
             {
-                DataGridCellsPresenter presenter = GetVisualChild<DataGridCellsPresenter>(rowContainer);
+                var presenter = GetVisualChild<DataGridCellsPresenter>(rowContainer);
 
-                DataGridCell cell = (DataGridCell)presenter.ItemContainerGenerator.ContainerFromIndex(column);
+                var cell = (DataGridCell)presenter.ItemContainerGenerator.ContainerFromIndex(column);
                 if (cell == null)
                 {
-                    dgTimeSheet.ScrollIntoView(rowContainer, dgTimeSheet.Columns[column]);
+                    DgTimeSheet.ScrollIntoView(rowContainer, DgTimeSheet.Columns[column]);
                     cell = (DataGridCell)presenter.ItemContainerGenerator.ContainerFromIndex(column);
                 }
                 return cell;
@@ -214,30 +197,26 @@ namespace Hured
 
         public DataGridRow GetRow(int index)
         {
-            dgTimeSheet.UpdateLayout();
-            dgTimeSheet.ScrollIntoView(dgTimeSheet.Items[index]);
-            DataGridRow row = (DataGridRow)dgTimeSheet.ItemContainerGenerator.ContainerFromIndex(index);
+            DgTimeSheet.UpdateLayout();
+            DgTimeSheet.ScrollIntoView(DgTimeSheet.Items[index]);
+            var row = (DataGridRow)DgTimeSheet.ItemContainerGenerator.ContainerFromIndex(index);
             if (row == null)
             {
-                dgTimeSheet.UpdateLayout();
-                dgTimeSheet.ScrollIntoView(dgTimeSheet.Items[index]);
-                row = (DataGridRow)dgTimeSheet.ItemContainerGenerator.ContainerFromIndex(index);
+                DgTimeSheet.UpdateLayout();
+                DgTimeSheet.ScrollIntoView(DgTimeSheet.Items[index]);
+                row = (DataGridRow)DgTimeSheet.ItemContainerGenerator.ContainerFromIndex(index);
             }
             return row;
         }
 
         public static T GetVisualChild<T>(Visual parent) where T : Visual
         {
-            T child = default(T);
-            int numVisuals = VisualTreeHelper.GetChildrenCount(parent);
-            for (int i = 0; i < numVisuals; i++)
+            var child = default(T);
+            var numVisuals = VisualTreeHelper.GetChildrenCount(parent);
+            for (var i = 0; i < numVisuals; i++)
             {
-                Visual v = (Visual)VisualTreeHelper.GetChild(parent, i);
-                child = v as T;
-                if (child == null)
-                {
-                    child = GetVisualChild<T>(v);
-                }
+                var v = (Visual)VisualTreeHelper.GetChild(parent, i);
+                child = v as T ?? GetVisualChild<T>(v);
                 if (child != null)
                 {
                     break;
@@ -265,26 +244,26 @@ namespace Hured
                 TimesheetEntry w;
                 if (isEditing)
                 {
-                    var employeeId = EmployeesId[e.Row.GetIndex()];
+                    var employeeId = _employeesId[e.Row.GetIndex()];
                     var entryDate = DateTime.Parse(e.Column.Header.ToString());
                     Controller.OpenConnection();
                     var entry = Controller.Find(new ТабельнаяЗапись(),
                         q => q.Сотрудник.СотрудникId == employeeId &&
                              q.Дата == entryDate);
                     Controller.CloseConnection();
-                    w = new TimesheetEntry(new object[]
+                    w = new TimesheetEntry(new[]
                     {
                         e.Column.Header,
-                        (grid.Items[e.Row.GetIndex()] as Object[])[0],
+                        (grid?.Items[e.Row.GetIndex()] as object[])?[0],
                         entry
                     });
                 }
                 else
                 {
-                    w = new TimesheetEntry(new object[]
+                    w = new TimesheetEntry(new[]
                     {
                         e.Column.Header,
-                        (grid.Items[e.Row.GetIndex()] as Object[])[0]
+                        (grid?.Items[e.Row.GetIndex()] as object[])?[0]
                     });
                 }
 
@@ -292,20 +271,23 @@ namespace Hured
                 if (w.DialogResult == true)
                 {
                     var entry = w.Tag as ТабельнаяЗапись;
-                    entry.Дата = DateTime.Parse(e.Column.Header.ToString());
-
-                    var employeeId = EmployeesId[e.Row.GetIndex()];
-                    entry.Сотрудник = Controller.Find(new Сотрудник(),
-                        q => q.СотрудникId == employeeId);
-
-                    if (isEditing)
+                    if (entry != null)
                     {
-                        Controller.Edit(q => q.ТабельнаяЗаписьId == entry.ТабельнаяЗаписьId, entry);
-                    }
-                    else
-                    {
-                        Controller.Insert(entry);
+                        entry.Дата = DateTime.Parse(e.Column.Header.ToString());
 
+                        var employeeId = _employeesId[e.Row.GetIndex()];
+                        entry.Сотрудник = Controller.Find(new Сотрудник(),
+                            q => q.СотрудникId == employeeId);
+
+                        if (isEditing)
+                        {
+                            Controller.Edit(q => q.ТабельнаяЗаписьId == entry.ТабельнаяЗаписьId, entry);
+                        }
+                        else
+                        {
+                            Controller.Insert(entry);
+
+                        }
                     }
 
                     Controller.CloseConnection();

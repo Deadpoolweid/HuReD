@@ -3,33 +3,32 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Hured"
-        xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
+    xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-        xmlns:Themes="clr-namespace:Xceed.Wpf.Toolkit.Themes;assembly=Xceed.Wpf.Toolkit" x:Class="Hured.Wizard"
+    x:Class="Hured.Wizard"
         mc:Ignorable="d"
-        Title="Настройка приложения" Height="300" Width="300" Name="_this">
-    
+        Title="Настройка приложения" Height="300" Width="300" Name="This" d:DataContext="{d:DesignData Wizard}">
+
     <Window.Resources>
         <Style TargetType="toolkit:WizardPage">
-            <Setter Property="DataContext" Value="{Binding ElementName=_this}"></Setter>
-            <Setter Property="CanSelectNextPage" Value="{Binding Path=IsRecordsAdded}"></Setter>
+            <Setter Property="DataContext" Value="{Binding ElementName=This}" />
+            <Setter Property="CanSelectNextPage" Value="{Binding Path=IsRecordsAdded}" />
         </Style>
     </Window.Resources>
-    <toolkit:Wizard FinishButtonClosesWindow="True" x:Name="wInit" Next="WInit_OnNext"
+    <toolkit:Wizard FinishButtonClosesWindow="True" x:Name="WInit" Next="WInit_OnNext"
                     NextButtonContent="Далее" BackButtonContent="Назад"
                     CancelButtonContent="Выйти" FinishButtonContent="Завершить"
                     HelpButtonVisibility="Hidden">
         <toolkit:WizardPage x:Name="IntroPage"
 			Title="Уважаемый пользователь" CanSelectNextPage="True"
 			Description="Мы поможем подготовить программу к первому использованию" />
-        
+
         <toolkit:WizardPage x:Name="Page1" PageType="Interior" 
 			Title="Основное"
 			Description="Для начала, добавьте основную информацию"
 			NextPage="{Binding ElementName=Page2}"
 			PreviousPage="{Binding ElementName=IntroPage}"
-                            DataContext="{Binding ElementName=_this}"
+                            DataContext="{Binding ElementName=This}"
                             CanSelectNextPage="{Binding Path=IsTextBoxesFilled}"
                             
                             >
@@ -46,58 +45,58 @@
                 </Grid.ColumnDefinitions>
                 <Label Grid.Row="0" Grid.Column="0" Content="Норма рабочего дня"/>
                 <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
-                    <TextBox x:Name="tbНормаРабочегоДня"/>
+                    <TextBox x:Name="TbНормаРабочегоДня"/>
                     <Label Content="часов"/>
                 </StackPanel>
 
                 <Label Grid.Row="1" Grid.Column="0" Content="Название организации"/>
-                <TextBox x:Name="tbНазваниеОрганизации" Grid.Row="1" Grid.Column="1"/>
+                <TextBox x:Name="TbНазваниеОрганизации" Grid.Row="1" Grid.Column="1"/>
 
 
                 <Label Grid.Row="2" Grid.Column="0" Content="Руководитель"/>
-                <TextBox x:Name="tbРуководитель" Grid.Row="2" Grid.Column="1"/>
+                <TextBox x:Name="TbРуководитель" Grid.Row="2" Grid.Column="1"/>
 
                 <Label Grid.Row="3" Grid.Column="0" Content="Должность руководителя"/>
-                <TextBox x:Name="tbДолжностьРуководителя" Grid.Row="3" Grid.Column="1"/>
+                <TextBox x:Name="TbДолжностьРуководителя" Grid.Row="3" Grid.Column="1"/>
             </Grid>
         </toolkit:WizardPage>
-        
+
         <toolkit:WizardPage x:Name="Page2" PageType="Interior"
 			Title="Подразделения"
 			Description="Добавьте подразделения" >
-            <Button Name="bUnits"  Content="Открыть список подразделений" />
+            <Button Name="BUnits"  Content="Открыть список подразделений" />
         </toolkit:WizardPage>
-        
+
         <toolkit:WizardPage x:Name="Page3" PageType="Interior"
 			Title="Должности"
 			Description="Добавьте должности" >
-            <Button Name="bPositions" Content="Открыть список должностей"/>
+            <Button Name="BPositions" Content="Открыть список должностей"/>
         </toolkit:WizardPage>
-        
+
         <toolkit:WizardPage x:Name="Page4" PageType="Interior"
 			Title="Сотрудники"
 			Description="Добавьте сотрудников" >
-            <Button Name="bEmployees" Content="Открыть список сотрудников"/>
+            <Button Name="BEmployees" Content="Открыть список сотрудников"/>
         </toolkit:WizardPage>
-        
+
         <toolkit:WizardPage x:Name="Page5" PageType="Interior"
 			Title="Приказы" CanSelectNextPage="True"
 			Description="Добавьте приказы" >
-            <Button Name="bOrders" Content="Открыть список приказов"/>
+            <Button Name="BOrders" Content="Открыть список приказов"/>
         </toolkit:WizardPage>
-        
+
         <toolkit:WizardPage x:Name="Page6" PageType="Interior"
 			Title="Статусы"
 			Description="Добавьте статусы для сотрудников" >
-            <Button Name="bStatuses" Content="Открыть список статусов"/>
+            <Button Name="BStatuses" Content="Открыть список статусов"/>
         </toolkit:WizardPage>
-        
+
         <toolkit:WizardPage x:Name="Page7" PageType="Interior"
 			Title="Табель посещаемости" CanSelectNextPage="True"
 			Description="Ознакомьтесь с табелем посещаемости" >
-            <Button Name="bTimeSheet" Content="Открыть табель посещаемости"/>
+            <Button Name="BTimeSheet" Content="Открыть табель посещаемости"/>
         </toolkit:WizardPage>
-        
+
         <toolkit:WizardPage x:Name="LastPage" PageType="Interior"
 			Title="Настройка завершена" CanSelectNextPage="False"
 			Description="Вы можете открыть этот помошник через настройки программы"

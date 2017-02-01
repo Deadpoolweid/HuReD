@@ -4,45 +4,44 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-        
-        xmlns:local="clr-namespace:Hured"
-        mc:Ignorable="d"
+
+                      mc:Ignorable="d"
         Title="Список приказов" >
 
     <Border>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <ListView Grid.Row="0" Grid.Column="0" Name="lvOrders">
+            <ListView Grid.Row="0" Grid.Column="0" Name="LvOrders">
                 <ListView.View>
                     <GridView >
                         <GridView.Columns>
-                            <GridViewColumn Header="Дата" Width="Auto" DisplayMemberBinding="{Binding Дата}"></GridViewColumn>
-                            <GridViewColumn Header="Номер" Width="Auto" DisplayMemberBinding="{Binding Номер}"></GridViewColumn>
-                            <GridViewColumn Header="Ф.И.О." Width="Auto" DisplayMemberBinding="{Binding ФИО}"></GridViewColumn>
-                            <GridViewColumn Header="Тип" Width="Auto" DisplayMemberBinding="{Binding Тип}"></GridViewColumn>
+                            <GridViewColumn Header="Дата" Width="Auto" DisplayMemberBinding="{Binding Дата}" />
+                            <GridViewColumn Header="Номер" Width="Auto" DisplayMemberBinding="{Binding Номер}" />
+                            <GridViewColumn Header="Ф.И.О." Width="Auto" DisplayMemberBinding="{Binding ФИО}" />
+                            <GridViewColumn Header="Тип" Width="Auto" DisplayMemberBinding="{Binding Тип}" />
                         </GridView.Columns>
                     </GridView>
                 </ListView.View>
             </ListView>
 
             <StackPanel Grid.Row="0" Grid.Column="1">
-                <Button x:Name="bAdd" Click="bAdd_Click">Добавить</Button>
-                <Button x:Name="bChange" Click="bChange_Click">Изменить</Button>
-                <Button x:Name="bOpen" Click="BOpen_OnClick">Открыть</Button>
-                <Button x:Name="bSave" Click="BSave_OnClick">Сохранить</Button>
-                <Button x:Name="bPrint" Click="BPrint_OnClick">Печать</Button>
-                <Button x:Name="bRemove" Click="bRemove_Click">Удалить</Button>
+                <Button x:Name="BAdd" Click="bAdd_Click">Добавить</Button>
+                <Button x:Name="BChange" Click="bChange_Click">Изменить</Button>
+                <Button x:Name="BOpen" Click="BOpen_OnClick">Открыть</Button>
+                <Button x:Name="BSave" Click="BSave_OnClick">Сохранить</Button>
+                <Button x:Name="BPrint" Click="BPrint_OnClick">Печать</Button>
+                <Button x:Name="BRemove" Click="bRemove_Click">Удалить</Button>
             </StackPanel>
 
-            <Button x:Name="bOk" Grid.Row="1" Grid.Column="1" Click="bOk_Click">ОК</Button>
+            <Button x:Name="BOk" Grid.Row="1" Grid.Column="1" Click="bOk_Click">ОК</Button>
 
         </Grid>
     </Border>

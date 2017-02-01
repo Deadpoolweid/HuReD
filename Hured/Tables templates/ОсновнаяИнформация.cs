@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Hured.DBModel;
 
-namespace Hured.DBModel
+namespace Hured.Tables_templates
 {
     [Table("СписокОсновнойИнформации")]
     public class ОсновнаяИнформация
@@ -22,7 +19,7 @@ namespace Hured.DBModel
 
         public DateTime ДатаПриема { get; set; }
 
-        public string ИНН { get; set; }
+        public string Инн { get; set; }
 
         public string ТабельныйНомер { get; set; }
 

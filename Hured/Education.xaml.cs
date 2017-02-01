@@ -1,17 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using Hured.DBModel;
+using Hured.Tables_templates;
 using MahApps.Metro.Controls;
 
 namespace Hured
@@ -19,7 +10,7 @@ namespace Hured
     /// <summary>
     /// Логика взаимодействия для Education.xaml
     /// </summary>
-    public partial class Education : MetroWindow
+    public partial class Education
     {
         public Education()
         {
@@ -39,18 +30,18 @@ namespace Hured
                 return;
             }
 
-            Образование education = new Образование()
+            var education = new Образование
             {
-                Документ = tbДокумент.Text,
-                Номер = tbНомер.Text,
-                Серия = tbСерия.Text,
-                Дополнительно = tbДополнительно.Text,
-                Тип = tbТип.Text,
-                Квалификация = tbКвалификация.Text,
-                НачалоОбучения = DateTime.Parse(dpBegin.Text),
-                КонецОбучения = DateTime.Parse(dpBegin.Text),
-                Специальность = tbСпециальность.Text,
-                Учреждение = tbУчреждение.Text,
+                Документ = TbДокумент.Text,
+                Номер = TbНомер.Text,
+                Серия = TbСерия.Text,
+                Дополнительно = TbДополнительно.Text,
+                Тип = TbТип.Text,
+                Квалификация = TbКвалификация.Text,
+                НачалоОбучения = DateTime.Parse(DpBegin.Text),
+                КонецОбучения = DateTime.Parse(DpBegin.Text),
+                Специальность = TbСпециальность.Text,
+                Учреждение = TbУчреждение.Text
             };
             Tag = education;
             DialogResult = true;

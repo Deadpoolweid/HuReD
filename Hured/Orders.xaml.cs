@@ -1,21 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using Hured.DBModel;
 using Hured.Tables_templates;
-using MahApps.Metro.Controls;
 using Microsoft.Win32;
-using Path = System.Windows.Shapes.Path;
 
 namespace Hured
 {
@@ -26,18 +14,18 @@ namespace Hured
             Номер = номер;
             Дата = дата;
             Тип = тип;
-            ФИО = фио;
+            Фио = фио;
         }
 
         public string Номер { get; set; }
 
         public string Дата { get; set; }
 
-        public string ФИО { get; set; }
+        public string Фио { get; set; }
 
         public string Тип { get; set; }
 
-        public int ID { get; set; }
+        public int Id { get; set; }
 
         public OrderType OrderType { get; set; }
 
@@ -47,7 +35,7 @@ namespace Hured
     /// <summary>
     /// Логика взаимодействия для Orders.xaml
     /// </summary>
-    public partial class Orders : MetroWindow
+    public partial class Orders
     {
         public Orders()
         {
@@ -58,19 +46,19 @@ namespace Hured
 
         void SyncOrders()
         {
-            lvOrders.Items.Clear();
+            LvOrders.Items.Clear();
 
             Controller.OpenConnection();
 
             var приказыПриём = Controller.Select(new ПриказПриём(), e => e != null);
             foreach (var e in приказыПриём)
             {
-                lvOrders.Items.Add(new OrderInfo(e.Номер,
+                LvOrders.Items.Add(new OrderInfo(e.Номер,
                     e.Сотрудник.ОсновнаяИнформация.Фамилия + " " +
                     e.Сотрудник.ОсновнаяИнформация.Имя + " " +
                     e.Сотрудник.ОсновнаяИнформация.Отчество, "Приём", e.Дата.ToShortDateString())
                 {
-                    ID = e.ПриказПриёмId,
+                    Id = e.ПриказПриёмId,
                     OrderType = OrderType.Recruitment,
                     Type = e.GetType()
                 });
@@ -79,12 +67,12 @@ namespace Hured
             var приказыУвольнение = Controller.Select(new ПриказУвольнение(), e => e != null);
             foreach (var e in приказыУвольнение)
             {
-                lvOrders.Items.Add(new OrderInfo(e.Номер,
+                LvOrders.Items.Add(new OrderInfo(e.Номер,
                     e.Сотрудник.ОсновнаяИнформация.Фамилия + " " +
                     e.Сотрудник.ОсновнаяИнформация.Имя + " " +
                     e.Сотрудник.ОсновнаяИнформация.Отчество, "Увольнение", e.Дата.ToShortDateString())
                 {
-                    ID = e.ПриказУвольнениеId,
+                    Id = e.ПриказУвольнениеId,
                     OrderType = OrderType.Dismissal,
                     Type = e.GetType()
                 });
@@ -93,12 +81,12 @@ namespace Hured
             var приказыОтпуск = Controller.Select(new ПриказОтпуск(), e => e != null);
             foreach (var e in приказыОтпуск)
             {
-                lvOrders.Items.Add(new OrderInfo(e.Номер,
+                LvOrders.Items.Add(new OrderInfo(e.Номер,
                     e.Сотрудник.ОсновнаяИнформация.Фамилия + " " +
                     e.Сотрудник.ОсновнаяИнформация.Имя + " " +
                     e.Сотрудник.ОсновнаяИнформация.Отчество, "Отпуск", e.Дата.ToShortDateString())
                 {
-                    ID = e.ПриказОтпускId,
+                    Id = e.ПриказОтпускId,
                     OrderType = OrderType.Vacation,
                     Type = e.GetType()
                 });
@@ -107,12 +95,12 @@ namespace Hured
             var приказыКомандировка = Controller.Select(new ПриказКомандировка(), e => e != null);
             foreach (var e in приказыКомандировка)
             {
-                lvOrders.Items.Add(new OrderInfo(e.Номер,
+                LvOrders.Items.Add(new OrderInfo(e.Номер,
                     e.Сотрудник.ОсновнаяИнформация.Фамилия + " " +
                     e.Сотрудник.ОсновнаяИнформация.Имя + " " +
                     e.Сотрудник.ОсновнаяИнформация.Отчество, "Командировка", e.Дата.ToShortDateString())
                 {
-                    ID = e.ПриказКомандировкаId,
+                    Id = e.ПриказКомандировкаId,
                     OrderType = OrderType.BusinessTrip,
                     Type = e.GetType()
                 });
@@ -125,7 +113,7 @@ namespace Hured
         {
             IsHitTestVisible = false;
 
-            Order w = new Order();
+            var w = new Order();
             w.ShowDialog();
 
             IsHitTestVisible = true;
@@ -138,10 +126,10 @@ namespace Hured
             IsHitTestVisible = false;
 
 
-            var item = lvOrders.SelectedItem as OrderInfo;
+            var item = LvOrders.SelectedItem as OrderInfo;
             if (item != null)
             {
-                Order w = new Order(item);
+                var w = new Order(item);
                 w.ShowDialog();
             }
 
@@ -152,7 +140,7 @@ namespace Hured
 
         private void BOpen_OnClick(object sender, RoutedEventArgs e)
         {
-            var item = lvOrders.SelectedItem as OrderInfo;
+            var item = LvOrders.SelectedItem as OrderInfo;
             Controller.OpenConnection();
             if (item != null)
             {
@@ -161,38 +149,41 @@ namespace Hured
                 {
                     case OrderType.Recruitment:
                         document = Functions.CreateOrder(item.OrderType, Controller.Find(new ПриказПриём(),
-                            q => q.ПриказПриёмId == item.ID));
+                            q => q.ПриказПриёмId == item.Id));
                         break;
                     case OrderType.Dismissal:
                         document = Functions.CreateOrder(item.OrderType, Controller.Find(new ПриказУвольнение(),
-                            q => q.ПриказУвольнениеId == item.ID));
+                            q => q.ПриказУвольнениеId == item.Id));
                         break;
                     case OrderType.Vacation:
                         document = Functions.CreateOrder(item.OrderType, Controller.Find(new ПриказОтпуск(),
-                            q => q.ПриказОтпускId == item.ID));
+                            q => q.ПриказОтпускId == item.Id));
                         break;
                     case OrderType.BusinessTrip:
                         document = Functions.CreateOrder(item.OrderType, Controller.Find(new ПриказКомандировка(),
-                            q => q.ПриказКомандировкаId == item.ID));
+                            q => q.ПриказКомандировкаId == item.Id));
                         break;
                     default:
                         document = null;
                         break;
                 }
-                string savePath = Directory.GetCurrentDirectory() + @"\Temp.docx";
-                document.Save(savePath);
-                document.Path = savePath;
-                document.Close();
-                document.OpenWithWord();
+                var savePath = Directory.GetCurrentDirectory() + @"\Temp.docx";
+                if (document != null)
+                {
+                    document.Save(savePath);
+                    document.Path = savePath;
+                    document.Close();
+                    document.OpenWithWord();
+                }
                 Controller.CloseConnection();
             }
         }
 
         private void BSave_OnClick(object sender, RoutedEventArgs e)
         {
-            var item = lvOrders.SelectedItem as OrderInfo;
+            var item = LvOrders.SelectedItem as OrderInfo;
             if (item == null) return;
-            var sfd = new SaveFileDialog()
+            var sfd = new SaveFileDialog
             {
                 InitialDirectory = Directory.GetCurrentDirectory(),
                     //initialDirectory == null
@@ -211,19 +202,19 @@ namespace Hured
             {
                 case OrderType.Recruitment:
                     document = Functions.CreateOrder(item.OrderType, Controller.Find(new ПриказПриём(),
-                        q => q.ПриказПриёмId == item.ID));
+                        q => q.ПриказПриёмId == item.Id));
                     break;
                 case OrderType.Dismissal:
                     document = Functions.CreateOrder(item.OrderType, Controller.Find(new ПриказУвольнение(), 
-                        q => q.ПриказУвольнениеId == item.ID));
+                        q => q.ПриказУвольнениеId == item.Id));
                     break;
                 case OrderType.Vacation:
                     document = Functions.CreateOrder(item.OrderType, Controller.Find(new ПриказОтпуск(), 
-                        q => q.ПриказОтпускId == item.ID));
+                        q => q.ПриказОтпускId == item.Id));
                     break;
                 case OrderType.BusinessTrip:
                     document = Functions.CreateOrder(item.OrderType, Controller.Find(new ПриказКомандировка(), 
-                        q => q.ПриказКомандировкаId == item.ID));
+                        q => q.ПриказКомандировкаId == item.Id));
                     break;
                 default:
                     document = null;
@@ -231,15 +222,18 @@ namespace Hured
             }
 
 
-            document.Save(sfd.FileName,false);
+            if (document != null)
+            {
+                document.Save(sfd.FileName,false);
 
-            document.Close();
+                document.Close();
+            }
             Controller.CloseConnection();
         }
 
         private void BPrint_OnClick(object sender, RoutedEventArgs e)
         {
-            var item = lvOrders.SelectedItem as OrderInfo;
+            var item = LvOrders.SelectedItem as OrderInfo;
             if (item != null)
             {
                 WordDocument document;
@@ -248,29 +242,32 @@ namespace Hured
                 {
                     case OrderType.Recruitment:
                         document = Functions.CreateOrder(item.OrderType, Controller.Find(new ПриказПриём(),
-                            q => q.ПриказПриёмId == item.ID));
+                            q => q.ПриказПриёмId == item.Id));
                         break;
                     case OrderType.Dismissal:
                         document = Functions.CreateOrder(item.OrderType, Controller.Find(new ПриказУвольнение(),
-                            q => q.ПриказУвольнениеId == item.ID));
+                            q => q.ПриказУвольнениеId == item.Id));
                         break;
                     case OrderType.Vacation:
                         document = Functions.CreateOrder(item.OrderType, Controller.Find(new ПриказОтпуск(),
-                            q => q.ПриказОтпускId == item.ID));
+                            q => q.ПриказОтпускId == item.Id));
                         break;
                     case OrderType.BusinessTrip:
                         document = Functions.CreateOrder(item.OrderType, Controller.Find(new ПриказКомандировка(),
-                            q => q.ПриказКомандировкаId == item.ID));
+                            q => q.ПриказКомандировкаId == item.Id));
                         break;
                     default:
                         document = null;
                         break;
                 }
-                string savePath = Directory.GetCurrentDirectory() + @"\Temp.docx";
-                document.Save(savePath,false);
-                document.Path = savePath;
-                document.Print();
-                document.Close();
+                var savePath = Directory.GetCurrentDirectory() + @"\Temp.docx";
+                if (document != null)
+                {
+                    document.Save(savePath,false);
+                    document.Path = savePath;
+                    document.Print();
+                    document.Close();
+                }
                 Controller.CloseConnection();
             }
         }
@@ -280,7 +277,7 @@ namespace Hured
             IsHitTestVisible = false;
 
 
-            var item = lvOrders.SelectedItem as OrderInfo;
+            var item = LvOrders.SelectedItem as OrderInfo;
             if (item != null)
             {
                 if (item.Тип == "Приём")

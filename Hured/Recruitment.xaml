@@ -4,78 +4,78 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-        
-        xmlns:local="clr-namespace:Hured"
-        mc:Ignorable="d"
+
+                      mc:Ignorable="d"
         Title="Взять на работу" Height="370" Width="650" ResizeMode="CanMinimize">
     <Border>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
             <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
                 <Label>С</Label>
-                <DatePicker x:Name="dpBegin"></DatePicker>
+                <DatePicker x:Name="DpBegin" />
                 <Label>по</Label>
-                <DatePicker x:Name="dpEnd"></DatePicker>
-                
+                <DatePicker x:Name="DpEnd" />
+
             </StackPanel>
 
 
             <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right">
                 <Label >Подразделение</Label>
-                <ComboBox x:Name="cbUnit" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" 
+                <ComboBox x:Name="CbUnit" HorizontalAlignment="Right" 
                           SelectionChanged="CbUnit_OnSelectionChanged" />
             </StackPanel>
 
             <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right">
                 <Label >Должность</Label>
-                <ComboBox x:Name="cbPosition" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" />
+                <ComboBox x:Name="CbPosition" HorizontalAlignment="Right" />
             </StackPanel>
 
-            <CheckBox Grid.Row="1" Grid.Column="1" x:Name="chIsTraineship" IsThreeState="False"
+            <CheckBox Grid.Row="1" Grid.Column="1" x:Name="ChIsTraineship" IsThreeState="False"
                       Checked="ChIsTraineship_OnChecked">Испытательный срок на</CheckBox>
 
             <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
-                <TextBox Name="tbИспытательныйСрокДлительность" />
+                <TextBox Name="TbИспытательныйСрокДлительность" />
                 <Label >Месяцев</Label>
             </StackPanel>
-            
+
 
             <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal">
                 <Label >Оклад</Label>
-                <TextBox x:Name="tbОклад"></TextBox>
+                <TextBox x:Name="TbОклад" />
             </StackPanel>
             <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
                 <Label>Надбавка</Label>
-                <TextBox x:Name="tbНадбавка"></TextBox>
+                <TextBox x:Name="TbНадбавка" />
             </StackPanel>
 
             <Label Grid.Row="4" Grid.Column="0">Условия приём на работу, характер работы</Label>
 
-            <RichTextBox x:Name="rtbПримечание" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"></RichTextBox>
+            <RichTextBox x:Name="RtbПримечание" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" />
 
             <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
                 <Label>Трудовой договор №</Label>
-                <TextBox x:Name="tbНомерДоговора"></TextBox>
+                <TextBox x:Name="TbНомерДоговора" />
                 <Label>от</Label>
-                <DatePicker x:Name="dpДатаДоговора"></DatePicker>
+                <DatePicker x:Name="DpДатаДоговора" />
             </StackPanel>
 
             <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Horizontal">
-                <Button x:Name="bOk" IsDefault="True" Click="bOk_Click">Оформить</Button>
-                <Button x:Name="bCancel" IsCancel="True" Click="bCancel_Click">Отмена</Button>
+                <Button x:Name="BOk" IsDefault="True" Click="bOk_Click">Оформить</Button>
+                <Button x:Name="BCancel" IsCancel="True" Click="bCancel_Click">Отмена</Button>
             </StackPanel>
         </Grid>
     </Border>

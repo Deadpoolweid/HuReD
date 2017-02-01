@@ -1,93 +1,83 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Hured.DBModel;
-using MahApps.Metro.Controls;
-using ListBox = System.Windows.Forms.ListBox;
+using Hured.Tables_templates;
 
 namespace Hured
 {
     /// <summary>
     /// Логика взаимодействия для Units.xaml
     /// </summary>
-    public partial class Units : MetroWindow
+    public partial class Units
     {
         public Units()
         {
             InitializeComponent();
 
-            Functions.AddUnitsFromDB(ref lbUnits);
+            Functions.AddUnitsFromDB(ref LbUnits);
 
-            tResult = new TransactionResult();
+            _editModeEnabled = false;
+
+            _tResult = new TransactionResult();
         }
 
         private void bAdd_Click(object sender, RoutedEventArgs e)
         {
-            lbUnits.Items.Add(tbNewUnit.Text);
+            LbUnits.Items.Add(TbNewUnit.Text);
             Controller.OpenConnection();
-            Controller.Insert(new Подразделение() {Название = tbNewUnit.Text});
+            Controller.Insert(new Подразделение { Название = TbNewUnit.Text });
             Controller.CloseConnection();
-            tResult.RecordsAdded++;
+            _tResult.RecordsAdded++;
         }
 
-        private TransactionResult tResult;
+        private readonly TransactionResult _tResult;
 
-        private bool EditModeEnabled = false;
+        private bool _editModeEnabled;
 
-        private string oldValue;
+        private string _oldValue;
 
         private void bChange_Click(object sender, RoutedEventArgs e)
         {
-            if (!EditModeEnabled)
+            if (!_editModeEnabled)
             {
-                tbNewUnit.Text = (lbUnits.SelectedItem as ListBoxItem).Content.ToString();
-                lbUnits.IsHitTestVisible = bAdd.IsHitTestVisible = bRemove.IsHitTestVisible =
-                    bClose.IsHitTestVisible = false;
-                oldValue = tbNewUnit.Text;
-                bChange.Content = "Ok";
+                TbNewUnit.Text = (LbUnits.SelectedItem as ListBoxItem)?.Content.ToString();
+                LbUnits.IsHitTestVisible = BAdd.IsHitTestVisible = BRemove.IsHitTestVisible =
+                    BClose.IsHitTestVisible = false;
+                _oldValue = TbNewUnit.Text;
+                BChange.Content = "Ok";
             }
             else
             {
-                oldValue = (lbUnits.Items[lbUnits.SelectedIndex] as ListBoxItem).Content.ToString();
+                _oldValue = (LbUnits.Items[LbUnits.SelectedIndex] as ListBoxItem)?.Content.ToString();
                 Controller.OpenConnection();
-                Controller.Edit(q => q.Название == oldValue,new Подразделение() {Название = tbNewUnit.Text});
+                Controller.Edit(q => q.Название == _oldValue, new Подразделение { Название = TbNewUnit.Text });
                 Controller.CloseConnection();
-                lbUnits.Items[lbUnits.SelectedIndex] = new ListBoxItem()
+                LbUnits.Items[LbUnits.SelectedIndex] = new ListBoxItem
                 {
-                    Content = tbNewUnit.Text,
-                    Tag = (lbUnits.Items[lbUnits.SelectedIndex] as ListBoxItem).Tag
+                    Content = TbNewUnit.Text,
+                    Tag = (LbUnits.Items[LbUnits.SelectedIndex] as ListBoxItem)?.Tag
                 };
-                lbUnits.IsHitTestVisible = bAdd.IsHitTestVisible = bRemove.IsHitTestVisible =
-                    bClose.IsHitTestVisible = true;
-                bChange.Content = "Изменить";
+                LbUnits.IsHitTestVisible = BAdd.IsHitTestVisible = BRemove.IsHitTestVisible =
+                    BClose.IsHitTestVisible = true;
+                BChange.Content = "Изменить";
 
-                tResult.RecordsChanged++;
+                _tResult.RecordsChanged++;
             }
-            EditModeEnabled = !EditModeEnabled;
+            _editModeEnabled = !_editModeEnabled;
         }
 
         private void bRemove_Click(object sender, RoutedEventArgs e)
         {
-            if (lbUnits.SelectedIndex == -1)
+            if (LbUnits.SelectedIndex == -1)
             {
                 return;
             }
             Controller.OpenConnection();
-            Controller.Remove(new Подразделение(), q => q.Название == lbUnits.SelectedValue.ToString());
+            Controller.Remove(new Подразделение(), q => q.Название == LbUnits.SelectedValue.ToString());
             Controller.CloseConnection();
-            lbUnits.Items.RemoveAt(lbUnits.SelectedIndex);
+            LbUnits.Items.RemoveAt(LbUnits.SelectedIndex);
 
-            tResult.RecordsDeleted++;
+            _tResult.RecordsDeleted++;
         }
 
         private void bClose_Click(object sender, RoutedEventArgs e)
@@ -95,10 +85,10 @@ namespace Hured
             Close();
 
             Controller.OpenConnection();
-            tResult.RecordsCount = Controller.RecordsCount<Подразделение>();
+            _tResult.RecordsCount = Controller.RecordsCount<Подразделение>();
             Controller.CloseConnection();
 
-            Tag = tResult;
+            Tag = _tResult;
         }
     }
 }

@@ -4,48 +4,47 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-        
-        xmlns:local="clr-namespace:Hured"
-        mc:Ignorable="d"
+
+                      mc:Ignorable="d"
         Title="Оформить увольнение" Height="250" Width="500" ResizeMode="CanMinimize">
     <Border>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
                 <Label>Трудовой договор №</Label>
-                <TextBox x:Name="tbНомерДоговора"></TextBox>
+                <TextBox x:Name="TbНомерДоговора" />
                 <Label>от</Label>
-                <DatePicker x:Name="dpДатаДоговора"></DatePicker>
+                <DatePicker x:Name="DpДатаДоговора" />
             </StackPanel>
 
             <Label Grid.Row="1" Grid.Column="0">Уволить</Label>
-            <Label x:Name="lEmployee" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left"></Label>
+            <Label x:Name="LEmployee" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" />
 
             <Label Grid.Row="2" Grid.Column="0">Дата увольнения</Label>
-            <DatePicker x:Name="dpДатаУвольнения" Grid.Row="2" Grid.Column="1"></DatePicker>
-            
+            <DatePicker x:Name="DpДатаУвольнения" Grid.Row="2" Grid.Column="1" />
+
             <Label Grid.Row="3" Grid.Column="0">Основание</Label>
-            <TextBox x:Name="tbОснование" Grid.Row="3" Grid.Column="1"></TextBox>
+            <TextBox x:Name="TbОснование" Grid.Row="3" Grid.Column="1" />
 
             <Label Grid.Row="4" Grid.Column="0">Основание(Документ, номер, дата)</Label>
-            <TextBox x:Name="tbОснованиеДокумент" Grid.Row="4" Grid.Column="1"></TextBox>
-            
+            <TextBox x:Name="TbОснованиеДокумент" Grid.Row="4" Grid.Column="1" />
+
 
             <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal">
-                <Button x:Name="bOk" IsDefault="True" Click="bOk_Click">Оформить</Button>
-                <Button x:Name="bCancel" IsCancel="True" Click="bCancel_Click">Отмена</Button>
+                <Button x:Name="BOk" IsDefault="True" Click="bOk_Click">Оформить</Button>
+                <Button x:Name="BCancel" IsCancel="True" Click="bCancel_Click">Отмена</Button>
             </StackPanel>
         </Grid>
     </Border>

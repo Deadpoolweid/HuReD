@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Hured.Tables_templates
 {
@@ -18,7 +13,7 @@ namespace Hured.Tables_templates
 
         public override string ToString()
         {
-            return this.Название;
+            return Название;
         }
     }
 }

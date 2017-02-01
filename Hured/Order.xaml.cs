@@ -1,29 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
+﻿using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Hured.DBModel;
 using Hured.Tables_templates;
-using MahApps.Metro.Controls;
-using Microsoft.Windows.Controls;
 
 namespace Hured
 {
     /// <summary>
     /// Логика взаимодействия для Order.xaml
     /// </summary>
-    public partial class Order : MetroWindow
+    public partial class Order
     {
         public Order(OrderInfo orderInfo = null)
         {
@@ -39,39 +24,39 @@ namespace Hured
                 имена.Add(сотрудник.ОсновнаяИнформация.Фамилия + " " +
                     сотрудник.ОсновнаяИнформация.Имя + " " +
                     сотрудник.ОсновнаяИнформация.Отчество);
-                employeesId.Add(сотрудник.СотрудникId);
+                _employeesId.Add(сотрудник.СотрудникId);
             }
-            cbEmployee.ItemsSource = имена;
-            cbOrderType.Items.Add("Приём");
-            cbOrderType.Items.Add("Увольнение");
-            cbOrderType.Items.Add("Отпуск");
-            cbOrderType.Items.Add("Командировка");
-            cbEmployee.SelectedIndex = cbOrderType.SelectedIndex = 0;
+            CbEmployee.ItemsSource = имена;
+            CbOrderType.Items.Add("Приём");
+            CbOrderType.Items.Add("Увольнение");
+            CbOrderType.Items.Add("Отпуск");
+            CbOrderType.Items.Add("Командировка");
+            CbEmployee.SelectedIndex = CbOrderType.SelectedIndex = 0;
 
             if (orderInfo != null)
             {
-                IsEditMode = true;
-                tbНомерПриказа.Text = orderInfo.Номер;
+                _isEditMode = true;
+                TbНомерПриказа.Text = orderInfo.Номер;
 
-                dpДатаПриказа.Text = orderInfo.Дата.ToString();
-                cbOrderType.SelectedItem = orderInfo.Тип;
-                cbOrderType.IsHitTestVisible = false;
-                cbEmployee.SelectedItem = orderInfo.ФИО;
-                tbНомерПриказа.IsHitTestVisible = false;
+                DpДатаПриказа.Text = orderInfo.Дата;
+                CbOrderType.SelectedItem = orderInfo.Тип;
+                CbOrderType.IsHitTestVisible = false;
+                CbEmployee.SelectedItem = orderInfo.Фио;
+                TbНомерПриказа.IsHitTestVisible = false;
             }
 
             Controller.CloseConnection();
         }
 
-        List<int> employeesId = new List<int>();
+        readonly List<int> _employeesId = new List<int>();
 
-        private bool IsEditMode = false;
+        private readonly bool _isEditMode;
 
         private bool IsNumberExists(int number, OrderType ordertype)
         {
             Controller.OpenConnection();
 
-            bool result = false;
+            var result = false;
 
             switch (ordertype)
             {
@@ -91,8 +76,6 @@ namespace Hured
                     result = Controller.Exists(new ПриказКомандировка(),
                         q => q.Номер == number.ToString());
                     break;
-                default:
-                    break;
             }
 
             Controller.CloseConnection();
@@ -101,29 +84,29 @@ namespace Hured
 
         private void bOk_Click(object sender, RoutedEventArgs e)
         {
-            if (Functions.IsEmpty(tbНомерПриказа))
+            if (Functions.IsEmpty(TbНомерПриказа))
             {
                 return;
             }
 
-            if (!IsEditMode)
+            if (!_isEditMode)
             {
-                if (IsNumberExists(int.Parse(tbНомерПриказа.Text), (OrderType)cbOrderType.SelectedIndex))
+                if (IsNumberExists(int.Parse(TbНомерПриказа.Text), (OrderType)CbOrderType.SelectedIndex))
                 {
-                    Functions.ShowPopup(tbНомерПриказа, "Номер приказа для своего типа должен быть уникальным.");
+                    Functions.ShowPopup(TbНомерПриказа, "Номер приказа для своего типа должен быть уникальным.");
                     return;
                 }
             }
-           
 
-            switch (cbOrderType.SelectedIndex)
+
+            switch (CbOrderType.SelectedIndex)
             {
                 case 0:
-                    Recruitment wRecruitment = new Recruitment();
-                    if (IsEditMode)
+                    var wRecruitment = new Recruitment();
+                    if (_isEditMode)
                     {
                         Controller.OpenConnection();
-                        string number = tbНомерПриказа.Text;
+                        var number = TbНомерПриказа.Text;
                         var order = Controller.Find(new ПриказПриём(),
                             q => q.Номер == number);
                         Controller.CloseConnection();
@@ -136,36 +119,39 @@ namespace Hured
                     if (wRecruitment.DialogResult == true)
                     {
                         var order = wRecruitment.Tag as ПриказПриём;
-                        order.Номер = tbНомерПриказа.Text;
-                        order.Дата = dpДатаПриказа.DisplayDate;
-                        int employeeId = employeesId[cbEmployee.SelectedIndex];
-                        order.Сотрудник = Controller.Find(new Сотрудник(),
-                            q => q.СотрудникId == employeeId);
+                        if (order != null)
+                        {
+                            order.Номер = TbНомерПриказа.Text;
+                            order.Дата = DpДатаПриказа.DisplayDate;
+                            var employeeId = _employeesId[CbEmployee.SelectedIndex];
+                            order.Сотрудник = Controller.Find(new Сотрудник(),
+                                q => q.СотрудникId == employeeId);
 
-                        if (IsEditMode)
-                        {
-                            Controller.Edit(q => q.Номер == order.Номер,
-                                order);
-                        }
-                        else
-                        {
-                            Controller.Insert(order);
+                            if (_isEditMode)
+                            {
+                                Controller.Edit(q => q.Номер == order.Номер,
+                                    order);
+                            }
+                            else
+                            {
+                                Controller.Insert(order);
+                            }
                         }
                         Controller.CloseConnection();
                     }
                     break;
                 case 1:
-                    Dismissal wDismissal = new Dismissal(employeesId[cbEmployee.SelectedIndex]);
+                    var wDismissal = new Dismissal(_employeesId[CbEmployee.SelectedIndex]);
 
-                    if (IsEditMode)
+                    if (_isEditMode)
                     {
                         Controller.OpenConnection();
-                        string number = tbНомерПриказа.Text;
+                        var number = TbНомерПриказа.Text;
                         var order = Controller.Find(new ПриказУвольнение(),
                             q => q.Номер == number);
                         Controller.CloseConnection();
 
-                        wDismissal = new Dismissal(employeesId[cbEmployee.SelectedIndex], order);
+                        wDismissal = new Dismissal(_employeesId[CbEmployee.SelectedIndex], order);
                     }
 
                     wDismissal.ShowDialog();
@@ -173,31 +159,34 @@ namespace Hured
                     if (wDismissal.DialogResult == true)
                     {
                         var order = wDismissal.Tag as ПриказУвольнение;
-                        order.Номер = tbНомерПриказа.Text;
-                        order.Дата = dpДатаПриказа.DisplayDate;
-                        int employeeId = employeesId[cbEmployee.SelectedIndex];
-                        order.Сотрудник = Controller.Find(new Сотрудник(),
-                            q => q.СотрудникId == employeeId);
+                        if (order != null)
+                        {
+                            order.Номер = TbНомерПриказа.Text;
+                            order.Дата = DpДатаПриказа.DisplayDate;
+                            var employeeId = _employeesId[CbEmployee.SelectedIndex];
+                            order.Сотрудник = Controller.Find(new Сотрудник(),
+                                q => q.СотрудникId == employeeId);
 
-                        if (IsEditMode)
-                        {
-                            Controller.Edit(q => q.Номер == order.Номер, order);
-                        }
-                        else
-                        {
-                            Controller.Insert(order);
+                            if (_isEditMode)
+                            {
+                                Controller.Edit(q => q.Номер == order.Номер, order);
+                            }
+                            else
+                            {
+                                Controller.Insert(order);
+                            }
                         }
                         Controller.CloseConnection();
                     }
 
                     break;
                 case 2:
-                    Vacation wVacation = new Vacation();
+                    var wVacation = new Vacation();
 
-                    if (IsEditMode)
+                    if (_isEditMode)
                     {
                         Controller.OpenConnection();
-                        string number = tbНомерПриказа.Text;
+                        var number = TbНомерПриказа.Text;
                         var order = Controller.Find(new ПриказОтпуск(),
                             q => q.Номер == number);
                         Controller.CloseConnection();
@@ -210,32 +199,35 @@ namespace Hured
                     if (wVacation.DialogResult == true)
                     {
                         var order = wVacation.Tag as ПриказОтпуск;
-                        order.Номер = tbНомерПриказа.Text;
-                        order.Дата = dpДатаПриказа.DisplayDate;
-                        int employeeId = employeesId[cbEmployee.SelectedIndex];
-                        Controller.OpenConnection();
-                        order.Сотрудник = Controller.Find(new Сотрудник(),
-                            q => q.СотрудникId == employeeId);
-                        if (IsEditMode)
+                        if (order != null)
                         {
-                            Controller.Edit(q => q.Номер == order.Номер, order);
+                            order.Номер = TbНомерПриказа.Text;
+                            order.Дата = DpДатаПриказа.DisplayDate;
+                            var employeeId = _employeesId[CbEmployee.SelectedIndex];
+                            Controller.OpenConnection();
+                            order.Сотрудник = Controller.Find(new Сотрудник(),
+                                q => q.СотрудникId == employeeId);
+                            if (_isEditMode)
+                            {
+                                Controller.Edit(q => q.Номер == order.Номер, order);
 
-                        }
-                        else
-                        {
-                            Controller.Insert(order);
+                            }
+                            else
+                            {
+                                Controller.Insert(order);
+                            }
                         }
                         Controller.CloseConnection();
                     }
 
                     break;
                 case 3:
-                    BusinessTrip wBusinessTrip = new BusinessTrip();
+                    var wBusinessTrip = new BusinessTrip();
 
-                    if (IsEditMode)
+                    if (_isEditMode)
                     {
                         Controller.OpenConnection();
-                        string number = tbНомерПриказа.Text;
+                        var number = TbНомерПриказа.Text;
                         var order = Controller.Find(new ПриказКомандировка(),
                             q => q.Номер == number);
                         Controller.CloseConnection();
@@ -247,21 +239,24 @@ namespace Hured
                     if (wBusinessTrip.DialogResult == true)
                     {
                         var order = wBusinessTrip.Tag as ПриказКомандировка;
-                        order.Номер = tbНомерПриказа.Text;
-                        order.Дата = dpДатаПриказа.DisplayDate;
-                        int employeeId = employeesId[cbEmployee.SelectedIndex];
-                        Controller.OpenConnection();
-                        order.Сотрудник = Controller.Find(new Сотрудник(),
-                            q => q.СотрудникId == employeeId);
-
-                        if (IsEditMode)
+                        if (order != null)
                         {
-                            Controller.Edit(q => q.Номер == order.Номер, order);
+                            order.Номер = TbНомерПриказа.Text;
+                            order.Дата = DpДатаПриказа.DisplayDate;
+                            var employeeId = _employeesId[CbEmployee.SelectedIndex];
+                            Controller.OpenConnection();
+                            order.Сотрудник = Controller.Find(new Сотрудник(),
+                                q => q.СотрудникId == employeeId);
 
-                        }
-                        else
-                        {
-                            Controller.Insert(order);
+                            if (_isEditMode)
+                            {
+                                Controller.Edit(q => q.Номер == order.Номер, order);
+
+                            }
+                            else
+                            {
+                                Controller.Insert(order);
+                            }
                         }
                         Controller.CloseConnection();
                     }
