@@ -5,6 +5,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows;
 using System.Windows.Controls;
 using MahApps.Metro.Controls;
+using MySql.Data.MySqlClient;
 using Xceed.Wpf.Toolkit.Core;
 
 namespace Hured
@@ -69,6 +70,7 @@ namespace Hured
             {
                 textbox.TextChanged += (sender, args) =>
                 {
+                    // Запустить проверку на пустоту
                     IsTextBoxesFilled = true;
                 };
             }
@@ -118,9 +120,33 @@ namespace Hured
             }
         }
 
+        private AppSettings _settings = new AppSettings();
+
         private void WInit_OnNext(object sender, CancelRoutedEventArgs e)
         {
             var currentPage = WInit.CurrentPage;
+
+            if (currentPage.Name == "DbSettings")
+            {
+                _settings.SetConnectionStringBuilder(new MySqlConnectionStringBuilder()
+                {
+                    Server = TbServer.Text,
+                    Port = (uint)NtbPort.Value,
+                    Database = TbDatabaseName.Text,
+                    UserID = tbUid.Text,
+                    Password = PbPassword.Password,
+                    PersistSecurityInfo = ChbPersistSecurityInfo.IsChecked.Value
+                });
+
+                var formatter = new BinaryFormatter();
+                // Сохранить объект в локальном файле.
+                using (Stream fStream = new FileStream("settings.dat",
+                    FileMode.Create, FileAccess.Write, FileShare.None))
+                {
+                    formatter.Serialize(fStream, _settings);
+                }
+                return;
+            }
 
             int currentNumber;
             var isContains = false;
@@ -137,21 +163,12 @@ namespace Hured
             switch (currentNumber)
             {
                 case 1:
-                    var s = new AppSettings
-                    {
-                        ДолжностьРуководителя = TbДолжностьРуководителя.Text,
-                        НазваниеОрганизации = TbНазваниеОрганизации.Text,
-                        РуководительОрганизации = TbРуководитель.Text,
-                        НормаРабочегоДня = TbНормаРабочегоДня.Text
-                    };
 
-                    var formatter = new BinaryFormatter();
-                    // Сохранить объект в локальном файле.
-                    using (Stream fStream = new FileStream("settings.dat",
-                        FileMode.Create, FileAccess.Write, FileShare.None))
-                    {
-                        formatter.Serialize(fStream, s);
-                    }
+                    _settings.ДолжностьРуководителя = TbДолжностьРуководителя.Text;
+                    _settings.НазваниеОрганизации = TbНазваниеОрганизации.Text;
+                    _settings.РуководительОрганизации = TbРуководитель.Text;
+                    _settings.НормаРабочегоДня = TbНормаРабочегоДня.Text;
+                    
                     break;
                 case 7:
                 case 5:

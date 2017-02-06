@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-        xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit">
+        xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:System="clr-namespace:System;assembly=mscorlib">
 
     <DrawingImage x:Key="Favicon">
         <DrawingImage.Drawing>
@@ -68,7 +69,7 @@
         <Setter Property="MinHeight" Value="20"/>
 
         <!-- Debug -->
-        <Setter Property="Text" Value="25.01.2017" />
+        <Setter Property="DisplayDate" Value="{x:Static System:DateTime.Today}"></Setter>
     </Style>
 
     <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
@@ -190,6 +191,24 @@
         <Setter Property="Background" Value="White" />
         <Setter Property="ExteriorPanelBackground" Value="{StaticResource AccentBaseColorBrush}" />
         <Setter Property="HeaderBackground" Value="White" />
+    </Style>
+    
+    <Style TargetType="PasswordBox" BasedOn="{StaticResource {x:Type PasswordBox}}">
+        <Setter Property="Padding" Value="10"/>
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="MinWidth" Value="50"/>
+    </Style>
+
+    <Style TargetType="controls:NumericUpDown">
+        <Setter Property="Padding" Value="10"/>
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="MinWidth" Value="50"/>
+    </Style>
+
+    <Style TargetType="ToggleButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
+        <Setter Property="Padding" Value="10"/>
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="MinWidth" Value="50"/>
     </Style>
 
     <!-- Для тестирования Grid -->

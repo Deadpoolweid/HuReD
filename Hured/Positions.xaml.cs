@@ -13,9 +13,19 @@ namespace Hured
         public Positions()
         {
             InitializeComponent();
-            LbUnits.Items.Add("Все подразделения");
             Functions.AddUnitsFromDB(ref LbUnits);
+            LbUnits.Items.Insert(0,new ListViewItem()
+            {
+                Content = new Подразделение()
+                {
+                    Название = "Все подразделения",
+                    ПодразделениеId = -1
+                },
+                Tag = -1
+            });
             LbUnits.SelectedIndex = 0;
+
+            SyncPositions();
         }
 
         private readonly TransactionResult _tResult = new TransactionResult();
@@ -38,12 +48,18 @@ namespace Hured
         {
             IsHitTestVisible = false;
 
-            var w = new Position(LvPositions.SelectedItem as Должность);
-            w.ShowDialog();
 
+            var listViewItem = LvPositions.SelectedItem as ListViewItem;
+            if (listViewItem != null)
+            {
+                var position = listViewItem.Content as Должность;
+
+                var w = new Position(position);
+                w.ShowDialog();
+                _tResult.RecordsChanged++;
+            }
             IsHitTestVisible = true;
 
-            _tResult.RecordsChanged++;
 
             SyncPositions();
         }
@@ -54,13 +70,16 @@ namespace Hured
 
             Controller.OpenConnection();
 
-            var названиеДолжности = (LvPositions.SelectedItem as Должность)?.Название;
 
+            var tag = (LvPositions.SelectedItem as ListViewItem)?.Tag;
+            if (tag != null)
+            {
+                int positionId = (int) tag;
 
-            Controller.Remove(new Должность(),
-                q => q.Название == названиеДолжности);
-            Controller.CloseConnection();
-
+                Controller.Remove<Должность>(
+                    q => q.ДолжностьId == positionId);
+                Controller.CloseConnection();
+            }
             _tResult.RecordsDeleted++;
 
             IsHitTestVisible = true;
@@ -93,6 +112,11 @@ namespace Hured
                     Functions.AddPositionsFromDB(ref LvPositions,
                         (int)tag);
             }
+        }
+
+        private void LbUnits_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SyncPositions();
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Hured
             if (сотрудники == null)
             {
                 Controller.OpenConnection();
-                сотрудники = Controller.Select(new Сотрудник(), e => e != null);
+                сотрудники = Controller.Select<Сотрудник>(e => e != null);
                 Controller.CloseConnection();
             }
 
@@ -62,7 +62,7 @@ namespace Hured
             IsHitTestVisible = false;
             var index = _employeesId[LvEmployees.SelectedIndex];
             Controller.OpenConnection();
-            var employee = Controller.Select(new Сотрудник(),
+            var employee = Controller.Select<Сотрудник>(
                 q => q.СотрудникId == index).FirstOrDefault();
             Controller.CloseConnection();
 
@@ -82,25 +82,25 @@ namespace Hured
 
             var index = _employeesId[LvEmployees.SelectedIndex];
 
-            var employee = Controller.Find(new Сотрудник(), q => q.СотрудникId == index);
+            var employee = Controller.Find<Сотрудник>(q => q.СотрудникId == index);
 
-            Controller.Remove(new ОсновнаяИнформация(),
+            Controller.Remove<ОсновнаяИнформация>(
                 q => q.ОсновнаяИнформацияId == employee.ОсновнаяИнформация.ОсновнаяИнформацияId);
-            Controller.Remove(new УдостоверениеЛичности(),
+            Controller.Remove<УдостоверениеЛичности>(
                 q => q.УдостоверениеЛичностиId == employee.УдостоверениеЛичности.УдостоверениеЛичностиId);
-            Controller.Remove(new ВоинскийУчёт(),
+            Controller.Remove<ВоинскийУчёт>(
                 q => q.ВоинскийУчётId == employee.ВоинскийУчёт.ВоинскийУчётId);
 
             var educationsId = employee.Образование.Select(образование => образование.ОбразованиеId).ToList();
 
             foreach (var id in educationsId)
             {
-                Controller.Remove(new Образование(),
+                Controller.Remove< Образование>(
                     q => q.ОбразованиеId == id);
             }
 
 
-            Controller.Remove(new Сотрудник(),
+            Controller.Remove< Сотрудник>(
                 q => q.СотрудникId == index);
 
 
@@ -138,7 +138,7 @@ namespace Hured
                     if (item?.Tag != null)
                     {
                         var unitId = (int)item.Tag;
-                        списокСотрудников = Controller.Select(new Сотрудник(),
+                        списокСотрудников = Controller.Select<Сотрудник>(
                             q => q.ОсновнаяИнформация.Должность.Подразделение.ПодразделениеId == unitId);
                     }
                 }
@@ -148,7 +148,7 @@ namespace Hured
                 if (item != null)
                 {
                     var positionId = (int)item.Tag;
-                    списокСотрудников = Controller.Select(new Сотрудник(),
+                    списокСотрудников = Controller.Select<Сотрудник>(
                         q => q.ОсновнаяИнформация.Должность.ДолжностьId == positionId);
                 }
             }

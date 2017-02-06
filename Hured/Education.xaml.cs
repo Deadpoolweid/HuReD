@@ -25,7 +25,7 @@ namespace Hured
 
         private void bOk_Click(object sender, RoutedEventArgs e)
         {
-            if (this.FindChildren<TextBox>().Any(Functions.IsEmpty))
+            if (!Functions.ValidateAllTextboxes(this))
             {
                 return;
             }

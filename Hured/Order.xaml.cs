@@ -17,7 +17,7 @@ namespace Hured
 
 
             Controller.OpenConnection();
-            var сотрудники = Controller.Select(new Сотрудник(), e => e != null);
+            var сотрудники = Controller.Select<Сотрудник>(e => e != null);
             var имена = new List<string>();
             foreach (var сотрудник in сотрудники)
             {
@@ -61,19 +61,19 @@ namespace Hured
             switch (ordertype)
             {
                 case OrderType.Recruitment:
-                    result = Controller.Exists(new ПриказПриём(),
+                    result = Controller.Exists<ПриказПриём>(
                         q => q.Номер == number.ToString());
                     break;
                 case OrderType.Dismissal:
-                    result = Controller.Exists(new ПриказУвольнение(),
+                    result = Controller.Exists<ПриказУвольнение>(
                         q => q.Номер == number.ToString());
                     break;
                 case OrderType.Vacation:
-                    result = Controller.Exists(new ПриказОтпуск(),
+                    result = Controller.Exists<ПриказОтпуск>(
                         q => q.Номер == number.ToString());
                     break;
                 case OrderType.BusinessTrip:
-                    result = Controller.Exists(new ПриказКомандировка(),
+                    result = Controller.Exists<ПриказКомандировка>(
                         q => q.Номер == number.ToString());
                     break;
             }
@@ -107,8 +107,7 @@ namespace Hured
                     {
                         Controller.OpenConnection();
                         var number = TbНомерПриказа.Text;
-                        var order = Controller.Find(new ПриказПриём(),
-                            q => q.Номер == number);
+                        var order = Controller.Find<ПриказПриём>(q => q.Номер == number);
                         Controller.CloseConnection();
                         wRecruitment = new Recruitment(order);
 
@@ -124,8 +123,7 @@ namespace Hured
                             order.Номер = TbНомерПриказа.Text;
                             order.Дата = DpДатаПриказа.DisplayDate;
                             var employeeId = _employeesId[CbEmployee.SelectedIndex];
-                            order.Сотрудник = Controller.Find(new Сотрудник(),
-                                q => q.СотрудникId == employeeId);
+                            order.Сотрудник = Controller.Find<Сотрудник>( q=> q.СотрудникId == employeeId);
 
                             if (_isEditMode)
                             {
@@ -147,8 +145,7 @@ namespace Hured
                     {
                         Controller.OpenConnection();
                         var number = TbНомерПриказа.Text;
-                        var order = Controller.Find(new ПриказУвольнение(),
-                            q => q.Номер == number);
+                        var order = Controller.Find<ПриказУвольнение>(q => q.Номер == number);
                         Controller.CloseConnection();
 
                         wDismissal = new Dismissal(_employeesId[CbEmployee.SelectedIndex], order);
@@ -164,7 +161,7 @@ namespace Hured
                             order.Номер = TbНомерПриказа.Text;
                             order.Дата = DpДатаПриказа.DisplayDate;
                             var employeeId = _employeesId[CbEmployee.SelectedIndex];
-                            order.Сотрудник = Controller.Find(new Сотрудник(),
+                            order.Сотрудник = Controller.Find<Сотрудник>(
                                 q => q.СотрудникId == employeeId);
 
                             if (_isEditMode)
@@ -187,8 +184,7 @@ namespace Hured
                     {
                         Controller.OpenConnection();
                         var number = TbНомерПриказа.Text;
-                        var order = Controller.Find(new ПриказОтпуск(),
-                            q => q.Номер == number);
+                        var order = Controller.Find<ПриказОтпуск>(q => q.Номер == number);
                         Controller.CloseConnection();
 
                         wVacation = new Vacation(order);
@@ -205,7 +201,7 @@ namespace Hured
                             order.Дата = DpДатаПриказа.DisplayDate;
                             var employeeId = _employeesId[CbEmployee.SelectedIndex];
                             Controller.OpenConnection();
-                            order.Сотрудник = Controller.Find(new Сотрудник(),
+                            order.Сотрудник = Controller.Find<Сотрудник>(
                                 q => q.СотрудникId == employeeId);
                             if (_isEditMode)
                             {
@@ -228,7 +224,7 @@ namespace Hured
                     {
                         Controller.OpenConnection();
                         var number = TbНомерПриказа.Text;
-                        var order = Controller.Find(new ПриказКомандировка(),
+                        var order = Controller.Find<ПриказКомандировка>(
                             q => q.Номер == number);
                         Controller.CloseConnection();
                         wBusinessTrip = new BusinessTrip(order);
@@ -245,7 +241,7 @@ namespace Hured
                             order.Дата = DpДатаПриказа.DisplayDate;
                             var employeeId = _employeesId[CbEmployee.SelectedIndex];
                             Controller.OpenConnection();
-                            order.Сотрудник = Controller.Find(new Сотрудник(),
+                            order.Сотрудник = Controller.Find<Сотрудник>(
                                 q => q.СотрудникId == employeeId);
 
                             if (_isEditMode)

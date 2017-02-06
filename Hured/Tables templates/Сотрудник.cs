@@ -18,5 +18,11 @@ namespace Hured.Tables_templates
         public virtual ВоинскийУчёт ВоинскийУчёт { get; set; }
 
         public virtual ДополнительнаяИнформация ДополнительнаяИнформация { get; set; }
+
+        public override string ToString()
+        {
+            var g = ОсновнаяИнформация;
+            return g.Фамилия + " " + g.Имя + " " + g.Отчество;
+        }
     }
 }

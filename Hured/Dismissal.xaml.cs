@@ -19,8 +19,7 @@ namespace Hured
 
             Controller.OpenConnection();
 
-            var employee = Controller.Find(new Сотрудник(),
-                e => e.СотрудникId == employeeId);
+            var employee = Controller.Find<Сотрудник>(e => e.СотрудникId == employeeId);
 
             LEmployee.Content = employee.ОсновнаяИнформация.Фамилия + " " +
                                 employee.ОсновнаяИнформация.Имя + " " +
@@ -47,7 +46,7 @@ namespace Hured
 
         private void bOk_Click(object sender, RoutedEventArgs e)
         {
-            if (this.FindChildren<TextBox>().Any(Functions.IsEmpty))
+            if (!Functions.ValidateAllTextboxes(this))
             {
                 return;
             }

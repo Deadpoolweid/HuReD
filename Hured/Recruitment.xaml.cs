@@ -63,16 +63,14 @@ namespace Hured
             {
                 var unitId = (int)tag;
 
-                var unit = Controller.Find(new Подразделение(),
-                    q => q.ПодразделениеId == unitId);
+                var unit = Controller.Find<Подразделение>(q => q.ПодразделениеId == unitId);
 
                 var comboboxItem = (CbPosition.SelectedItem as ComboBoxItem)?.Tag;
                 if (comboboxItem != null)
                 {
                     var positionId = (int)comboboxItem;
 
-                    var position = Controller.Find(new Должность(),
-                        q => q.Подразделение.ПодразделениеId == unit.ПодразделениеId
+                    var position = Controller.Find<Должность>(q => q.Подразделение.ПодразделениеId == unit.ПодразделениеId
                              && q.ДолжностьId == positionId);
 
                     var приём = new ПриказПриём

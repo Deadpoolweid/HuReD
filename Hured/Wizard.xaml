@@ -26,7 +26,7 @@
         <toolkit:WizardPage x:Name="Page1" PageType="Interior" 
 			Title="Основное"
 			Description="Для начала, добавьте основную информацию"
-			NextPage="{Binding ElementName=Page2}"
+			NextPage="{Binding ElementName=DbSettings}"
 			PreviousPage="{Binding ElementName=IntroPage}"
                             DataContext="{Binding ElementName=This}"
                             CanSelectNextPage="{Binding Path=IsTextBoxesFilled}"
@@ -61,6 +61,51 @@
             </Grid>
         </toolkit:WizardPage>
 
+        <toolkit:WizardPage x:Name="DbSettings" PageType="Interior" 
+			Title="Настройка базы данных"
+			Description="Настройте соединение с базой данных"
+			NextPage="{Binding ElementName=Page2}"
+			PreviousPage="{Binding ElementName=Page1}"
+                            DataContext="{Binding ElementName=This}"
+                            CanSelectNextPage="{Binding Path=IsTextBoxesFilled}"
+                            >
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0">Сервер</Label>
+                <TextBox Name="TbServer" Grid.Row="0" Grid.Column="1"></TextBox>
+
+                <Label Grid.Row="1" Grid.Column="0">Порт</Label>
+                <controls:NumericUpDown Name="NtbPort" Grid.Row="1" Grid.Column="1" Minimum="0" Maximum="45151"
+                                                Interval="1" Value="0"></controls:NumericUpDown>
+
+                <Label Grid.Row="2" Grid.Column="0">Имя базы данных</Label>
+                <TextBox Name="TbDatabaseName" Grid.Row="2" Grid.Column="1"></TextBox>
+
+                <Label Grid.Row="3" Grid.Column="0">Пользователь</Label>
+                <TextBox Name="tbUid" Grid.Row="3" Grid.Column="1"></TextBox>
+
+                <Label Grid.Row="4" Grid.Column="0">Пароль</Label>
+                <PasswordBox Name="PbPassword" Grid.Row="4" Grid.Column="1"
+                     PasswordChar="*"></PasswordBox>
+
+                <CheckBox Name="ChbPersistSecurityInfo" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center">Передавать конфиденциальные данные</CheckBox>
+
+            </Grid>
+        </toolkit:WizardPage>
+        
         <toolkit:WizardPage x:Name="Page2" PageType="Interior"
 			Title="Подразделения"
 			Description="Добавьте подразделения" >

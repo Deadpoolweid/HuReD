@@ -6,7 +6,9 @@
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
 
                       mc:Ignorable="d"
-        Title="Создать приказ" Height="180" Width="450" ResizeMode="CanMinimize">
+        Title="Создать приказ" ResizeMode="CanMinimize"
+                      Height="Auto" Width="Auto" SizeToContent="WidthAndHeight">
+    <!--Height="180" Width="450" >-->
     <Border>
         <Grid>
             <Grid.RowDefinitions>
@@ -16,8 +18,8 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition  />
+                <ColumnDefinition  />
             </Grid.ColumnDefinitions>
 
             <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">

@@ -16,7 +16,7 @@ namespace Hured
 
             Controller.OpenConnection();
 
-            var statuses = Controller.Select(new Статус(), q => q != null);
+            var statuses = Controller.Select<Статус>(q => q != null);
 
 
             foreach (var status in statuses)
@@ -33,7 +33,7 @@ namespace Hured
             if (data.Length > 2)
             {
                 var entry = data[2] as ТабельнаяЗапись;
-                var editingEntry = Controller.Find(new ТабельнаяЗапись(),
+                var editingEntry = Controller.Find<ТабельнаяЗапись>(
                     q => q.ТабельнаяЗаписьId == entry.ТабельнаяЗаписьId);
                 CbStatus.SelectedIndex = _statusesId.IndexOf(editingEntry.Статус.СтатусId);
                 TbОтработанныеЧасы.Text = editingEntry.Часы;
@@ -59,7 +59,7 @@ namespace Hured
             {
                 Часы = TbОтработанныеЧасы.Text,
                 Примечание = Functions.GetRtbText(Rtbпримечание),
-                Статус = Controller.Find(new Статус(), q => q.СтатусId == statusId),
+                Статус = Controller.Find<Статус>( q => q.СтатусId == statusId),
                 ТабельнаяЗаписьId = _editingEntryId
             };
 

@@ -74,7 +74,7 @@ namespace Hured
 
             Controller.OpenConnection();
 
-            var statuses = Controller.Select(new Статус(), q => q != null);
+            var statuses = Controller.Select<Статус>( q => q != null);
 
             foreach (var status in statuses)
             {
@@ -114,8 +114,7 @@ namespace Hured
 
             var id = _statusesId[LvStatuses.SelectedIndex];
             Controller.OpenConnection();
-            var w = new Status(Controller.Find(new Статус(),
-    q => q.СтатусId == id));
+            var w = new Status(Controller.Find<Статус>(q => q.СтатусId == id));
             Controller.CloseConnection();
             w.ShowDialog();
 
@@ -129,8 +128,7 @@ namespace Hured
         {
             Controller.OpenConnection();
             var id = _statusesId[LvStatuses.SelectedIndex];
-            Controller.Remove(new Статус(),
-                q => q.СтатусId == id);
+            Controller.Remove<Статус>(q => q.СтатусId == id);
             Controller.CloseConnection();
 
             _tResult.RecordsDeleted++;

@@ -6,18 +6,18 @@
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
 
                       mc:Ignorable="d"
-        Title="Добавить должность" Height="200" Width="300" ResizeMode="CanMinimize">
+        Title="Добавить должность" Height="190" Width="340" ResizeMode="CanMinimize">
     <Border>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
+                <RowDefinition MaxHeight="40"/>
+                <RowDefinition MaxHeight="40"/>
+                <RowDefinition MaxHeight="40"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0">Название</Label>

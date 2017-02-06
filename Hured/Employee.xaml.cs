@@ -132,7 +132,7 @@ namespace Hured
 
         private void bOk_Click(object sender, RoutedEventArgs e)
         {
-            if (this.FindChildren<TextBox>().Any(Functions.IsEmpty))
+            if (!Functions.ValidateAllTextboxes(this))
             {
                 return;
             }
@@ -167,7 +167,7 @@ namespace Hured
             if (tag != null)
             {
                 var positionId = (int)tag;
-                var chosenPosition = Controller.Select(new Должность(),
+                var chosenPosition = Controller.Select< Должность>(
                     q => q.ДолжностьId == positionId).FirstOrDefault();
 
                 var employeeToAdd = new Сотрудник

@@ -23,10 +23,13 @@ namespace Hured
 
         private void bAdd_Click(object sender, RoutedEventArgs e)
         {
-            LbUnits.Items.Add(TbNewUnit.Text);
+
             Controller.OpenConnection();
             Controller.Insert(new Подразделение { Название = TbNewUnit.Text });
             Controller.CloseConnection();
+
+            Functions.AddUnitsFromDB(ref LbUnits);
+
             _tResult.RecordsAdded++;
         }
 
@@ -72,11 +75,18 @@ namespace Hured
             {
                 return;
             }
-            Controller.OpenConnection();
-            Controller.Remove(new Подразделение(), q => q.Название == LbUnits.SelectedValue.ToString());
-            Controller.CloseConnection();
-            LbUnits.Items.RemoveAt(LbUnits.SelectedIndex);
 
+            var listBoxItem = LbUnits.SelectedItem as ListBoxItem;
+            if (listBoxItem != null)
+            {
+                int index = (int) listBoxItem.Tag;
+
+                Controller.OpenConnection();
+                Controller.Remove<Подразделение>( q => q.ПодразделениеId == index);
+                Controller.CloseConnection();
+
+                LbUnits.Items.RemoveAt(LbUnits.SelectedIndex);
+            }
             _tResult.RecordsDeleted++;
         }
 

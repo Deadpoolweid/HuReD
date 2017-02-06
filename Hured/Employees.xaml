@@ -20,11 +20,10 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
                 <RowDefinition Height="Auto" />
-                <RowDefinition />
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0">Место работы</Label>
-            <TreeView x:Name="TvUnits" Grid.Column="0" Grid.Row="1" Grid.RowSpan="3"
+            <TreeView x:Name="TvUnits" Grid.Column="0" Grid.Row="1" Grid.RowSpan="2"
                       SelectedItemChanged="TvUnits_OnSelectedItemChanged" />
 
             <GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" 

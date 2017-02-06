@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.IO;
+using System.Windows;
 using Hured.DBModel;
 
 namespace Hured
@@ -11,12 +12,28 @@ namespace Hured
         public MainWindow()
         {
             InitializeComponent();
-            if (!Properties.Settings.Default.IsFirstLaunch) return;
-            var w = new Wizard();
-            w.ShowDialog();
 
-            Controller.InitDb();
-            Properties.Settings.Default.IsFirstLaunch = false;
+            if (Properties.Settings.Default.IsFirstLaunch)
+            {
+                var w = new Wizard();
+                w.ShowDialog();
+
+                Controller.SetConnectionString(Functions.GetAppSettings().GetConnectionString());
+
+                Controller.InitDb();
+
+                Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\Documents");
+
+
+                Properties.Settings.Default.IsFirstLaunch = false;
+            }
+
+            var settings = Functions.GetAppSettings();
+
+            Controller.SetConnectionString(settings?.GetConnectionString());
+
+            Functions.ChangeTheme(settings?.Theme);
+            Functions.ChangeAccent(settings?.Accent);
         }
 
         public void BEmployees_OnClick(object sender, RoutedEventArgs e)

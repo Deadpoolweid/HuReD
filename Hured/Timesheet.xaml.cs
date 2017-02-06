@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
+using System.Windows.Threading;
 using Hured.DBModel;
 using Hured.Tables_templates;
 
@@ -63,12 +65,12 @@ namespace Hured
             Controller.OpenConnection();
             if (сотрудники == null)
             {
-                сотрудники = Controller.Select(new Сотрудник(), q => q != null);
+                сотрудники = Controller.Select<Сотрудник>(q => q != null);
             }
 
             foreach (var employee in сотрудники)
             {
-                var entries = Controller.Select(new ТабельнаяЗапись(),
+                var entries = Controller.Select<ТабельнаяЗапись>(
                     q => q.Сотрудник.СотрудникId == employee.СотрудникId);
                 entries = entries.OrderBy(q => q.Дата).ToList();
 
@@ -96,41 +98,63 @@ namespace Hured
 
             Controller.CloseConnection();
 
+            
 
-            DgTimeSheet.ItemContainerGenerator.StatusChanged += (sender, args) =>
+
+            DgTimeSheet.ItemContainerGenerator.StatusChanged += OnItemContainerGeneratorStautsChanged;
+
+            DgTimeSheet.UpdateLayout();
+
+            //DgTimeSheet.ItemContainerGenerator.StatusChanged += (sender, args) =>
+            //{
+            //    if (DgTimeSheet.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
+            //    {
+
+            //    }
+            //};
+
+        }
+
+        private void OnItemContainerGeneratorStautsChanged(object sender, EventArgs args)
+        {
+            if (DgTimeSheet.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
             {
-                if (DgTimeSheet.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
+                DgTimeSheet.ItemContainerGenerator.StatusChanged -= OnItemContainerGeneratorStautsChanged;
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new Action(DelayedAction));
+            }
+        }
+
+        private void DelayedAction()
+        {
+            for (var row = 0; row < DgTimeSheet.Items.Count; row++)
+            {
+                var items = DgTimeSheet.Items[row] as Object[];
+
+                for (var column = 0; column < DgTimeSheet.Columns.Count; column++)
                 {
-                    for (var row = 0; row < DgTimeSheet.Items.Count; row++)
+                    //var cell = GetCell(row, column);
+
+                    var cell = DgTimeSheet.GetCellOfColumn(row, column);
+
+                    if (items != null && items[column] == null)
                     {
-                        var items = DgTimeSheet.Items[row] as Object[];
-
-                        for (var column = 0; column < DgTimeSheet.Columns.Count; column++)
-                        {
-                            var cell = GetCell(row, column);
-
-                            if (items != null && items[column] == null)
-                            {
-                                cell.Tag = false;
-                                continue;
-                            }
-
-                            var content = items?[column] as ТабельнаяЗапись;
-                            if (content == null)
-                            {
-                                cell.Content = items?[column] as String;
-                                continue;
-                            }
-
-
-                            cell.Tag = true;
-                            cell.Background = GetColorFromString(content.Статус.Цвет);
-                            cell.Content = content.Статус.Название;
-                        }
+                        cell.Tag = false;
+                        continue;
                     }
-                }
-            };
 
+                    var content = items?[column] as ТабельнаяЗапись;
+                    if (content == null)
+                    {
+                        cell.Content = items?[column] as String;
+                        continue;
+                    }
+
+
+                    cell.Tag = true;
+                    cell.Background = GetColorFromString(content.Статус.Цвет);
+                    cell.Content = content.Статус.Название;
+                }
+            }
         }
 
         private void TvUnits_OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -149,7 +173,7 @@ namespace Hured
                 if (item != null && item.Header.ToString() != "Все подразделения")
                 {
                     var unitId = (int)item.Tag;
-                    списокСотрудников = Controller.Select(new Сотрудник(),
+                    списокСотрудников = Controller.Select<Сотрудник>(
                         q => q.ОсновнаяИнформация.Должность.Подразделение.ПодразделениеId == unitId);
                 }
             } // Выбрана должность
@@ -158,7 +182,7 @@ namespace Hured
                 if (item?.Tag != null)
                 {
                     var positionId = (int)item.Tag;
-                    списокСотрудников = Controller.Select(new Сотрудник(),
+                    списокСотрудников = Controller.Select<Сотрудник>(
                         q => q.ОсновнаяИнформация.Должность.ДолжностьId == positionId);
                 }
             }
@@ -183,13 +207,12 @@ namespace Hured
             if (rowContainer != null)
             {
                 var presenter = GetVisualChild<DataGridCellsPresenter>(rowContainer);
+                if (presenter == null) presenter = GetVisualChild<DataGridCellsPresenter>(rowContainer);
 
-                var cell = (DataGridCell)presenter.ItemContainerGenerator.ContainerFromIndex(column);
-                if (cell == null)
-                {
-                    DgTimeSheet.ScrollIntoView(rowContainer, DgTimeSheet.Columns[column]);
-                    cell = (DataGridCell)presenter.ItemContainerGenerator.ContainerFromIndex(column);
-                }
+
+                DgTimeSheet.ScrollIntoView(rowContainer, DgTimeSheet.Columns[column]);
+                    var cell = (DataGridCell)presenter.ItemContainerGenerator.ContainerFromIndex(column);
+
                 return cell;
             }
             return null;
@@ -247,7 +270,7 @@ namespace Hured
                     var employeeId = _employeesId[e.Row.GetIndex()];
                     var entryDate = DateTime.Parse(e.Column.Header.ToString());
                     Controller.OpenConnection();
-                    var entry = Controller.Find(new ТабельнаяЗапись(),
+                    var entry = Controller.Find<ТабельнаяЗапись>(
                         q => q.Сотрудник.СотрудникId == employeeId &&
                              q.Дата == entryDate);
                     Controller.CloseConnection();
@@ -276,7 +299,7 @@ namespace Hured
                         entry.Дата = DateTime.Parse(e.Column.Header.ToString());
 
                         var employeeId = _employeesId[e.Row.GetIndex()];
-                        entry.Сотрудник = Controller.Find(new Сотрудник(),
+                        entry.Сотрудник = Controller.Find<Сотрудник>(
                             q => q.СотрудникId == employeeId);
 
                         if (isEditing)
@@ -296,6 +319,225 @@ namespace Hured
             e.Cancel = true;
 
             SyncTimeSheet();
+        }
+
+
+
+    }
+
+    public static class VisualHelper
+    {
+        public static T FindVisualChild<T>(this Visual parent) where T : Visual
+        {
+            List<T> childs = new List<T>();
+
+            return GetVisualChild(parent, true, ref childs);
+        }
+
+        public static IEnumerable<T> FindVisualChilds<T>(this Visual parent) where T : Visual
+        {
+            List<T> childs = new List<T>();
+            GetVisualChild(parent, false, ref childs);
+            return childs;
+        }
+
+        public static T FindVisualChildByName<T>(this Visual parent, string name) where T : Visual
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                return null;
+
+            List<T> childs = new List<T>();
+
+            return GetVisualChild(parent, true, ref childs, true, name);
+        }
+
+        private static T GetVisualChild<T>(this Visual parent, bool getOnlyOnechild, ref List<T> list, bool findByName = false, string childName = "") where T : Visual
+        {
+            T child = default(T);
+
+            for (int index = 0; index < VisualTreeHelper.GetChildrenCount(parent); index++)
+            {
+                Visual visualChild = (Visual)VisualTreeHelper.GetChild(parent, index);
+                child = visualChild as T;
+
+                if (child == null)
+                    child = GetVisualChild<T>(visualChild, getOnlyOnechild, ref list);//Find Recursively
+
+                if (child != null)
+                {
+                    if (getOnlyOnechild)
+                    {
+                        if (findByName)
+                        {
+                            var element = child as FrameworkElement;
+                            if (element != null && element.Name == childName)
+                                break;
+                        }
+                        else
+                            break;
+                    }
+                    else
+                        list.Add(child);
+                }
+            }
+            return child;
+        }
+    }
+
+    public static class DataGridHelper
+    {
+        public static DataGridColumn GetColumnByIndices(this DataGrid dataGrid, int rowIndex, int columnIndex)
+        {
+            if (dataGrid == null)
+                return null;
+
+            //Validate Indices
+            ValidateColumnIndex(dataGrid, columnIndex);
+            ValidateRowIndex(dataGrid, rowIndex);
+
+
+            var row = dataGrid.GetRowByIndex(rowIndex);
+
+
+            if (row != null)//Get Column for the DataGridRow by index using GetRowColumnByIndex Extension methods
+                return row.GetRowColumnByIndex(dataGrid, columnIndex);
+
+            return null;
+        }
+
+        public static DataGridCell GetCellByIndices(this DataGrid dataGrid, int rowIndex, int columnIndex)
+        {
+            if (dataGrid == null)
+                return null;
+
+            //Validate Indices
+            ValidateColumnIndex(dataGrid, columnIndex);
+            ValidateRowIndex(dataGrid, rowIndex);
+
+            var row = dataGrid.GetRowByIndex(rowIndex);
+
+            if (row != null)
+                return row.GetCellByColumnIndex(dataGrid, columnIndex);
+
+            return null;
+        }
+
+        public static DataGridRow GetRowByIndex(this DataGrid dataGrid, int rowIndex)
+        {
+            if (dataGrid == null)
+                return null;
+
+            ValidateRowIndex(dataGrid, rowIndex);
+
+            var container = dataGrid.ItemContainerGenerator.ContainerFromIndex(rowIndex);
+            var result = (DataGridRow) container;
+
+            if (result == null)
+            {
+                dataGrid.UpdateLayout();
+                dataGrid.ScrollIntoView(dataGrid.Items[rowIndex]);
+                result = (DataGridRow)dataGrid.ItemContainerGenerator.ContainerFromIndex(rowIndex);
+            }
+            return result;
+        }
+
+        public static DataGridColumn GetRowColumnByIndex(this DataGridRow row, DataGrid dataGrid, int columnIndex)
+        {
+
+            if (row == null || dataGrid == null)
+                return null;
+
+            ValidateColumnIndex(dataGrid, columnIndex);
+
+            var cell = GetCellByColumnIndex(row, dataGrid, columnIndex);
+
+            if (cell != null)
+                return cell.Column;
+
+            return null;
+        }
+
+        public static DataGridCell GetCellByColumnIndex(this DataGridRow row, DataGrid dataGrid, int columnIndex)
+        {
+            if (row == null || dataGrid == null)
+                return null;
+
+            ValidateColumnIndex(dataGrid, columnIndex);
+
+            DataGridCellsPresenter cellPresenter = row.FindVisualChild<DataGridCellsPresenter>();
+
+            if (cellPresenter != null)
+                return ((DataGridCell)cellPresenter.ItemContainerGenerator.ContainerFromIndex(columnIndex));
+
+            return null;
+        }
+
+        public static T GetUIElementOfCell<T>(this DataGrid dataGrid, int rowIndex, int columnIndex) where T : Visual
+        {
+            var cell = GetCellByIndices(dataGrid, rowIndex, columnIndex);
+
+            if (cell != null)
+                return cell.FindVisualChild<T>();
+
+            return null;
+        }
+
+        public static IEnumerable<T> GetUIElementsOfCell<T>(this DataGrid dataGrid, int rowIndex, int columnIndex) where T : Visual
+        {
+            var cell = GetCellByIndices(dataGrid, rowIndex, columnIndex);
+
+            if (cell != null)
+                return cell.FindVisualChilds<T>();
+
+            return null;
+        }
+
+        public static T GetUIElementOfCell<T>(this DataGridCell dataGridCell) where T : Visual
+        {
+            if (dataGridCell == null)
+                return null;
+
+            return dataGridCell.FindVisualChild<T>();
+        }
+
+        private static void ValidateColumnIndex(DataGrid dataGrid, int columnIndex)
+        {
+            if (columnIndex >= dataGrid.Columns.Count)
+                throw new IndexOutOfRangeException("columnIndex out of range");
+        }
+
+        private static void ValidateRowIndex(DataGrid dataGrid, int rowIndex)
+        {
+            if (rowIndex >= dataGrid.Items.Count)
+                throw new IndexOutOfRangeException("rowIndex out of range");
+        }
+    }
+
+    public class ExtendedDataGrid : DataGrid
+    {
+        public DataGridRow this[int rowIndex]
+        {
+            get { return DataGridHelper.GetRowByIndex(this as DataGrid, rowIndex); }
+        }
+
+        public DataGridColumn this[int rowIndex, int columnIndex]
+        {
+            get { return DataGridHelper.GetColumnByIndices(this as DataGrid, rowIndex, columnIndex); }
+        }
+
+        public DataGridCell GetCellOfColumn(int rowIndex, int columnIndex)
+        {
+            return this.GetCellByIndices(rowIndex, columnIndex);
+        }
+
+        public T GetVisualElementOfCell<T>(int rowIndex, int columnIndex) where T : Visual
+        {
+            return this.GetCellByIndices(rowIndex, columnIndex).FindVisualChild<T>();
+        }
+
+        public IEnumerable<T> GetVisualElementsOfCell<T>(int rowIndex, int columnIndex) where T : Visual
+        {
+            return this.GetCellByIndices(rowIndex, columnIndex).FindVisualChilds<T>();
         }
     }
 }

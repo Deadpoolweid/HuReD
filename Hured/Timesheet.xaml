@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-
-                      mc:Ignorable="d"
+        xmlns:hured="clr-namespace:Hured"
+        mc:Ignorable="d"
         Title="Табель посещаемости" >
     <Border>
         <Grid>
@@ -13,7 +13,6 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
                 <RowDefinition Height="Auto" />
-                <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -22,15 +21,16 @@
             </Grid.ColumnDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0">Место работы</Label>
-            <TreeView x:Name="TvUnits" Grid.Column="0" Grid.Row="1" Grid.RowSpan="3"
+            <TreeView x:Name="TvUnits" Grid.Column="0" Grid.Row="1" Grid.RowSpan="2"
                       SelectedItemChanged="TvUnits_OnSelectedItemChanged" />
 
             <GridSplitter Grid.Row="0" Grid.RowSpan="3" Grid.Column="1"
                           ResizeBehavior="PreviousAndNext" ResizeDirection="Columns" ShowsPreview="True"
                       VerticalAlignment="Stretch" Width="5" />
 
-            <DataGrid Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" Name="DgTimeSheet"
-                      BeginningEdit="DgTimeSheet_OnBeginningEdit" Margin="3" />
+            <hured:ExtendedDataGrid Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" x:Name="DgTimeSheet"
+                      BeginningEdit="DgTimeSheet_OnBeginningEdit" Margin="3" 
+                                    VirtualizingStackPanel.IsVirtualizing="False"/>
 
             <Button x:Name="BClose" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" IsDefault="True" Click="bClose_Click">Закрыть</Button>
         </Grid>

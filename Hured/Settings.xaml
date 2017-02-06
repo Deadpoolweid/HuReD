@@ -6,19 +6,67 @@
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
 
                       mc:Ignorable="d"
-        Title="Настройки" Height="410" Width="450" ResizeMode="CanMinimize">
+        Title="Настройки" Height="490" Width="450" ResizeMode="CanMinimize">
+    <controls:MetroWindow.Flyouts>
+        <controls:FlyoutsControl>
+            <controls:Flyout x:Name="FDbSettings" Position="Right" Theme="Accent" >
+
+                <Border>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+
+                        <Label Grid.Row="0" Grid.Column="0">Сервер</Label>
+                        <TextBox Name="TbServer" Grid.Row="0" Grid.Column="1"></TextBox>
+
+                        <Label Grid.Row="1" Grid.Column="0">Порт</Label>
+                        <controls:NumericUpDown Name="NtbPort" Grid.Row="1" Grid.Column="1" Minimum="0" Maximum="45151"
+                                                Interval="1"></controls:NumericUpDown>
+
+                        <Label Grid.Row="2" Grid.Column="0">Имя базы данных</Label>
+                        <TextBox Name="TbDatabaseName" Grid.Row="2" Grid.Column="1"></TextBox>
+
+                        <Label Grid.Row="3" Grid.Column="0">Пользователь</Label>
+                        <TextBox Name="tbUid" Grid.Row="3" Grid.Column="1"></TextBox>
+
+                        <Label Grid.Row="4" Grid.Column="0">Пароль</Label>
+                        <PasswordBox Name="PbPassword" Grid.Row="4" Grid.Column="1"
+                     PasswordChar="*"></PasswordBox>
+
+                        <CheckBox Name="ChbPersistSecurityInfo" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center">Передавать конфиденциальные данные</CheckBox>
+
+
+
+                    </Grid>
+                </Border>
+            </controls:Flyout>
+
+        </controls:FlyoutsControl>
+    </controls:MetroWindow.Flyouts>
+    
     <Border>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -41,10 +89,35 @@
             <Label Grid.Row="3" Grid.Column="0">Должность руководителя</Label>
             <TextBox x:Name="TbДолжностьРуководителя" Grid.Row="3" Grid.Column="1" />
 
-            <Button x:Name="BUnits" Grid.Row="7" Grid.Column="0" Click="bUnits_Click">Подразделения</Button>
+            <CheckBox Grid.Row="4" Grid.Column="0" Name="ChbСтрогаяПроеркаПолей" IsChecked="True">Строгая проверка полей</CheckBox>
+
+            <Label Grid.Row="5" Grid.Column="0">Тема</Label>
+            <ComboBox x:Name="cbTheme" Grid.Row="5" Grid.Column="1">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <Label Grid.Row="6" Grid.Column="0">Оттенок</Label>
+            <ComboBox x:Name="cbAccent" Grid.Row="6" Grid.Column="1" >
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <Button x:Name="BUnits" Grid.Row="7" Grid.Column="0" Click="bUnits_Click" Content="Подразделения"/>
             <Button x:Name="BPositions" Grid.Row="7" Grid.Column="1" Click="bPositions_Click">Должности</Button>
 
             <Button x:Name="BStatuses" Grid.Row="8" Grid.Column="0" Click="bStatuses_Click">Статусы</Button>
+            <ToggleButton x:Name="BdbSettings" Grid.Row="8" Grid.Column="1" 
+                          IsChecked="{Binding ElementName=FDbSettings, Path=IsOpen}" Cursor="Hand" Content="Настройки базы данных"/>
+
+            
+
 
             <Button x:Name="BClose" Grid.Row="9" Grid.Column="1" Click="bClose_Click">Закрыть</Button>
         </Grid>

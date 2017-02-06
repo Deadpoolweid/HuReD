@@ -50,7 +50,7 @@ namespace Hured
 
             Controller.OpenConnection();
 
-            var приказыПриём = Controller.Select(new ПриказПриём(), e => e != null);
+            var приказыПриём = Controller.Select< ПриказПриём>( e => e != null);
             foreach (var e in приказыПриём)
             {
                 LvOrders.Items.Add(new OrderInfo(e.Номер,
@@ -64,7 +64,7 @@ namespace Hured
                 });
             }
 
-            var приказыУвольнение = Controller.Select(new ПриказУвольнение(), e => e != null);
+            var приказыУвольнение = Controller.Select<ПриказУвольнение>( e => e != null);
             foreach (var e in приказыУвольнение)
             {
                 LvOrders.Items.Add(new OrderInfo(e.Номер,
@@ -78,7 +78,7 @@ namespace Hured
                 });
             }
 
-            var приказыОтпуск = Controller.Select(new ПриказОтпуск(), e => e != null);
+            var приказыОтпуск = Controller.Select<ПриказОтпуск>( e => e != null);
             foreach (var e in приказыОтпуск)
             {
                 LvOrders.Items.Add(new OrderInfo(e.Номер,
@@ -92,7 +92,7 @@ namespace Hured
                 });
             }
 
-            var приказыКомандировка = Controller.Select(new ПриказКомандировка(), e => e != null);
+            var приказыКомандировка = Controller.Select<ПриказКомандировка>(e => e != null);
             foreach (var e in приказыКомандировка)
             {
                 LvOrders.Items.Add(new OrderInfo(e.Номер,
@@ -148,19 +148,19 @@ namespace Hured
                 switch (item.OrderType)
                 {
                     case OrderType.Recruitment:
-                        document = Functions.CreateOrder(item.OrderType, Controller.Find(new ПриказПриём(),
+                        document = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказПриём>(
                             q => q.ПриказПриёмId == item.Id));
                         break;
                     case OrderType.Dismissal:
-                        document = Functions.CreateOrder(item.OrderType, Controller.Find(new ПриказУвольнение(),
+                        document = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказУвольнение>(
                             q => q.ПриказУвольнениеId == item.Id));
                         break;
                     case OrderType.Vacation:
-                        document = Functions.CreateOrder(item.OrderType, Controller.Find(new ПриказОтпуск(),
+                        document = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказОтпуск>(
                             q => q.ПриказОтпускId == item.Id));
                         break;
                     case OrderType.BusinessTrip:
-                        document = Functions.CreateOrder(item.OrderType, Controller.Find(new ПриказКомандировка(),
+                        document = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказКомандировка>(
                             q => q.ПриказКомандировкаId == item.Id));
                         break;
                     default:
@@ -201,19 +201,19 @@ namespace Hured
             switch (item.OrderType)
             {
                 case OrderType.Recruitment:
-                    document = Functions.CreateOrder(item.OrderType, Controller.Find(new ПриказПриём(),
+                    document = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказПриём>(
                         q => q.ПриказПриёмId == item.Id));
                     break;
                 case OrderType.Dismissal:
-                    document = Functions.CreateOrder(item.OrderType, Controller.Find(new ПриказУвольнение(), 
+                    document = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказУвольнение>(
                         q => q.ПриказУвольнениеId == item.Id));
                     break;
                 case OrderType.Vacation:
-                    document = Functions.CreateOrder(item.OrderType, Controller.Find(new ПриказОтпуск(), 
+                    document = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказОтпуск>(
                         q => q.ПриказОтпускId == item.Id));
                     break;
                 case OrderType.BusinessTrip:
-                    document = Functions.CreateOrder(item.OrderType, Controller.Find(new ПриказКомандировка(), 
+                    document = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказКомандировка>(
                         q => q.ПриказКомандировкаId == item.Id));
                     break;
                 default:
@@ -241,19 +241,19 @@ namespace Hured
                 switch (item.OrderType)
                 {
                     case OrderType.Recruitment:
-                        document = Functions.CreateOrder(item.OrderType, Controller.Find(new ПриказПриём(),
+                        document = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказПриём>(
                             q => q.ПриказПриёмId == item.Id));
                         break;
                     case OrderType.Dismissal:
-                        document = Functions.CreateOrder(item.OrderType, Controller.Find(new ПриказУвольнение(),
+                        document = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказУвольнение>(
                             q => q.ПриказУвольнениеId == item.Id));
                         break;
                     case OrderType.Vacation:
-                        document = Functions.CreateOrder(item.OrderType, Controller.Find(new ПриказОтпуск(),
+                        document = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказОтпуск>(
                             q => q.ПриказОтпускId == item.Id));
                         break;
                     case OrderType.BusinessTrip:
-                        document = Functions.CreateOrder(item.OrderType, Controller.Find(new ПриказКомандировка(),
+                        document = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказКомандировка>(
                             q => q.ПриказКомандировкаId == item.Id));
                         break;
                     default:
@@ -283,25 +283,25 @@ namespace Hured
                 if (item.Тип == "Приём")
                 {
                     Controller.OpenConnection();
-                    Controller.Remove(new ПриказПриём(), q => q.Номер == item.Номер);
+                    Controller.Remove<ПриказПриём>(q => q.Номер == item.Номер);
                     Controller.CloseConnection();
                 }
                 else if (item.Тип == "Увольнение")
                 {
                     Controller.OpenConnection();
-                    Controller.Remove(new ПриказУвольнение(), q => q.Номер == item.Номер);
+                    Controller.Remove<ПриказУвольнение>( q => q.Номер == item.Номер);
                     Controller.CloseConnection();
                 }
                 else if (item.Тип == "Отпуск")
                 {
                     Controller.OpenConnection();
-                    Controller.Remove(new ПриказОтпуск(), q => q.Номер == item.Номер);
+                    Controller.Remove<ПриказОтпуск>( q => q.Номер == item.Номер);
                     Controller.CloseConnection();
                 }
                 else if (item.Тип == "Командировка")
                 {
                     Controller.OpenConnection();
-                    Controller.Remove(new ПриказКомандировка(), q => q.Номер == item.Номер);
+                    Controller.Remove<ПриказКомандировка>( q => q.Номер == item.Номер);
                     Controller.CloseConnection();
                 }
             }

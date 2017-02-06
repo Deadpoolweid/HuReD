@@ -17,13 +17,12 @@ namespace Hured
             InitializeComponent();
             Functions.AddUnitsFromDB(ref CbUnit);
             CbUnit.SelectedIndex = 0;
-            if (position != null)
-            {
-                _isEditMode = true;
-                TbName.Text = _oldName = position.Название;
-                TbРасписание.Text = position.Расписание;
-                CbUnit.SelectedItem = position.Подразделение.Название;
-            }
+            if (position == null) return;
+
+            _isEditMode = true;
+            TbName.Text = _oldName = position.Название;
+            TbРасписание.Text = position.Расписание;
+            CbUnit.SelectedItem = position.Подразделение.Название;
         }
 
         private readonly bool _isEditMode;
@@ -31,7 +30,7 @@ namespace Hured
 
         private void bOk_Click(object sender, RoutedEventArgs e)
         {
-            if (this.FindChildren<TextBox>().Any(Functions.IsEmpty))
+            if (!Functions.ValidateAllTextboxes(this))
             {
                 return;
             }
@@ -44,7 +43,7 @@ namespace Hured
             {
                 var unitId = (int)tag;
 
-                var unit = Controller.Select(new Подразделение(),
+                var unit = Controller.Select<Подразделение>(
                     q => q.ПодразделениеId == unitId).FirstOrDefault();
 
                 var position = new Должность

@@ -19,6 +19,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Hured.DBModel;
 using Hured.Tables_templates;
+using MahApps.Metro;
+using MahApps.Metro.Controls;
 using Microsoft.Office.Interop.Word;
 using Application = Microsoft.Office.Interop.Word.Application;
 using Brushes = System.Windows.Media.Brushes;
@@ -32,7 +34,7 @@ namespace Hured
         public static void AddUnitsFromDB(ref ListView lvUnits)
         {
             Controller.OpenConnection();
-            var units = Controller.Select(new Подразделение(), e => e != null);
+            var units = Controller.Select<Подразделение>(e => e != null);
             Controller.CloseConnection();
 
             foreach (var unit in units)
@@ -47,7 +49,7 @@ namespace Hured
         public static void AddUnitsFromDB(ref ComboBox cbUnits)
         {
             Controller.OpenConnection();
-            var units = Controller.Select(new Подразделение(), e => e != null);
+            var units = Controller.Select<Подразделение>(e => e != null);
             Controller.CloseConnection();
 
             foreach (var unit in units)
@@ -61,15 +63,18 @@ namespace Hured
 
         public static void AddUnitsFromDB(ref ListBox lbUnits)
         {
+            lbUnits.Items.Clear();
+
             Controller.OpenConnection();
-            var units = Controller.Select(new Подразделение(), e => e != null);
+            var units = Controller.Select<Подразделение>( e => e != null);
             Controller.CloseConnection();
 
-            foreach (var unit in units)
+            foreach (var newItem in units.Select(unit => new ListBoxItem
             {
-                var newItem = new ListBoxItem();
-                newItem.Content = unit;
-                newItem.Tag = unit.ПодразделениеId;
+                Content = unit,
+                Tag = unit.ПодразделениеId
+            }))
+            {
                 lbUnits.Items.Add(newItem);
             }
         }
@@ -77,18 +82,20 @@ namespace Hured
         public static List<Должность> GetPositionsForUnit(int unitId)
         {
             Controller.OpenConnection();
-            var positions = Controller.Select(new Должность(), e => e.Подразделение.ПодразделениеId == unitId);
+            var positions = Controller.Select<Должность>( e => e.Подразделение.ПодразделениеId == unitId);
             Controller.CloseConnection();
             return positions;
         }
 
         public static void AddPositionsFromDB(ref ListView lvPositions, int unitId = -1)
         {
+            lvPositions.Items.Clear();
+
             List<Должность> positions;
             if (unitId == -1)
             {
                 Controller.OpenConnection();
-                positions = Controller.Select(new Должность(), e => e != null);
+                positions = Controller.Select<Должность>( e => e != null);
                 Controller.CloseConnection();
 
             }
@@ -96,9 +103,14 @@ namespace Hured
             {
                 positions = GetPositionsForUnit(unitId);
             }
-            foreach (var должность in positions)
+            foreach (var item in positions.Select(
+                должность => new ListViewItem
+                {
+                    Content = должность,
+                    Tag = должность.ДолжностьId
+                }))
             {
-                lvPositions.Items.Add(должность);
+                lvPositions.Items.Add(item);
             }
         }
 
@@ -108,7 +120,7 @@ namespace Hured
             if (unitId == -1)
             {
                 Controller.OpenConnection();
-                positions = Controller.Select(new Должность(), e => e != null);
+                positions = Controller.Select<Должность>( e => e != null);
                 Controller.CloseConnection();
 
             }
@@ -135,8 +147,6 @@ namespace Hured
         public static WordDocument CreateOrder<T>(OrderType orderType, T _order)
         {
             if (_order == null) throw new ArgumentNullException(nameof(_order));
-            // TODO Перенести в инициализацию
-            Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\Documents");
 
             var bookmarks = new Dictionary<string, string>();
             string openPath;
@@ -310,12 +320,12 @@ namespace Hured
         {
 
             Controller.OpenConnection();
-            var подразделения = Controller.Select(new Подразделение(), e => e != null);
+            var подразделения = Controller.Select<Подразделение>( e => e != null);
 
             var item = new TreeViewItem();
 
             item.Header = "Все подразделения";
-            foreach (var должность in Controller.Select(new Должность(), e => e != null))
+            foreach (var должность in Controller.Select<Должность>( e => e != null))
             {
                 item.Items.Add(new TreeViewItem
                 {
@@ -331,7 +341,7 @@ namespace Hured
                 item = new TreeViewItem();
                 item.Tag = подразделение.ПодразделениеId;
                 item.Header = подразделение.Название;
-                var subItems = Controller.Select(new Должность(),
+                var subItems = Controller.Select<Должность>(
                     e => e.Подразделение.ПодразделениеId == подразделение.ПодразделениеId).Select(должность => new TreeViewItem
                     {
                         Header = должность.Название,
@@ -355,6 +365,13 @@ namespace Hured
             }
             textbox.BorderBrush = Brushes.Black;
             return false;
+        }
+
+        public static bool ValidateAllTextboxes(System.Windows.Window w, bool? isFiledsStrictCheckEnabled = null)
+        {
+            var settings = isFiledsStrictCheckEnabled ?? GetAppSettings().СтрогаяПроверкаПолей;
+            if (!settings) return true;
+            return !w.FindChildren<TextBox>().Any(IsEmpty);
         }
 
         public static bool IsNumber(TextBox textbox)
@@ -484,6 +501,20 @@ namespace Hured
                 timer.Start();
             };
             popup.IsOpen = true;
+        }
+
+        public static void ChangeTheme(string name)
+        {
+            if (name == null) return;
+            ThemeManager.ChangeAppTheme(System.Windows.Application.Current, name);
+        }
+
+        public static void ChangeAccent(string newAccent)
+        {
+            if (newAccent == null) return;
+
+            var accent = ThemeManager.Accents.FirstOrDefault(q => q.Name == newAccent);
+            ThemeManager.ChangeAppStyle(System.Windows.Application.Current, accent,ThemeManager.DetectAppStyle(System.Windows.Application.Current).Item1);
         }
     }
 

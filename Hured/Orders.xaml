@@ -19,13 +19,13 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <ListView Grid.Row="0" Grid.Column="0" Name="LvOrders">
+            <ListView Grid.Row="0" Grid.Column="0" Name="LvOrders" d:DataContext="{d:DesignData OrderInfo}">
                 <ListView.View>
                     <GridView >
                         <GridView.Columns>
                             <GridViewColumn Header="Дата" Width="Auto" DisplayMemberBinding="{Binding Дата}" />
                             <GridViewColumn Header="Номер" Width="Auto" DisplayMemberBinding="{Binding Номер}" />
-                            <GridViewColumn Header="Ф.И.О." Width="Auto" DisplayMemberBinding="{Binding ФИО}" />
+                            <GridViewColumn Header="Ф.И.О." Width="Auto" DisplayMemberBinding="{Binding Фио}" />
                             <GridViewColumn Header="Тип" Width="Auto" DisplayMemberBinding="{Binding Тип}" />
                         </GridView.Columns>
                     </GridView>
