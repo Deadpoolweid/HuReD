@@ -25,6 +25,9 @@
                             <RowDefinition Height="Auto"></RowDefinition>
                             <RowDefinition Height="Auto"></RowDefinition>
                             <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
                         </Grid.RowDefinitions>
 
                         <Label Grid.Row="0" Grid.Column="0">Сервер</Label>
@@ -46,7 +49,12 @@
 
                         <CheckBox Name="ChbPersistSecurityInfo" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center">Передавать конфиденциальные данные</CheckBox>
 
+                        <Button Name="BCheckDbConnection" Grid.Row="6" Grid.Column="0"
+                                Click="BCheckDbConnection_OnClick">Проверить соединение</Button>
 
+                        <Button Name="BExportDb" Grid.Row="7" Click="BExportDb_OnClick">Экспортировать базу данных</Button>
+
+                        <Button Name="BImportDb" Grid.Row="8" Click="BImportDb_OnClick">Импортировать базу данных</Button>
 
                     </Grid>
                 </Border>

@@ -5,20 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-    x:Class="Hured.Wizard"
+        xmlns:controls1="http://catel.codeplex.com"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        x:Class="Hured.Wizard"
         mc:Ignorable="d"
         Title="Настройка приложения" Height="300" Width="300" Name="This" d:DataContext="{d:DesignData Wizard}">
 
     <Window.Resources>
         <Style TargetType="toolkit:WizardPage">
             <Setter Property="DataContext" Value="{Binding ElementName=This}" />
-            <Setter Property="CanSelectNextPage" Value="{Binding Path=IsRecordsAdded}" />
+            <!--<Setter Property="CanSelectNextPage" Value="{Binding Path=IsRecordsAdded}" />-->
         </Style>
     </Window.Resources>
     <toolkit:Wizard FinishButtonClosesWindow="True" x:Name="WInit" Next="WInit_OnNext"
                     NextButtonContent="Далее" BackButtonContent="Назад"
                     CancelButtonContent="Выйти" FinishButtonContent="Завершить"
-                    HelpButtonVisibility="Hidden">
+                    HelpButtonVisibility="Hidden" Finish="WInit_OnFinish">
         <toolkit:WizardPage x:Name="IntroPage"
 			Title="Уважаемый пользователь" CanSelectNextPage="True"
 			Description="Мы поможем подготовить программу к первому использованию" />
@@ -28,11 +30,9 @@
 			Description="Для начала, добавьте основную информацию"
 			NextPage="{Binding ElementName=DbSettings}"
 			PreviousPage="{Binding ElementName=IntroPage}"
-                            DataContext="{Binding ElementName=This}"
-                            CanSelectNextPage="{Binding Path=IsTextBoxesFilled}"
-                            
-                            >
-            <Grid>
+                            DataContext="{Binding ElementName=This}">
+            <!--CanSelectNextPage="{Binding Path=IsTextBoxesFilled}"-->
+            <controls1:StackGrid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -58,7 +58,7 @@
 
                 <Label Grid.Row="3" Grid.Column="0" Content="Должность руководителя"/>
                 <TextBox x:Name="TbДолжностьРуководителя" Grid.Row="3" Grid.Column="1"/>
-            </Grid>
+            </controls1:StackGrid>
         </toolkit:WizardPage>
 
         <toolkit:WizardPage x:Name="DbSettings" PageType="Interior" 
@@ -66,10 +66,9 @@
 			Description="Настройте соединение с базой данных"
 			NextPage="{Binding ElementName=Page2}"
 			PreviousPage="{Binding ElementName=Page1}"
-                            DataContext="{Binding ElementName=This}"
-                            CanSelectNextPage="{Binding Path=IsTextBoxesFilled}"
-                            >
-            <Grid>
+                            DataContext="{Binding ElementName=This}">
+            <!--CanSelectNextPage="{Binding Path=IsTextBoxesFilled}"-->
+            <controls1:StackGrid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
@@ -103,7 +102,7 @@
 
                 <CheckBox Name="ChbPersistSecurityInfo" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center">Передавать конфиденциальные данные</CheckBox>
 
-            </Grid>
+            </controls1:StackGrid>
         </toolkit:WizardPage>
         
         <toolkit:WizardPage x:Name="Page2" PageType="Interior"

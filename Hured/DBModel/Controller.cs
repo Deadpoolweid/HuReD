@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Windows.Media.Animation;
 using MySql.Data.MySqlClient;
 
 namespace Hured.DBModel
@@ -25,6 +28,7 @@ namespace Hured.DBModel
             _connection = new MySqlConnection(ConnectionString);
             Context = new Hured(_connection, false);
             _connection.Open();
+
             _transaction = _connection.BeginTransaction();
 
             // Interception/SQL logging
@@ -73,6 +77,31 @@ namespace Hured.DBModel
             }
         }
 
+        public static bool IsConnectionSucceded(string connectionString = null)
+        {
+            if (connectionString == null)
+            {
+                connectionString = ConnectionString;
+            }
+
+            try
+            {
+                using (var sqlConn =
+                    new MySqlConnection(connectionString))
+                {
+                    sqlConn.Open();
+                    return (sqlConn.State == ConnectionState.Open);
+                }
+            }
+            catch (SqlException)
+            {
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
 
         public static void Insert<T>(T item) where T : class
         {
@@ -146,6 +175,54 @@ namespace Hured.DBModel
 
             var result = table.Count();
             return result;
+        }
+
+        public static void ExportDataBase(string path)
+        {
+
+            if (path == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            using (MySqlConnection conn = new MySqlConnection(ConnectionString))
+            {
+                using (MySqlCommand cmd = new MySqlCommand())
+                {
+                    using (MySqlBackup mb = new MySqlBackup(cmd))
+                    {
+                        cmd.Connection = conn;
+                        conn.Open();
+                        mb.ExportToFile(path);
+                        conn.Close();
+                    }
+                }
+            }
+        }
+
+        public static void ImportDataBase(string path)
+        {
+            if (path == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            InitDb();
+            
+
+            using (MySqlConnection conn = new MySqlConnection(ConnectionString))
+            {
+                using (MySqlCommand cmd = new MySqlCommand())
+                {
+                    using (MySqlBackup mb = new MySqlBackup(cmd))
+                    {
+                        cmd.Connection = conn;
+                        conn.Open();
+                        mb.ImportFromFile(path);
+                        conn.Close();
+                    }
+                }
+            }
         }
     }
 }

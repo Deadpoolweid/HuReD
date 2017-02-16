@@ -1,12 +1,15 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using Hured.DBModel;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using Microsoft.Win32;
 using MySql.Data.MySqlClient;
 using MessageBox = Xceed.Wpf.Toolkit.MessageBox;
 
@@ -31,9 +34,12 @@ namespace Hured
             TbНормаРабочегоДня.Text = _loadedSettings.НормаРабочегоДня;
             ChbСтрогаяПроеркаПолей.IsChecked = _loadedSettings.СтрогаяПроверкаПолей;
 
+            cbTheme.SelectedIndex = cbAccent.SelectedIndex = 0;
+
             cbTheme.SelectedItem = ThemeManager.AppThemes.ToList().FirstOrDefault(
                 q => q.Name == _loadedSettings.Theme);
             cbAccent.SelectedItem = ThemeManager.Accents.FirstOrDefault(q => q.Name == _loadedSettings.Accent);
+            
 
             var mySqlConnectionStringBuilder = _loadedSettings.GetConnectionStringBuilder();
             if (mySqlConnectionStringBuilder == null) return;
@@ -50,6 +56,14 @@ namespace Hured
 
         public void bUnits_Click(object sender, RoutedEventArgs e)
         {
+
+            if (!Controller.IsConnectionSucceded())
+            {
+                Functions.ShowPopup(BUnits, "Не удаётся подключиться к базе данных. " +
+                                               "Проверьте настройки подключения.");
+                return;
+            }
+
             IsHitTestVisible = false;
             var w = new Units();
             w.ShowDialog();
@@ -58,6 +72,14 @@ namespace Hured
 
         public void bPositions_Click(object sender, RoutedEventArgs e)
         {
+
+            if (!Controller.IsConnectionSucceded())
+            {
+                Functions.ShowPopup(BPositions, "Не удаётся подключиться к базе данных. " +
+                                               "Проверьте настройки подключения.");
+                return;
+            }
+
             IsHitTestVisible = false;
             var w = new Positions();
             w.ShowDialog();
@@ -66,6 +88,14 @@ namespace Hured
 
         public void bStatuses_Click(object sender, RoutedEventArgs e)
         {
+
+            if (!Controller.IsConnectionSucceded())
+            {
+                Functions.ShowPopup(BStatuses, "Не удаётся подключиться к базе данных. " +
+                                               "Проверьте настройки подключения.");
+                return;
+            }
+
             IsHitTestVisible = false;
             var w = new Statuses();
             w.ShowDialog();
@@ -76,6 +106,12 @@ namespace Hured
         {
             if (!Functions.ValidateAllTextboxes(this, ChbСтрогаяПроеркаПолей.IsChecked))
             {
+                return;
+            }
+
+            if (!Regex.IsMatch(TbРуководитель.Text, "^[А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+$"))
+            {
+                Functions.ShowPopup(TbРуководитель,"Введите фамилию, имя и отчество через пробелы.");
                 return;
             }
 
@@ -139,5 +175,62 @@ namespace Hured
         }
 
 
+        private void BCheckDbConnection_OnClick(object sender, RoutedEventArgs e)
+        {
+            var connectionStringBuilder = new MySqlConnectionStringBuilder()
+            {
+                Server = TbServer.Text,
+                Port = (uint) NtbPort.Value,
+                UserID = tbUid.Text,
+                Password = PbPassword.Password,
+                PersistSecurityInfo = ChbPersistSecurityInfo.IsChecked.Value
+            };
+            if (Controller.IsConnectionSucceded(connectionStringBuilder.ConnectionString))
+            {
+                BCheckDbConnection.Background = Brushes.ForestGreen;
+                Functions.ShowPopup(BCheckDbConnection,"Соединение установлено.");
+            }
+            else
+            {
+                BCheckDbConnection.Background = Brushes.Red;
+                Functions.ShowPopup(BCheckDbConnection,"Соединение не установлено.");
+            }
+        }
+
+        private void BExportDb_OnClick(object sender, RoutedEventArgs e)
+        {
+            string backUpDirectory = Directory.GetCurrentDirectory() + @"\Backup";
+            Directory.CreateDirectory(backUpDirectory);
+
+            var sfd = new SaveFileDialog
+            {
+                InitialDirectory = backUpDirectory,
+                Filter = "SQL Query | *.sql | Все файлы (*.*)|*.*",
+                FileName = "Backup"
+            };
+
+            if (sfd.ShowDialog() == false) return;
+
+            Controller.ExportDataBase(sfd.FileName);
+        }
+
+        private void BImportDb_OnClick(object sender, RoutedEventArgs e)
+        {
+            string backUpDirectory = Directory.GetCurrentDirectory() + @"\Backup";
+            
+            var ofd = new OpenFileDialog()
+            {
+                InitialDirectory = backUpDirectory,
+                Filter = "SQL |*.sql|Все файлы (*.*)|*.*"
+            };
+
+            if (ofd.ShowDialog() == false) return;
+
+            Functions.AddProgressRing(this);
+
+            Controller.ImportDataBase(ofd.FileName);
+
+            Functions.RemoveProgressRing();
+        }
     }
 }

@@ -8,7 +8,7 @@
         Title="Отдел кадров - Главное меню" 
                       WindowStartupLocation="CenterScreen">
 
-    <Grid>
+    <Grid Name="mainGrid">
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition />
@@ -31,5 +31,6 @@
         <Button x:Name="BTimesheet" Grid.Row="2" Click="bTimesheet_Click">Табель посещаемости</Button>
         <Button x:Name="BSettings" Grid.Row="3" Click="bSettings_Click">Настройки</Button>
 
+        <controls:ProgressRing Name="Loading" IsActive="False" Foreground="{StaticResource AccentColorBrush}" />
     </Grid>
 </controls:MetroWindow>

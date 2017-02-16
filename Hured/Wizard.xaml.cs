@@ -138,13 +138,7 @@ namespace Hured
                     PersistSecurityInfo = ChbPersistSecurityInfo.IsChecked.Value
                 });
 
-                var formatter = new BinaryFormatter();
-                // Сохранить объект в локальном файле.
-                using (Stream fStream = new FileStream("settings.dat",
-                    FileMode.Create, FileAccess.Write, FileShare.None))
-                {
-                    formatter.Serialize(fStream, _settings);
-                }
+
                 return;
             }
 
@@ -163,6 +157,11 @@ namespace Hured
             switch (currentNumber)
             {
                 case 1:
+                    if (currentPage.FindChildren<TextBox>().Any(Functions.IsEmpty))
+                    {
+                        e.Cancel = true;
+                        return;
+                    }
 
                     _settings.ДолжностьРуководителя = TbДолжностьРуководителя.Text;
                     _settings.НазваниеОрганизации = TbНазваниеОрганизации.Text;
@@ -175,8 +174,23 @@ namespace Hured
                     currentPage.CanSelectNextPage = true;
                     break;
                 default:
-                    IsRecordsAdded = false;
+                    if (!IsRecordsAdded)
+                    {
+                        e.Cancel = true;
+                    }
                     break;
+            }
+        }
+
+
+        private void WInit_OnFinish(object sender, CancelRoutedEventArgs e)
+        {
+            var formatter = new BinaryFormatter();
+            // Сохранить объект в локальном файле.
+            using (Stream fStream = new FileStream("settings.dat",
+                FileMode.Create, FileAccess.Write, FileShare.None))
+            {
+                formatter.Serialize(fStream, _settings);
             }
         }
     }

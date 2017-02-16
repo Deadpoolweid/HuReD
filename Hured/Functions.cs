@@ -6,13 +6,15 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text.RegularExpressions;
-using System.Timers;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Interop;
 using System.Windows.Media;
@@ -26,6 +28,9 @@ using Application = Microsoft.Office.Interop.Word.Application;
 using Brushes = System.Windows.Media.Brushes;
 using Image = System.Drawing.Image;
 using Paragraph = System.Windows.Documents.Paragraph;
+using Border = System.Windows.Controls.Border;
+using Task = System.Threading.Tasks.Task;
+using Timer = System.Timers.Timer;
 
 namespace Hured
 {
@@ -66,7 +71,7 @@ namespace Hured
             lbUnits.Items.Clear();
 
             Controller.OpenConnection();
-            var units = Controller.Select<Подразделение>( e => e != null);
+            var units = Controller.Select<Подразделение>(e => e != null);
             Controller.CloseConnection();
 
             foreach (var newItem in units.Select(unit => new ListBoxItem
@@ -82,7 +87,7 @@ namespace Hured
         public static List<Должность> GetPositionsForUnit(int unitId)
         {
             Controller.OpenConnection();
-            var positions = Controller.Select<Должность>( e => e.Подразделение.ПодразделениеId == unitId);
+            var positions = Controller.Select<Должность>(e => e.Подразделение.ПодразделениеId == unitId);
             Controller.CloseConnection();
             return positions;
         }
@@ -95,7 +100,7 @@ namespace Hured
             if (unitId == -1)
             {
                 Controller.OpenConnection();
-                positions = Controller.Select<Должность>( e => e != null);
+                positions = Controller.Select<Должность>(e => e != null);
                 Controller.CloseConnection();
 
             }
@@ -120,7 +125,7 @@ namespace Hured
             if (unitId == -1)
             {
                 Controller.OpenConnection();
-                positions = Controller.Select<Должность>( e => e != null);
+                positions = Controller.Select<Должность>(e => e != null);
                 Controller.CloseConnection();
 
             }
@@ -320,12 +325,12 @@ namespace Hured
         {
 
             Controller.OpenConnection();
-            var подразделения = Controller.Select<Подразделение>( e => e != null);
+            var подразделения = Controller.Select<Подразделение>(e => e != null);
 
             var item = new TreeViewItem();
 
             item.Header = "Все подразделения";
-            foreach (var должность in Controller.Select<Должность>( e => e != null))
+            foreach (var должность in Controller.Select<Должность>(e => e != null))
             {
                 item.Items.Add(new TreeViewItem
                 {
@@ -359,7 +364,7 @@ namespace Hured
             var text = textbox.Text;
             if (text == "")
             {
-                ShowPopup(textbox,"Заполните это поле.");
+                ShowPopup(textbox, "Заполните это поле.");
                 textbox.BorderBrush = Brushes.Red;
                 return true;
             }
@@ -377,9 +382,9 @@ namespace Hured
         public static bool IsNumber(TextBox textbox)
         {
             var text = textbox.Text;
-            if (Regex.IsMatch(text,"\\D"))
+            if (Regex.IsMatch(text, "\\D"))
             {
-                ShowPopup(textbox,"Допускаются только цифры.");
+                ShowPopup(textbox, "Допускаются только цифры.");
                 textbox.BorderBrush = Brushes.Red;
                 return false;
             }
@@ -479,11 +484,15 @@ namespace Hured
                 PlacementTarget = element,
                 PopupAnimation = PopupAnimation.Fade,
                 AllowsTransparency = true,
-                Child = new Label
+                Child = new System.Windows.Controls.Border()
                 {
-                    Background = Brushes.AliceBlue,
-                    Content = "Заполните это поле.",
-                    BorderBrush = Brushes.Red
+                    Child = new TextBlock()
+                    {
+                        Padding = new Thickness(5),
+                        Background = new RadialGradientBrush(Colors.WhiteSmoke, Colors.NavajoWhite),
+                        Text = message,
+                        Foreground = Brushes.Black
+                    }
                 }
             };
             popup.Opened += (o, args) =>
@@ -491,17 +500,47 @@ namespace Hured
                 var timer = new Timer(2000);
                 timer.Elapsed += (sender1, eventArgs) =>
                 {
-
                     popup.Dispatcher.Invoke(() =>
                     {
                         popup.IsOpen = false;
                     });
-
                 };
                 timer.Start();
             };
             popup.IsOpen = true;
         }
+
+        static Popup Popup = new Popup()
+        {
+            StaysOpen = false,
+            Placement = PlacementMode.Center,
+            PopupAnimation = PopupAnimation.Fade,
+            AllowsTransparency = true,
+            Child = new System.Windows.Controls.Border()
+            {
+                Child = new ProgressRing()
+                {
+                    IsActive = true
+                }
+            }
+        };
+
+        public static void AddProgressRing(MetroWindow window)
+        {
+            Popup.PlacementTarget = window;
+
+            //ProgressRings.Enqueue(Popup);
+            Popup.IsOpen = true;
+        }
+
+
+        public static void RemoveProgressRing()
+        {
+            Popup.IsOpen = false;
+            //ProgressRings.Dequeue().IsOpen = false;
+        }
+
+        static Queue<Popup> ProgressRings = new Queue<Popup>();
 
         public static void ChangeTheme(string name)
         {
@@ -514,7 +553,7 @@ namespace Hured
             if (newAccent == null) return;
 
             var accent = ThemeManager.Accents.FirstOrDefault(q => q.Name == newAccent);
-            ThemeManager.ChangeAppStyle(System.Windows.Application.Current, accent,ThemeManager.DetectAppStyle(System.Windows.Application.Current).Item1);
+            ThemeManager.ChangeAppStyle(System.Windows.Application.Current, accent, ThemeManager.DetectAppStyle(System.Windows.Application.Current).Item1);
         }
     }
 
