@@ -64,7 +64,7 @@
         <toolkit:WizardPage x:Name="DbSettings" PageType="Interior" 
 			Title="Настройка базы данных"
 			Description="Настройте соединение с базой данных"
-			NextPage="{Binding ElementName=Page2}"
+			NextPage="{Binding ElementName=SelectDb}"
 			PreviousPage="{Binding ElementName=Page1}"
                             DataContext="{Binding ElementName=This}">
             <!--CanSelectNextPage="{Binding Path=IsTextBoxesFilled}"-->
@@ -105,9 +105,28 @@
             </controls1:StackGrid>
         </toolkit:WizardPage>
         
+        <toolkit:WizardPage x:Name="SelectDb" PageType="Interior">
+            <controls1:StackGrid>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <RadioButton Name="rbIHaveDatabase" GroupName="choose" IsChecked="True">У меня есть своя база данных</RadioButton>
+                <RadioButton Name="rbCreateDatabase" GroupName="choose">Я хочу создать новую базу данных</RadioButton>
+            </controls1:StackGrid>
+        </toolkit:WizardPage>
+        
+        <toolkit:WizardPage x:Name="ImportDb" PageType="Interior"
+                            NextPage="{Binding ElementName=LastPage}"
+                            PreviousPage="{Binding ElementName=SelectDb}"
+                            >
+            <Button Click="ImportDataBase"></Button>
+        </toolkit:WizardPage>
+        
         <toolkit:WizardPage x:Name="Page2" PageType="Interior"
 			Title="Подразделения"
-			Description="Добавьте подразделения" >
+			Description="Добавьте подразделения" 
+                            PreviousPage="{Binding ElementName=SelectDb}">
             <Button Name="BUnits"  Content="Открыть список подразделений" />
         </toolkit:WizardPage>
 

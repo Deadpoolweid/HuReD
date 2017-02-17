@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,13 +22,10 @@ namespace Hured
         {
             InitializeComponent();
 
-            LaunchWizard();
+            var appSettings = ConfigurationManager.AppSettings;
 
-            this.Close();
-
-            if (Properties.Settings.Default.IsFirstLaunch)
+            if (bool.Parse(appSettings["IsFirstLaunch"]))
             {
-
                 LaunchWizard();
 
                 Controller.SetConnectionString(Functions.GetAppSettings().GetConnectionString());
@@ -37,7 +35,7 @@ namespace Hured
                 Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\Documents");
 
 
-                Properties.Settings.Default.IsFirstLaunch = false;
+                appSettings["IsFirstLaunch"] = false.ToString();
             }
 
             var settings = Functions.GetAppSettings();

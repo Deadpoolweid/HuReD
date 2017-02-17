@@ -56,7 +56,6 @@ namespace Hured
 
         public void bUnits_Click(object sender, RoutedEventArgs e)
         {
-
             if (!Controller.IsConnectionSucceded())
             {
                 Functions.ShowPopup(BUnits, "Не удаётся подключиться к базе данных. " +
