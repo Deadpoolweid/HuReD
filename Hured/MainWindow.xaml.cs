@@ -26,7 +26,7 @@ namespace Hured
 
             if (bool.Parse(appSettings["IsFirstLaunch"]))
             {
-                LaunchWizard();
+                if (!LaunchWizard()) return;
 
                 Controller.SetConnectionString(Functions.GetAppSettings().GetConnectionString());
 
@@ -56,10 +56,11 @@ namespace Hured
             Grid.SetColumnSpan(Loading, mainGrid.ColumnDefinitions.Count);
         }
 
-        private void LaunchWizard()
+        private bool LaunchWizard()
         {
             var w = new Wizard();
             w.ShowDialog();
+            return w.IsFinished;
         }
 
         public void BEmployees_OnClick(object sender, RoutedEventArgs e)

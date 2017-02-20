@@ -20,11 +20,29 @@
     <toolkit:Wizard FinishButtonClosesWindow="True" x:Name="WInit" Next="WInit_OnNext"
                     NextButtonContent="Далее" BackButtonContent="Назад"
                     CancelButtonContent="Выйти" FinishButtonContent="Завершить"
-                    HelpButtonVisibility="Hidden" Finish="WInit_OnFinish">
+                    HelpButtonVisibility="Hidden" Finish="WInit_OnFinish" Previous="WInit_OnPrevious">
         <toolkit:WizardPage x:Name="IntroPage"
 			Title="Уважаемый пользователь" CanSelectNextPage="True"
 			Description="Мы поможем подготовить программу к первому использованию" />
 
+        <toolkit:WizardPage x:Name="SelectSettings" PageType="Interior">
+            <toolkit:WizardPage.Description>Если вы уже пользовались программой, вы можете продолжить работу 
+                со своими старыми настройками</toolkit:WizardPage.Description>
+            <controls1:StackGrid>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <RadioButton Name="rbIHaveSettings" GroupName="chooseSettings" IsChecked="True">У меня есть файл настроек</RadioButton>
+                
+                <RadioButton Name="rbCreateSettings" GroupName="chooseSettings">Я хочу сам настроить программу</RadioButton>
+            </controls1:StackGrid>
+        </toolkit:WizardPage>
+        
+        <toolkit:WizardPage x:Name="ImportSettings" PageType="Interior" NextPage="{Binding ElementName=LastPage}">
+            <Button Click="ImportSettingsClick">Импортировать настройки</Button>
+        </toolkit:WizardPage>
+        
         <toolkit:WizardPage x:Name="Page1" PageType="Interior" 
 			Title="Основное"
 			Description="Для начала, добавьте основную информацию"
@@ -118,9 +136,9 @@
         
         <toolkit:WizardPage x:Name="ImportDb" PageType="Interior"
                             NextPage="{Binding ElementName=LastPage}"
-                            PreviousPage="{Binding ElementName=SelectDb}"
+                            PreviousPage="{Binding ElementName=SelectSettings}"
                             >
-            <Button Click="ImportDataBase"></Button>
+            <Button Click="ImportDataBase">Импортировать базу данных</Button>
         </toolkit:WizardPage>
         
         <toolkit:WizardPage x:Name="Page2" PageType="Interior"
@@ -163,6 +181,6 @@
         <toolkit:WizardPage x:Name="LastPage" PageType="Interior"
 			Title="Настройка завершена" CanSelectNextPage="False"
 			Description="Вы можете открыть этот помошник через настройки программы"
-			CanFinish="True"/>
+			CanFinish="True" PreviousPage="{Binding ElementName=SelectSettings}"/>
     </toolkit:Wizard>
 </controls:MetroWindow>

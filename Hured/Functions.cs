@@ -407,9 +407,14 @@ namespace Hured
             rtb.Document = document;
         }
 
-        public static AppSettings GetAppSettings()
+        public static AppSettings GetAppSettings(string path = null)
         {
-            if (File.Exists(Directory.GetCurrentDirectory() + "/settings.dat"))
+            if (path == null)
+            {
+                path = Directory.GetCurrentDirectory() + "/settings.dat";
+            }
+
+            if (File.Exists(path))
             {
                 var formatter = new BinaryFormatter();
 

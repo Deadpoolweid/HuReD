@@ -30,24 +30,42 @@ namespace Hured
 
             _isGridCreated = false;
 
-            SyncTimeSheet();
+            CurrentDate = DateTime.Now;
+
+            SyncTimeSheet(firstDay:CurrentDate);
         }
 
         readonly List<int> _employeesId = new List<int>();
 
         private bool _isGridCreated;
 
-        private const int DaysCount = 20;
+        private DateTime _currentDate;
 
-        void SyncTimeSheet(List<Сотрудник> сотрудники = null)
+        private DateTime CurrentDate
         {
-            if (!_isGridCreated)
+            get { return _currentDate; }
+            set
+            {
+                _currentDate = value;
+                CurrentDateChanged = true;
+            }
+        }
+
+        private bool CurrentDateChanged = false;
+
+        private const int DaysCount = 7;
+
+        void SyncTimeSheet(List<Сотрудник> сотрудники = null, DateTime firstDay = default(DateTime))
+        {
+            if (!_isGridCreated || CurrentDateChanged)
             {
                 var name = new DataGridTextColumn { Header = "Сотрудник" };
 
+                DgTimeSheet.Columns.Clear();
+
                 DgTimeSheet.Columns.Add(name);
 
-                var now = DateTime.Now.Date;
+                var now = firstDay;
 
                 for (var i = 0; i < DaysCount; i++)
                 {
@@ -58,6 +76,7 @@ namespace Hured
                     now = now.AddDays(1);
                 }
                 _isGridCreated = true;
+                CurrentDateChanged = false;
             }
 
             DgTimeSheet.Items.Clear();
@@ -188,7 +207,7 @@ namespace Hured
             }
 
             Controller.CloseConnection();
-            SyncTimeSheet(списокСотрудников);
+            SyncTimeSheet(списокСотрудников, CurrentDate);
         }
 
         Brush GetColorFromString(string colorString)
@@ -318,11 +337,20 @@ namespace Hured
             }
             e.Cancel = true;
 
-            SyncTimeSheet();
+            SyncTimeSheet(firstDay:CurrentDate);
         }
 
+        private void Back_OnClick(object sender, RoutedEventArgs e)
+        {
+            CurrentDate = CurrentDate.AddDays(-7);
+            SyncTimeSheet(firstDay:CurrentDate);
+        }
 
-
+        private void Next_OnClick(object sender, RoutedEventArgs e)
+        {
+            CurrentDate = CurrentDate.AddDays(7);
+            SyncTimeSheet(firstDay:CurrentDate);
+        }
     }
 
     public static class VisualHelper

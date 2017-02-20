@@ -10,6 +10,7 @@ using MySql.Data.MySqlClient;
 using Xceed.Wpf.Toolkit.Core;
 using System.Windows.Media;
 using Microsoft.Win32;
+using Xceed.Wpf.Toolkit;
 
 namespace Hured
 {
@@ -90,6 +91,7 @@ namespace Hured
             return tResult.RecordsCount > 0;
         }
 
+        public bool IsFinished = false;
 
         public static readonly DependencyProperty IsTextBoxesFilledProperty =
    DependencyProperty.Register("IsTextBoxesFilled", typeof(bool), typeof(Wizard));
@@ -122,6 +124,25 @@ namespace Hured
 
         private AppSettings _settings = new AppSettings();
 
+        private void ImportSettingsClick(object sender, RoutedEventArgs args)
+        {
+            var ofd = new OpenFileDialog()
+            {
+                InitialDirectory = Directory.GetCurrentDirectory(),
+                Filter = "Файл настроек |*.dat|Все файлы (*.*)|*.*"
+            };
+
+            if (ofd.ShowDialog() == false) return;
+
+            Functions.AddProgressRing(this);
+
+            _settings = Functions.GetAppSettings(ofd.FileName);
+
+            IsSettingsImported = true;
+
+            Functions.RemoveProgressRing();
+        }
+
         private void ImportDataBase(object sender, RoutedEventArgs args)
         {
             string backUpDirectory = Directory.GetCurrentDirectory() + @"\Backup";
@@ -145,9 +166,53 @@ namespace Hured
 
         private bool IsDatabaseImported = false;
 
+        private bool IsSettingsImported = false;
+
         private void WInit_OnNext(object sender, CancelRoutedEventArgs e)
         {
             var currentPage = WInit.CurrentPage;
+
+            if (currentPage.Name == "SelectSettings")
+            {
+                if (rbIHaveSettings.IsChecked == true)
+                {
+                    currentPage.NextPage = ImportSettings;
+                }
+                else if (rbCreateSettings.IsChecked == true)
+                {
+                    currentPage.NextPage = Page1;
+                }
+            }
+
+            if (currentPage.Name == "ImportSettings")
+            {
+                if (!IsSettingsImported)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+            }
+
+            if (currentPage.Name == "SelectDb")
+            {
+                if (rbCreateDatabase.IsChecked == true)
+                {
+                    currentPage.NextPage = Page2;
+                }
+                else if (rbIHaveDatabase.IsChecked == true)
+                {
+                    currentPage.NextPage = ImportDb;
+                }
+            }
+
+            if (currentPage.Name == "ImportDb")
+            {
+                if (!IsDatabaseImported)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+            }
 
             if (currentPage.Name == "DbSettings")
             {
@@ -193,27 +258,6 @@ namespace Hured
                 _settings.SetConnectionStringBuilder(builder);
 
                 return;
-            }
-
-            if (currentPage.Name == "SelectDb")
-            {
-                if (rbCreateDatabase.IsChecked == true)
-                {
-                    currentPage.NextPage = Page2;
-                }
-                else if (rbIHaveDatabase.IsChecked == true)
-                {
-                    currentPage.NextPage = ImportDb;
-                }
-            }
-
-            if (currentPage.Name == "ImportDb")
-            {
-                if (!IsDatabaseImported)
-                {
-                    e.Cancel = true;
-                    return;
-                }
             }
 
             int currentNumber;
@@ -269,6 +313,30 @@ namespace Hured
             {
                 formatter.Serialize(fStream, _settings);
             }
+
+            IsFinished = true;
+        }
+
+        private void WInit_OnPrevious(object sender, CancelRoutedEventArgs e)
+        {
+            var currentPage = WInit.CurrentPage;
+
+            if (currentPage.Name == "LastPage")
+            {
+                if (IsSettingsImported)
+                {
+                    currentPage.PreviousPage = ImportSettings;
+                }
+                else if (IsDatabaseImported)
+                {
+                    currentPage.PreviousPage = ImportDb;
+                }
+                else
+                {
+                    currentPage.PreviousPage = Page7;
+                }
+            }
+
         }
     }
 }

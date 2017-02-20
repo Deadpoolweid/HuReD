@@ -5,10 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:hured="clr-namespace:Hured"
+        xmlns:controls1="http://catel.codeplex.com"
         mc:Ignorable="d"
         Title="Табель посещаемости" >
     <Border>
-        <Grid>
+        <controls1:StackGrid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
@@ -20,19 +21,26 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <Label Grid.Row="0" Grid.Column="0">Место работы</Label>
-            <TreeView x:Name="TvUnits" Grid.Column="0" Grid.Row="1" Grid.RowSpan="2"
-                      SelectedItemChanged="TvUnits_OnSelectedItemChanged" />
-
-            <GridSplitter Grid.Row="0" Grid.RowSpan="3" Grid.Column="1"
+            <Label>Место работы</Label>
+            <GridSplitter  Grid.RowSpan="3"
                           ResizeBehavior="PreviousAndNext" ResizeDirection="Columns" ShowsPreview="True"
                       VerticalAlignment="Stretch" Width="5" />
-
-            <hured:ExtendedDataGrid Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" x:Name="DgTimeSheet"
+            <hured:ExtendedDataGrid Grid.RowSpan="2" x:Name="DgTimeSheet"
                       BeginningEdit="DgTimeSheet_OnBeginningEdit" Margin="3" 
                                     VirtualizingStackPanel.IsVirtualizing="False"/>
+            
+            <TreeView x:Name="TvUnits" Grid.RowSpan="2"
+                      SelectedItemChanged="TvUnits_OnSelectedItemChanged" />
 
-            <Button x:Name="BClose" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" IsDefault="True" Click="bClose_Click">Закрыть</Button>
-        </Grid>
+            <controls1:EmptyCell></controls1:EmptyCell>
+            <controls1:EmptyCell></controls1:EmptyCell>
+            <controls1:EmptyCell></controls1:EmptyCell>
+            <controls1:EmptyCell></controls1:EmptyCell>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <Button Name="Back" Click="Back_OnClick">Назад</Button>
+                <Button Name="Next" Click="Next_OnClick">Вперёд</Button>
+                <Button x:Name="BClose" HorizontalAlignment="Right" IsDefault="True" Click="bClose_Click">Закрыть</Button>
+            </StackPanel>
+        </controls1:StackGrid>
     </Border>
 </controls:MetroWindow>
