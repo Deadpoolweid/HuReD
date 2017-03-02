@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -26,7 +27,7 @@ namespace Hured
 
             if (bool.Parse(appSettings["IsFirstLaunch"]))
             {
-                if (!LaunchWizard()) return;
+                if (!LaunchWizard()) Application.Current.Shutdown(1);
 
                 Controller.SetConnectionString(Functions.GetAppSettings().GetConnectionString());
 
@@ -47,9 +48,10 @@ namespace Hured
 
             var buttons = this.FindChildren<Button>();
             foreach (var button in buttons)
-            {
-
+            { 
             }
+
+            this.Unloaded += (sender, args) => Environment.Exit(0);
 
             Grid.SetRowSpan(Loading, mainGrid.RowDefinitions.Count);
             if (mainGrid.ColumnDefinitions.Count < 1) return;

@@ -7,7 +7,7 @@
         xmlns:hured="clr-namespace:Hured"
         xmlns:controls1="http://catel.codeplex.com"
         mc:Ignorable="d"
-        Title="Табель посещаемости" >
+        Title="Табель посещаемости">
     <Border>
         <controls1:StackGrid>
             <Grid.RowDefinitions>

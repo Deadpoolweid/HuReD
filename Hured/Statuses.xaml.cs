@@ -144,5 +144,10 @@ namespace Hured
             Tag = _tResult;
             Close();
         }
+
+        private void Statuses_OnClosing(object sender, CancelEventArgs e)
+        {
+
+        }
     }
 }

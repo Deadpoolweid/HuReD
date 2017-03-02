@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text.RegularExpressions;
@@ -110,7 +112,7 @@ namespace Hured
 
             if (!Regex.IsMatch(TbРуководитель.Text, "^[А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+$"))
             {
-                Functions.ShowPopup(TbРуководитель,"Введите фамилию, имя и отчество через пробелы.");
+                Functions.ShowPopup(TbРуководитель, "Введите фамилию, имя и отчество через пробелы.");
                 return;
             }
 
@@ -148,6 +150,7 @@ namespace Hured
                 if (s == _loadedSettings && s.GetConnectionString() == _loadedSettings.GetConnectionString())
                 {
                     Close();
+                    return;
                 }
             }
 
@@ -230,6 +233,11 @@ namespace Hured
             Controller.ImportDataBase(ofd.FileName);
 
             Functions.RemoveProgressRing();
+        }
+
+        private async void Settings_OnClosed(object sender, EventArgs e)
+        {
+            
         }
     }
 }

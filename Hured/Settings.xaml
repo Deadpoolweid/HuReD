@@ -6,7 +6,8 @@
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
 
                       mc:Ignorable="d"
-        Title="Настройки" Height="490" Width="450" ResizeMode="CanMinimize">
+        Title="Настройки" Height="490" Width="450" ResizeMode="CanMinimize"
+                      Closed="Settings_OnClosed">
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl>
             <controls:Flyout x:Name="FDbSettings" Position="Right" Theme="Accent" >

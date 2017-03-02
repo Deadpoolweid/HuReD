@@ -6,7 +6,8 @@
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
 
                       mc:Ignorable="d"
-        Title="Редактирование табельной записи" Height="260" Width="650" ResizeMode="CanMinimize">
+        Title="Редактирование табельной записи" Height="260" Width="650" ResizeMode="CanMinimize"
+                      Closing="TimesheetEntry_OnClosing">
 
     <Border>
         <Grid>

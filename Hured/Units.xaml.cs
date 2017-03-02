@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 using Hured.DBModel;
 using Hured.Tables_templates;
@@ -92,13 +93,19 @@ namespace Hured
 
         private void bClose_Click(object sender, RoutedEventArgs e)
         {
-            Close();
-
             Controller.OpenConnection();
             _tResult.RecordsCount = Controller.RecordsCount<Подразделение>();
             Controller.CloseConnection();
 
             Tag = _tResult;
+
+            Close();
+
+        }
+
+        private void Units_OnClosing(object sender, CancelEventArgs e)
+        {
+
         }
     }
 }

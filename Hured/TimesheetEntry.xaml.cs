@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
 using Hured.DBModel;
 using Hured.Tables_templates;
@@ -70,8 +71,12 @@ namespace Hured
 
         private void bCancel_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = false;
             Close();
+        }
+
+        private void TimesheetEntry_OnClosing(object sender, CancelEventArgs e)
+        {
+            DialogResult = false;
         }
     }
 }

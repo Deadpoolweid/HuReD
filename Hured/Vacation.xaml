@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                       mc:Ignorable="d"
-        Title="Выдать отпуск" Height="240" Width="550" ResizeMode="CanMinimize">
+        Title="Выдать отпуск" Height="240" Width="550" ResizeMode="CanMinimize"
+                      Closing="Vacation_OnClosing">
     <Border>
         <Grid>
             <Grid.RowDefinitions>

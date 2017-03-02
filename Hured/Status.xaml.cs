@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media;
@@ -71,7 +72,6 @@ namespace Hured
 
         private void bCancel_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = false;
             Close();
         }
 
@@ -87,6 +87,11 @@ namespace Hured
             _selectedColor.G = color.G;
             _selectedColor.B = color.B;
             BColor.Background = new SolidColorBrush(_selectedColor);
+        }
+
+        private void Status_OnClosing(object sender, CancelEventArgs e)
+        {
+            DialogResult = false;
         }
     }
 }

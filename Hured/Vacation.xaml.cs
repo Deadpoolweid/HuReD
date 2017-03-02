@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using Hured.Tables_templates;
 
@@ -39,7 +40,6 @@ namespace Hured
 
         private void bCancel_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = false;
             Close();
         }
 
@@ -71,6 +71,11 @@ namespace Hured
 
             DialogResult = true;
             Close();
+        }
+
+        private void Vacation_OnClosing(object sender, CancelEventArgs e)
+        {
+            DialogResult = false;
         }
     }
 }

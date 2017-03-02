@@ -6,7 +6,8 @@
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
 
                       mc:Ignorable="d"
-        Title="Список подразделений" Height="250" Width="300" ResizeMode="CanMinimize">
+        Title="Список подразделений" Height="250" Width="300" ResizeMode="CanMinimize"
+                      Closing="Units_OnClosing">
 
     <Border>
         <Grid>

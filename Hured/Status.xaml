@@ -6,7 +6,8 @@
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
     x:Class="Hured.Status"
         mc:Ignorable="d"
-        Title="Добавить статус сотрудника" Height="140" Width="330" ResizeMode="CanMinimize">
+        Title="Добавить статус сотрудника" Height="140" Width="330" ResizeMode="CanMinimize"
+    Closing="Status_OnClosing">
     <Border>
         <Grid>
             <Grid.RowDefinitions>
