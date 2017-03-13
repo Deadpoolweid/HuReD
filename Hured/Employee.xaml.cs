@@ -160,9 +160,21 @@ namespace Hured
                 return;
             }
 
+            Controller.OpenConnection();
+
+            string серия = TbСерия.Text, номер = Tbномер.Text;
+
+            if (Controller.Exists<Сотрудник>(q => q.УдостоверениеЛичности.Серия == серия) &&
+                Controller.Exists<Сотрудник>(q => q.УдостоверениеЛичности.Номер == номер))
+            {
+                Functions.ShowPopup(this,"Сотрудник с указанными паспотрными данными уже существует.");
+                Controller.CloseConnection();
+                return;
+            }
+
+
             var xByte = Functions.ImageSourceToBytes(new PngBitmapEncoder(), IAvatar.Source);
 
-            Controller.OpenConnection();
             var tag = (CbPosition.SelectedItem as ComboBoxItem)?.Tag;
             if (tag != null)
             {

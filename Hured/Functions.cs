@@ -418,7 +418,7 @@ namespace Hured
             {
                 var formatter = new BinaryFormatter();
 
-                using (Stream fStream = File.OpenRead("settings.dat"))
+                using (Stream fStream = File.OpenRead(path))
                 {
                     return formatter.Deserialize(fStream) as AppSettings;
                 }
@@ -426,7 +426,7 @@ namespace Hured
             return null;
         }
 
-        static public byte[] ImageToByteArray(Image imageIn)
+        public static byte[] ImageToByteArray(Image imageIn)
         {
             var ms = new MemoryStream();
             imageIn.Save(ms, ImageFormat.Gif);

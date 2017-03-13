@@ -26,6 +26,8 @@ namespace Hured
 
         void SyncEmployeesList(List<Сотрудник> сотрудники = null)
         {
+
+            сотрудники = FilterEmployees();
             LvEmployees.Items.Clear();
             _employeesId.Clear();
 
@@ -42,6 +44,8 @@ namespace Hured
                 LvEmployees.Items.Add(сотрудник.ОсновнаяИнформация);
                 _employeesId.Add(сотрудник.СотрудникId);
             }
+
+
         }
 
         private void bAdd_OnClick(object sender, RoutedEventArgs e)
@@ -120,9 +124,9 @@ namespace Hured
             Close();
         }
 
-        private void TvUnits_OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        private List<Сотрудник> FilterEmployees()
         {
-            var tvUnits = sender as TreeView;
+            var tvUnits = TvUnits;
 
             List<Сотрудник> списокСотрудников = null;
 
@@ -154,7 +158,13 @@ namespace Hured
             }
 
             Controller.CloseConnection();
-            SyncEmployeesList(списокСотрудников);
+
+            return списокСотрудников;
+        }
+
+        private void TvUnits_OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            SyncEmployeesList();
         }
     }
 }
