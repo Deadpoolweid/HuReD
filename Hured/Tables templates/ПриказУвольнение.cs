@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Hured.Tables_templates
 {
     [Table("ПриказыУвольнение")]
-    public class ПриказУвольнение
+    public class ПриказУвольнение : Приказ
     {
         public int ПриказУвольнениеId { get; set; }
 

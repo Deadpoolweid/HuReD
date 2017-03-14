@@ -40,6 +40,7 @@ namespace Hured
 
         private void bCancel_Click(object sender, RoutedEventArgs e)
         {
+            DialogResult = false;
             Close();
         }
 
@@ -75,7 +76,7 @@ namespace Hured
 
         private void Vacation_OnClosing(object sender, CancelEventArgs e)
         {
-            DialogResult = false;
+            
         }
     }
 }

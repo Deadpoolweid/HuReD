@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-  
+        xmlns:local="clr-namespace:Hured"
         mc:Ignorable="d"
         Title="Справочник сотрудников" Height="Auto" Width="Auto">
     <Border>
@@ -48,6 +48,10 @@
                 <Button Name="BChange" Click="BChange_OnClick">Изменить</Button>
                 <Button x:Name="BRemove" Click="bRemove_Click">Удалить</Button>
             </StackPanel>
+
+            <TextBox Grid.Row="2" Grid.Column="2" Name="tbSearch" ToolTip="Введите фамилию,имя или отчество сотрудника" 
+                         local:TextboxExtensions.Placeholder="Поиск сотрудника" local:TextboxExtensions.HavePlaceHolder="True"
+                     TextChanged="TbSearch_OnTextChanged"/>
 
             <Button x:Name="BClose" Grid.Row="2" Grid.Column="3" Click="bClose_Click">Закрыть</Button>
 

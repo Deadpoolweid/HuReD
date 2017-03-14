@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -19,6 +20,7 @@ using System.Windows.Documents;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Catel.Windows.Data;
 using Hured.DBModel;
 using Hured.Tables_templates;
 using MahApps.Metro;
@@ -92,7 +94,7 @@ namespace Hured
             return positions;
         }
 
-        public static void AddPositionsFromDB(ref ListView lvPositions, int unitId = -1)
+        public static void AddPositionsFromDB(ref ListView lvPositions, int unitId = -1, string[] filter = null)
         {
             lvPositions.Items.Clear();
 
@@ -108,6 +110,20 @@ namespace Hured
             {
                 positions = GetPositionsForUnit(unitId);
             }
+
+
+            if (filter != null)
+            {
+                var searchResult = positions.Where(
+q => new Regex(string.Join("|", filter.Select(Regex.Escape)), RegexOptions.IgnoreCase).IsMatch(
+    q.Название + q.Расписание)
+    );
+                if (searchResult != null)
+                {
+                    positions = searchResult.ToList();
+                } 
+            }
+
             foreach (var item in positions.Select(
                 должность => new ListViewItem
                 {
@@ -140,6 +156,81 @@ namespace Hured
                 newItem.Tag = должность.ДолжностьId;
                 cbPositions.Items.Add(newItem);
             }
+        }
+
+        public static void AddSortingToListView(ListView lw)
+        {
+            lw.AddHandler(GridViewColumnHeader.ClickEvent, new RoutedEventHandler(ListViewHeader_OnClick));
+        }
+
+        // Global objects
+        static ICollectionView blcv;
+        static GridViewColumnHeader _lastHeaderClicked = null;
+        static ListSortDirection _lastDirection = ListSortDirection.Ascending;
+
+        // Header click event
+        public static void ListViewHeader_OnClick(object sender, RoutedEventArgs e)
+        {
+            GridViewColumnHeader headerClicked =
+                e.OriginalSource as GridViewColumnHeader;
+            ListSortDirection direction;
+
+            if (headerClicked != null)
+            {
+                if (headerClicked.Role != GridViewColumnHeaderRole.Padding)
+                {
+                    if (headerClicked != _lastHeaderClicked)
+                    {
+                        direction = ListSortDirection.Ascending;
+                    }
+                    else
+                    {
+                        if (_lastDirection == ListSortDirection.Ascending)
+                        {
+                            direction = ListSortDirection.Descending;
+                        }
+                        else
+                        {
+                            direction = ListSortDirection.Ascending;
+                        }
+                    }
+
+                    blcv  = CollectionViewSource.GetDefaultView((sender as ListView).Items);
+
+                    string header = headerClicked.Column.Header as string;
+                    Sort(header, direction);
+
+                    if (direction == ListSortDirection.Ascending)
+                    {
+                        headerClicked.Column.HeaderTemplate =
+                            (sender as FrameworkElement).FindResource("HeaderTemplateArrowUp") as DataTemplate;
+                    }
+                    else
+                    {
+                        headerClicked.Column.HeaderTemplate =
+                            (sender as FrameworkElement).FindResource("HeaderTemplateArrowDown") as DataTemplate;
+                    }
+
+                    // Remove arrow from previously sorted header
+                    if (_lastHeaderClicked != null && _lastHeaderClicked != headerClicked)
+                    {
+                        _lastHeaderClicked.Column.HeaderTemplate = null;
+                    }
+
+                    _lastHeaderClicked = headerClicked;
+                    _lastDirection = direction;
+                }
+            }
+        }
+
+// Sort code
+        private static void Sort(string sortBy, ListSortDirection direction)
+        {
+
+            blcv.SortDescriptions.Clear();
+            SortDescription sd = new SortDescription(sortBy, direction);
+            blcv.SortDescriptions.Add(sd);
+            blcv.Refresh();
         }
 
         /// <summary>
@@ -433,7 +524,7 @@ namespace Hured
             return ms.ToArray();
         }
 
-        static public Image ByteArrayToImage(byte[] byteArrayIn)
+        public static Image ByteArrayToImage(byte[] byteArrayIn)
         {
             var ms = new MemoryStream(byteArrayIn);
             var returnImage = Image.FromStream(ms);
@@ -462,7 +553,7 @@ namespace Hured
         [return: MarshalAs(UnmanagedType.Bool)]
         internal static extern bool DeleteObject(IntPtr value);
 
-        static public byte[] ImageSourceToBytes(BitmapEncoder encoder, ImageSource imageSource)
+        public static byte[] ImageSourceToBytes(BitmapEncoder encoder, ImageSource imageSource)
         {
             byte[] bytes = null;
             var bitmapSource = imageSource as BitmapSource;

@@ -71,12 +71,12 @@ namespace Hured
 
         private void bCancel_Click(object sender, RoutedEventArgs e)
         {
+            DialogResult = false;
             Close();
         }
 
         private void TimesheetEntry_OnClosing(object sender, CancelEventArgs e)
         {
-            DialogResult = false;
         }
     }
 }

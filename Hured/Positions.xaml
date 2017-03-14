@@ -4,8 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:hured="clr-namespace:Hured"
 
-                      mc:Ignorable="d"
+        mc:Ignorable="d"
         Title="Справочник должностей" Height="Auto" Width="Auto" ResizeMode="CanResize">
     <Border>
         <Grid>
@@ -41,7 +42,11 @@
                 </ListView.View>
             </ListView>
 
-            <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal">
+            <TextBox Grid.Row="1" Grid.Column="2" Name="tbSearch" ToolTip="Введите название должности или расписание" 
+                         hured:TextboxExtensions.Placeholder="Поиск должности" hured:TextboxExtensions.HavePlaceHolder="True"
+                     TextChanged="TbSearch_OnTextChanged"/>
+            
+            <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Horizontal">
                 <Button x:Name="BAdd" Click="bAdd_Click">Добавить</Button>
                 <Button x:Name="BChange" Click="bChange_Click">Изменить</Button>
                 <Button x:Name="BRemove" Click="bRemove_Click">Удалить</Button>

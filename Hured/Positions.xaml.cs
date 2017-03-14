@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 using Hured.DBModel;
 using Hured.Tables_templates;
@@ -12,6 +14,8 @@ namespace Hured
     {
         public Positions()
         {
+            Closing += Positions_OnClosing;
+
             InitializeComponent();
             Functions.AddUnitsFromDB(ref LbUnits);
             LbUnits.Items.Insert(0,new ListViewItem()
@@ -26,6 +30,8 @@ namespace Hured
             LbUnits.SelectedIndex = 0;
 
             SyncPositions();
+
+            Functions.AddSortingToListView(LvPositions);
         }
 
         private readonly TransactionResult _tResult = new TransactionResult();
@@ -88,33 +94,50 @@ namespace Hured
 
         private void bClose_Click(object sender, RoutedEventArgs e)
         {
+
+            Close();
+        }
+
+        private void Positions_OnClosing(object sender, CancelEventArgs e)
+        {
             Controller.OpenConnection();
             _tResult.RecordsCount = Controller.RecordsCount<Должность>();
             Controller.CloseConnection();
 
 
             Tag = _tResult;
-            Close();
         }
 
         private void SyncPositions()
         {
             LvPositions.Items.Clear();
 
+            string[] filter = null;
+
+            if (tbSearch.Text != String.Empty && !tbSearch.IsHavePlaceholder())
+            {
+                filter = tbSearch.Text.Split(' ');
+            }
+
             if (LbUnits.SelectedIndex == 0)
             {
-                Functions.AddPositionsFromDB(ref LvPositions);
+                Functions.AddPositionsFromDB(ref LvPositions, filter: filter);
             }
             else
             {
                 var tag = (LbUnits.SelectedItem as ListBoxItem)?.Tag;
                 if (tag != null)
                     Functions.AddPositionsFromDB(ref LvPositions,
-                        (int)tag);
+                        (int)tag, filter);
             }
         }
 
         private void LbUnits_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SyncPositions();
+        }
+
+        private void TbSearch_OnTextChanged(object sender, TextChangedEventArgs e)
         {
             SyncPositions();
         }

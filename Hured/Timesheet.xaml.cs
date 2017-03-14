@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -33,6 +34,8 @@ namespace Hured
 
             CurrentDate = DateTime.Now;
 
+            (TvUnits.Items[0] as TreeViewItem).IsSelected = true;
+
             SyncTimeSheet(firstDay:CurrentDate);
         }
 
@@ -58,6 +61,11 @@ namespace Hured
 
         void SyncTimeSheet(List<Сотрудник> сотрудники = null, DateTime firstDay = default(DateTime))
         {
+            if (firstDay == default(DateTime))
+            {
+                firstDay = CurrentDate;
+            }
+
             if (!_isGridCreated || CurrentDateChanged)
             {
                 var name = new DataGridTextColumn { Header = "Сотрудник" };
@@ -82,12 +90,17 @@ namespace Hured
 
             DgTimeSheet.Items.Clear();
 
-            Controller.OpenConnection();
             if (сотрудники == null)
             {
-                сотрудники = Controller.Select<Сотрудник>(q => q != null);
+                сотрудники = FilterEmployees();
             }
 
+            if (tbSearch.Text != String.Empty && !tbSearch.IsHavePlaceholder())
+            {
+                сотрудники = FilterEmployeesByTags(tbSearch.Text.Split(' '), сотрудники);
+            }
+
+            Controller.OpenConnection();
             foreach (var employee in сотрудники)
             {
                 var entries = Controller.Select<ТабельнаяЗапись>(
@@ -124,15 +137,71 @@ namespace Hured
             DgTimeSheet.ItemContainerGenerator.StatusChanged += OnItemContainerGeneratorStautsChanged;
 
             DgTimeSheet.UpdateLayout();
+        }
 
-            //DgTimeSheet.ItemContainerGenerator.StatusChanged += (sender, args) =>
-            //{
-            //    if (DgTimeSheet.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
-            //    {
+        private List<Сотрудник> FilterEmployees()
+        {
+            var tvUnits = TvUnits;
 
-            //    }
-            //};
+            List<Сотрудник> списокСотрудников = null;
 
+            var item = tvUnits?.SelectedItem as TreeViewItem;
+
+            Controller.OpenConnection();
+
+            //Выбрано подразделение
+            if (tvUnits != null && tvUnits.Items.Contains(tvUnits.SelectedItem))
+            {
+                if (item?.Header.ToString() != "Все подразделения")
+                {
+                    if (item?.Tag != null)
+                    {
+                        var unitId = (int)item.Tag;
+                        списокСотрудников = Controller.Select<Сотрудник>(
+                            q => q.ОсновнаяИнформация.Должность.Подразделение.ПодразделениеId == unitId);
+                    }
+                }
+                else
+                {
+                    списокСотрудников = Controller.Select<Сотрудник>(q => q != null);
+                }
+            } // Выбрана должность
+            else
+            {
+                if (item != null)
+                {
+                    var positionId = (int)item.Tag;
+                    списокСотрудников = Controller.Select<Сотрудник>(
+                        q => q.ОсновнаяИнформация.Должность.ДолжностьId == positionId);
+                }
+            }
+
+            Controller.CloseConnection();
+
+            if (!tbSearch.IsHavePlaceholder() && tbSearch.Text != String.Empty)
+            {
+                var tags = tbSearch.Text.Split(' ');
+
+                списокСотрудников = FilterEmployeesByTags(tags, списокСотрудников);
+            }
+
+            return списокСотрудников;
+        }
+
+
+        private List<Сотрудник> FilterEmployeesByTags(string[] tags, List<Сотрудник> employees)
+        {
+            var searchResult = employees.Where(
+                q => new Regex(string.Join("|", tags.Select(Regex.Escape)), RegexOptions.IgnoreCase).IsMatch(
+                    q.ОсновнаяИнформация.Имя + q.ОсновнаяИнформация.Фамилия +
+                    q.ОсновнаяИнформация.Отчество)
+                    );
+            if (searchResult != null)
+            {
+                employees = searchResult.ToList();
+            }
+
+            return employees;
         }
 
         private void OnItemContainerGeneratorStautsChanged(object sender, EventArgs args)
@@ -179,36 +248,7 @@ namespace Hured
 
         private void TvUnits_OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            var tvUnits = sender as TreeView;
-
-            List<Сотрудник> списокСотрудников = null;
-
-            var item = tvUnits?.SelectedItem as TreeViewItem;
-
-            Controller.OpenConnection();
-
-            //Выбрано подразделение
-            if (tvUnits != null && tvUnits.Items.Contains(tvUnits.SelectedItem))
-            {
-                if (item != null && item.Header.ToString() != "Все подразделения")
-                {
-                    var unitId = (int)item.Tag;
-                    списокСотрудников = Controller.Select<Сотрудник>(
-                        q => q.ОсновнаяИнформация.Должность.Подразделение.ПодразделениеId == unitId);
-                }
-            } // Выбрана должность
-            else
-            {
-                if (item?.Tag != null)
-                {
-                    var positionId = (int)item.Tag;
-                    списокСотрудников = Controller.Select<Сотрудник>(
-                        q => q.ОсновнаяИнформация.Должность.ДолжностьId == positionId);
-                }
-            }
-
-            Controller.CloseConnection();
-            SyncTimeSheet(списокСотрудников, CurrentDate);
+            SyncTimeSheet();
         }
 
         Brush GetColorFromString(string colorString)
@@ -353,6 +393,11 @@ namespace Hured
             SyncTimeSheet(firstDay:CurrentDate);
         }
 
+        private void TbSearch_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (tbSearch.IsHavePlaceholder()) return;
+            SyncTimeSheet();
+        }
     }
 
     public static class VisualHelper

@@ -4,14 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:hured="clr-namespace:Hured"
 
-                      mc:Ignorable="d"
+        mc:Ignorable="d"
         Title="Список приказов" >
 
     <Border>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition />
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -19,7 +21,14 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <ListView Grid.Row="0" Grid.Column="0" Name="LvOrders" d:DataContext="{d:DesignData OrderInfo}">
+            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" >
+                <RadioButton Click="SelectedOrderType_OnChanged" Name="rbRecruitment" GroupName="SelectedOrderType_OnChanged" IsChecked="True">Приём</RadioButton>
+                <RadioButton Click="SelectedOrderType_OnChanged" Name="rbDismissal" GroupName="SelectedOrderType_OnChanged">Увольнение</RadioButton>
+                <RadioButton Click="SelectedOrderType_OnChanged" Name="rbVacation" GroupName="SelectedOrderType_OnChanged">Отпуск</RadioButton>
+                <RadioButton Click="SelectedOrderType_OnChanged" Name="rbBusinessTrip" GroupName="SelectedOrderType_OnChanged">Командировка</RadioButton>
+            </StackPanel>
+            
+            <ListView Grid.Row="1" Grid.Column="0" Name="LvOrders" d:DataContext="{d:DesignData OrderInfo}">
                 <ListView.View>
                     <GridView >
                         <GridView.Columns>
@@ -32,7 +41,7 @@
                 </ListView.View>
             </ListView>
 
-            <StackPanel Grid.Row="0" Grid.Column="1">
+            <StackPanel Grid.Row="0" Grid.Column="1" Grid.RowSpan="2">
                 <Button x:Name="BAdd" Click="bAdd_Click">Добавить</Button>
                 <Button x:Name="BChange" Click="bChange_Click">Изменить</Button>
                 <Button x:Name="BOpen" Click="BOpen_OnClick">Открыть</Button>
@@ -41,7 +50,11 @@
                 <Button x:Name="BRemove" Click="bRemove_Click">Удалить</Button>
             </StackPanel>
 
-            <Button x:Name="BOk" Grid.Row="1" Grid.Column="1" Click="bOk_Click">ОК</Button>
+            <TextBox Grid.Row="2" Grid.Column="0" Name="tbSearch" ToolTip="Введите фамилию,имя или отчество сотрудника" 
+                         hured:TextboxExtensions.Placeholder="Поиск по сотруднику" hured:TextboxExtensions.HavePlaceHolder="True"
+                     TextChanged="TbSearch_OnTextChanged"/>
+            
+            <Button x:Name="BOk" Grid.Row="2" Grid.Column="1" Click="bOk_Click">ОК</Button>
 
         </Grid>
     </Border>

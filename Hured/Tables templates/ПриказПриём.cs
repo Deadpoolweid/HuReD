@@ -5,7 +5,7 @@ using Hured.DBModel;
 namespace Hured.Tables_templates
 {
     [Table("ПриказыПриёма")]
-    public class ПриказПриём
+    public class ПриказПриём : Приказ
     {
         public int ПриказПриёмId { set; get; }
 

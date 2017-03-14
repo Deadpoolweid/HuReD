@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Hured.DBModel;
@@ -14,6 +15,8 @@ namespace Hured
     {
         public Position(Должность position = null)
         {
+            Closing += Position_OnClosing;
+
             InitializeComponent();
             Functions.AddUnitsFromDB(ref CbUnit);
             CbUnit.SelectedIndex = 0;
@@ -29,6 +32,12 @@ namespace Hured
         private readonly string _oldName;
 
         private void bOk_Click(object sender, RoutedEventArgs e)
+        {
+
+            Close();
+        }
+
+        private void Position_OnClosing(object sender, CancelEventArgs e)
         {
             if (!Functions.ValidateAllTextboxes(this))
             {
@@ -68,7 +77,6 @@ namespace Hured
 
 
             DialogResult = true;
-            Close();
         }
 
         private void bCancel_Click(object sender, RoutedEventArgs e)

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
 using Hured.DBModel;
 using Hured.Tables_templates;
@@ -12,6 +14,8 @@ namespace Hured
     {
         public Order(OrderInfo orderInfo = null)
         {
+            Closing += Order_OnClosing;
+
             InitializeComponent();
 
 
@@ -46,6 +50,10 @@ namespace Hured
             }
 
             Controller.CloseConnection();
+        }
+
+        private void Order_OnClosing(object sender, CancelEventArgs cancelEventArgs)
+        {
         }
 
         readonly List<int> _employeesId = new List<int>();
@@ -267,7 +275,6 @@ namespace Hured
 
         private void bCancel_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = false;
             Close();
         }
     }

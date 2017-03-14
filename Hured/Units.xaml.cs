@@ -93,19 +93,16 @@ namespace Hured
 
         private void bClose_Click(object sender, RoutedEventArgs e)
         {
+            Close();
+        }
+
+        private void Units_OnClosing(object sender, CancelEventArgs e)
+        {
             Controller.OpenConnection();
             _tResult.RecordsCount = Controller.RecordsCount<Подразделение>();
             Controller.CloseConnection();
 
             Tag = _tResult;
-
-            Close();
-
-        }
-
-        private void Units_OnClosing(object sender, CancelEventArgs e)
-        {
-
         }
     }
 }

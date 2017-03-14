@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Controls;
 using Hured.DBModel;
 using Hured.Tables_templates;
 using Microsoft.Win32;
@@ -42,6 +46,23 @@ namespace Hured
             InitializeComponent();
 
             SyncOrders();
+
+            Functions.AddSortingToListView(LvOrders);
+        }
+
+        private List<T> FilterOrdersByTags<T>(string[] tags, List<T> employees) where T:Приказ
+        {
+            var searchResult = employees.Where(
+                q => new Regex(string.Join("|", tags.Select(Regex.Escape)), RegexOptions.IgnoreCase).IsMatch(
+                    q.Сотрудник.ОсновнаяИнформация.Имя + q.Сотрудник.ОсновнаяИнформация.Фамилия +
+                    q.Сотрудник.ОсновнаяИнформация.Отчество)
+                    );
+            if (searchResult != null)
+            {
+                employees = searchResult.ToList();
+            }
+
+            return employees;
         }
 
         void SyncOrders()
@@ -50,60 +71,98 @@ namespace Hured
 
             Controller.OpenConnection();
 
-            var приказыПриём = Controller.Select< ПриказПриём>( e => e != null);
-            foreach (var e in приказыПриём)
+            bool needFilter = tbSearch.Text != String.Empty && !tbSearch.IsHavePlaceholder();
+            var tags = tbSearch.Text.Split(' ');
+
+            if (rbRecruitment.IsChecked == true)
             {
-                LvOrders.Items.Add(new OrderInfo(e.Номер,
-                    e.Сотрудник.ОсновнаяИнформация.Фамилия + " " +
-                    e.Сотрудник.ОсновнаяИнформация.Имя + " " +
-                    e.Сотрудник.ОсновнаяИнформация.Отчество, "Приём", e.Дата.ToShortDateString())
+                var приказыПриём = Controller.Select<ПриказПриём>(e => e != null);
+
+                if (needFilter)
                 {
-                    Id = e.ПриказПриёмId,
-                    OrderType = OrderType.Recruitment,
-                    Type = e.GetType()
-                });
+                    приказыПриём = FilterOrdersByTags(tags, приказыПриём);
+                }
+
+                foreach (var e in приказыПриём)
+                {
+                    LvOrders.Items.Add(new OrderInfo(e.Номер,
+                        e.Сотрудник.ОсновнаяИнформация.Фамилия + " " +
+                        e.Сотрудник.ОсновнаяИнформация.Имя + " " +
+                        e.Сотрудник.ОсновнаяИнформация.Отчество, "Приём", e.Дата.ToShortDateString())
+                    {
+                        Id = e.ПриказПриёмId,
+                        OrderType = OrderType.Recruitment,
+                        Type = e.GetType()
+                    });
+                }
+            }
+            if (rbDismissal.IsChecked == true)
+            {
+                var приказыУвольнение = Controller.Select<ПриказУвольнение>(e => e != null);
+
+                if (needFilter)
+                {
+                    приказыУвольнение = FilterOrdersByTags(tags, приказыУвольнение);
+                }
+
+                foreach (var e in приказыУвольнение)
+                {
+                    LvOrders.Items.Add(new OrderInfo(e.Номер,
+                        e.Сотрудник.ОсновнаяИнформация.Фамилия + " " +
+                        e.Сотрудник.ОсновнаяИнформация.Имя + " " +
+                        e.Сотрудник.ОсновнаяИнформация.Отчество, "Увольнение", e.Дата.ToShortDateString())
+                    {
+                        Id = e.ПриказУвольнениеId,
+                        OrderType = OrderType.Dismissal,
+                        Type = e.GetType()
+                    });
+                } 
             }
 
-            var приказыУвольнение = Controller.Select<ПриказУвольнение>( e => e != null);
-            foreach (var e in приказыУвольнение)
+            if (rbVacation.IsChecked == true)
             {
-                LvOrders.Items.Add(new OrderInfo(e.Номер,
-                    e.Сотрудник.ОсновнаяИнформация.Фамилия + " " +
-                    e.Сотрудник.ОсновнаяИнформация.Имя + " " +
-                    e.Сотрудник.ОсновнаяИнформация.Отчество, "Увольнение", e.Дата.ToShortDateString())
+                var приказыОтпуск = Controller.Select<ПриказОтпуск>(e => e != null);
+
+                if (needFilter)
                 {
-                    Id = e.ПриказУвольнениеId,
-                    OrderType = OrderType.Dismissal,
-                    Type = e.GetType()
-                });
+                    приказыОтпуск = FilterOrdersByTags(tags, приказыОтпуск);
+                }
+
+                foreach (var e in приказыОтпуск)
+                {
+                    LvOrders.Items.Add(new OrderInfo(e.Номер,
+                        e.Сотрудник.ОсновнаяИнформация.Фамилия + " " +
+                        e.Сотрудник.ОсновнаяИнформация.Имя + " " +
+                        e.Сотрудник.ОсновнаяИнформация.Отчество, "Отпуск", e.Дата.ToShortDateString())
+                    {
+                        Id = e.ПриказОтпускId,
+                        OrderType = OrderType.Vacation,
+                        Type = e.GetType()
+                    });
+                } 
             }
 
-            var приказыОтпуск = Controller.Select<ПриказОтпуск>( e => e != null);
-            foreach (var e in приказыОтпуск)
+            if (rbBusinessTrip.IsChecked == true)
             {
-                LvOrders.Items.Add(new OrderInfo(e.Номер,
-                    e.Сотрудник.ОсновнаяИнформация.Фамилия + " " +
-                    e.Сотрудник.ОсновнаяИнформация.Имя + " " +
-                    e.Сотрудник.ОсновнаяИнформация.Отчество, "Отпуск", e.Дата.ToShortDateString())
-                {
-                    Id = e.ПриказОтпускId,
-                    OrderType = OrderType.Vacation,
-                    Type = e.GetType()
-                });
-            }
+                var приказыКомандировка = Controller.Select<ПриказКомандировка>(e => e != null);
 
-            var приказыКомандировка = Controller.Select<ПриказКомандировка>(e => e != null);
-            foreach (var e in приказыКомандировка)
-            {
-                LvOrders.Items.Add(new OrderInfo(e.Номер,
-                    e.Сотрудник.ОсновнаяИнформация.Фамилия + " " +
-                    e.Сотрудник.ОсновнаяИнформация.Имя + " " +
-                    e.Сотрудник.ОсновнаяИнформация.Отчество, "Командировка", e.Дата.ToShortDateString())
+                if (needFilter)
                 {
-                    Id = e.ПриказКомандировкаId,
-                    OrderType = OrderType.BusinessTrip,
-                    Type = e.GetType()
-                });
+                    приказыКомандировка = FilterOrdersByTags(tags, приказыКомандировка);
+                }
+
+                foreach (var e in приказыКомандировка)
+                {
+                    LvOrders.Items.Add(new OrderInfo(e.Номер,
+                        e.Сотрудник.ОсновнаяИнформация.Фамилия + " " +
+                        e.Сотрудник.ОсновнаяИнформация.Имя + " " +
+                        e.Сотрудник.ОсновнаяИнформация.Отчество, "Командировка", e.Дата.ToShortDateString())
+                    {
+                        Id = e.ПриказКомандировкаId,
+                        OrderType = OrderType.BusinessTrip,
+                        Type = e.GetType()
+                    });
+                } 
             }
 
             Controller.CloseConnection();
@@ -314,6 +373,16 @@ namespace Hured
         private void bOk_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void SelectedOrderType_OnChanged(object sender, RoutedEventArgs e)
+        {
+            SyncOrders();
+        }
+
+        private void TbSearch_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            SyncOrders();
         }
     }
 }

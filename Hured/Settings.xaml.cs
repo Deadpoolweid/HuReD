@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -24,6 +26,8 @@ namespace Hured
     {
         public Settings()
         {
+            Closing += Settings_OnClosing;
+
             InitializeComponent();
 
             cbTheme.ItemsSource = ThemeManager.AppThemes.ToList();
@@ -53,6 +57,8 @@ namespace Hured
             ChbPersistSecurityInfo.IsChecked = mySqlConnectionStringBuilder.PersistSecurityInfo;
 
         }
+
+
 
         private readonly AppSettings _loadedSettings;
 
@@ -103,75 +109,9 @@ namespace Hured
             IsHitTestVisible = true;
         }
 
-        private async void bClose_Click(object sender, RoutedEventArgs e)
+        private void bClose_Click(object sender, RoutedEventArgs e)
         {
-            if (!Functions.ValidateAllTextboxes(this, ChbСтрогаяПроеркаПолей.IsChecked))
-            {
-                return;
-            }
-
-            if (!Regex.IsMatch(TbРуководитель.Text, "^[А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+$"))
-            {
-                Functions.ShowPopup(TbРуководитель, "Введите фамилию, имя и отчество через пробелы.");
-                return;
-            }
-
-            var mySettings = new MetroDialogSettings
-            {
-                AffirmativeButtonText = "Да",
-                NegativeButtonText = "Нет",
-                AnimateShow = true,
-                AnimateHide = false
-            };
-
-            var s = new AppSettings
-            {
-                ДолжностьРуководителя = TbДолжностьРуководителя.Text,
-                НазваниеОрганизации = TbНазваниеОрганизации.Text,
-                РуководительОрганизации = TbРуководитель.Text,
-                НормаРабочегоДня = TbНормаРабочегоДня.Text,
-                СтрогаяПроверкаПолей = ChbСтрогаяПроеркаПолей.IsChecked != null && ChbСтрогаяПроеркаПолей.IsChecked.Value,
-                Theme = (cbTheme.SelectedItem as AppTheme).Name,
-                Accent = (cbAccent.SelectedItem as Accent).Name
-            };
-
-            s.SetConnectionStringBuilder(new MySqlConnectionStringBuilder()
-            {
-                Server = TbServer.Text,
-                Port = (uint)NtbPort.Value,
-                Database = TbDatabaseName.Text,
-                UserID = tbUid.Text,
-                Password = PbPassword.Password,
-                PersistSecurityInfo = ChbPersistSecurityInfo.IsChecked.Value
-            });
-
-            if (!Equals(_loadedSettings, null))
-            {
-                if (s == _loadedSettings && s.GetConnectionString() == _loadedSettings.GetConnectionString())
-                {
-                    Close();
-                    return;
-                }
-            }
-
-            var result = await this.ShowMessageAsync("Предупреждение", "Сохранить настройки?",
-                MessageDialogStyle.AffirmativeAndNegative, mySettings);
-
-            if (result == MessageDialogResult.Affirmative)
-            {
-                var formatter = new BinaryFormatter();
-                // Сохранить объект в локальном файле.
-                using (Stream fStream = new FileStream("settings.dat",
-                   FileMode.Create, FileAccess.Write, FileShare.None))
-                {
-                    formatter.Serialize(fStream, s);
-                }
-
-                Functions.ChangeTheme((cbTheme.SelectedItem as AppTheme).Name);
-                Functions.ChangeAccent((cbAccent.SelectedItem as Accent).Name);
-            }
-
-            Controller.SetConnectionString(s.GetConnectionString());
+           
 
             Close();
         }
@@ -235,9 +175,100 @@ namespace Hured
             Functions.RemoveProgressRing();
         }
 
-        private async void Settings_OnClosed(object sender, EventArgs e)
+        private async void Settings_OnClosing(object sender, CancelEventArgs e)
         {
-            
+            if (!Functions.ValidateAllTextboxes(this, ChbСтрогаяПроеркаПолей.IsChecked))
+            {
+                e.Cancel = true;
+                return;
+            }
+
+            if (!Regex.IsMatch(TbРуководитель.Text, "^[А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+$"))
+            {
+                Functions.ShowPopup(TbРуководитель, "Введите фамилию, имя и отчество через пробелы.");
+                e.Cancel = true;
+                return;
+            }
+
+
+
+            var s = new AppSettings
+            {
+                ДолжностьРуководителя = TbДолжностьРуководителя.Text,
+                НазваниеОрганизации = TbНазваниеОрганизации.Text,
+                РуководительОрганизации = TbРуководитель.Text,
+                НормаРабочегоДня = TbНормаРабочегоДня.Text,
+                СтрогаяПроверкаПолей = ChbСтрогаяПроеркаПолей.IsChecked != null && ChbСтрогаяПроеркаПолей.IsChecked.Value,
+                Theme = (cbTheme.SelectedItem as AppTheme).Name,
+                Accent = (cbAccent.SelectedItem as Accent).Name
+            };
+
+            s.SetConnectionStringBuilder(new MySqlConnectionStringBuilder()
+            {
+                Server = TbServer.Text,
+                Port = (uint)NtbPort.Value,
+                Database = TbDatabaseName.Text,
+                UserID = tbUid.Text,
+                Password = PbPassword.Password,
+                PersistSecurityInfo = ChbPersistSecurityInfo.IsChecked.Value
+            });
+
+            if (!Equals(_loadedSettings, null))
+            {
+                if (s == _loadedSettings && s.GetConnectionString() == _loadedSettings.GetConnectionString())
+                {
+                    return;
+                }
+            }
+
+            if (!CanExit)
+            {
+                e.Cancel = true;
+
+                // caller returns and window stays open
+                await Task.Yield();
+
+                SaveCurrentSettings(s);
+            }
+            else
+            {
+                e.Cancel = false;
+            }
+        }
+
+        private bool CanExit = false;
+
+        private async void SaveCurrentSettings(AppSettings s)
+        {
+            var mySettings = new MetroDialogSettings
+            {
+                AffirmativeButtonText = "Да",
+                NegativeButtonText = "Нет",
+                AnimateShow = true,
+                AnimateHide = false
+            };
+
+            var result = await this.ShowMessageAsync("Предупреждение", "Сохранить настройки?",
+    MessageDialogStyle.AffirmativeAndNegative, mySettings);
+
+            if (result == MessageDialogResult.Affirmative)
+            {
+                var formatter = new BinaryFormatter();
+                // Сохранить объект в локальном файле.
+                using (Stream fStream = new FileStream("settings.dat",
+                   FileMode.Create, FileAccess.Write, FileShare.None))
+                {
+                    formatter.Serialize(fStream, s);
+                }
+
+                Functions.ChangeTheme((cbTheme.SelectedItem as AppTheme).Name);
+                Functions.ChangeAccent((cbAccent.SelectedItem as Accent).Name);
+            }
+
+            Controller.SetConnectionString(s.GetConnectionString());
+
+            CanExit = true;
+            Close();
         }
     }
 }

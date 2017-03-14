@@ -138,16 +138,16 @@ namespace Hured
 
         private void bClose_Click(object sender, RoutedEventArgs e)
         {
-            Controller.OpenConnection();
-            _tResult.RecordsCount = Controller.RecordsCount<Статус>();
-            Controller.CloseConnection();
-            Tag = _tResult;
+
             Close();
         }
 
         private void Statuses_OnClosing(object sender, CancelEventArgs e)
         {
-
+            Controller.OpenConnection();
+            _tResult.RecordsCount = Controller.RecordsCount<Статус>();
+            Controller.CloseConnection();
+            Tag = _tResult;
         }
     }
 }

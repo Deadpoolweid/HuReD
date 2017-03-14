@@ -27,7 +27,13 @@
                       VerticalAlignment="Stretch" Width="5" />
             <hured:ExtendedDataGrid Grid.RowSpan="2" x:Name="DgTimeSheet"
                       BeginningEdit="DgTimeSheet_OnBeginningEdit" Margin="3" 
-                                    VirtualizingStackPanel.IsVirtualizing="False"/>
+                                    VirtualizingStackPanel.IsVirtualizing="False">
+                <DataGrid.Resources>
+                    <Style TargetType="Button" x:Key="{ComponentResourceKey ResourceId=DataGridSelectAllButtonStyle, TypeInTargetAssembly={x:Type DataGrid}}">
+                        <Setter Property="Background" Value="{StaticResource AccentBaseColorBrush}" />
+                    </Style>
+                </DataGrid.Resources>
+            </hured:ExtendedDataGrid>
             
             <TreeView x:Name="TvUnits" Grid.RowSpan="2"
                       SelectedItemChanged="TvUnits_OnSelectedItemChanged" />
@@ -37,6 +43,9 @@
             <controls1:EmptyCell></controls1:EmptyCell>
             <controls1:EmptyCell></controls1:EmptyCell>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <TextBox Grid.Row="2" Grid.Column="2" Name="tbSearch" ToolTip="Введите фамилию,имя или отчество сотрудника" 
+                         hured:TextboxExtensions.Placeholder="Поиск сотрудника" hured:TextboxExtensions.HavePlaceHolder="True"
+                     TextChanged="TbSearch_OnTextChanged"/>
                 <Button Name="Back" Click="Back_OnClick">Назад</Button>
                 <Button Name="Next" Click="Next_OnClick">Вперёд</Button>
                 <Button x:Name="BClose" HorizontalAlignment="Right" IsDefault="True" Click="bClose_Click">Закрыть</Button>

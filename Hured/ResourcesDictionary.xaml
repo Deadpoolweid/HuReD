@@ -215,5 +215,32 @@
     <!--<Style TargetType="Grid">
         <Setter Property="ShowGridLines" Value="True"></Setter>
     </Style>-->
+    
+    <Style TargetType="DataGridRowHeader" BasedOn="{StaticResource {x:Type DataGridRowHeader}}">
+        <Setter Property="Background" Value="{StaticResource AccentColorBrush2}"></Setter>
+    </Style>
+    <Style TargetType="DataGridColumnHeader">
+        <Setter Property="Background" Value="{StaticResource AccentColorBrush2}"></Setter>
+    </Style>
+    <Style TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
+    </Style>
+    
+    <Style TargetType="ListView" BasedOn="{StaticResource {x:Type ListView}}">
+        
+    </Style>
+
+    <DataTemplate x:Key="HeaderTemplateArrowUp">
+        <DockPanel LastChildFill="True" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type GridViewColumnHeader}}}">
+            <Path x:Name="arrowUp" StrokeThickness="1" Fill="Gray" Data="M 5,10 L 15,10 L 10,5 L 5,10" DockPanel.Dock="Right" Width="20" HorizontalAlignment="Right" Margin="5,0,5,0" SnapsToDevicePixels="True"/>
+            <TextBlock Text="{Binding }" />
+        </DockPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="HeaderTemplateArrowDown">
+        <DockPanel LastChildFill="True" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type GridViewColumnHeader}}}">
+            <Path x:Name="arrowDown" StrokeThickness="1" Fill="Gray"  Data="M 5,5 L 10,10 L 15,5 L 5,5" DockPanel.Dock="Right" Width="20" HorizontalAlignment="Right" Margin="5,0,5,0" SnapsToDevicePixels="True"/>
+            <TextBlock Text="{Binding }" />
+        </DockPanel>
+    </DataTemplate>
 
 </ResourceDictionary>

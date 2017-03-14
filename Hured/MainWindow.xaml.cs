@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Configuration;
 using System.IO;
 using System.Linq;
@@ -56,6 +57,10 @@ namespace Hured
             Grid.SetRowSpan(Loading, mainGrid.RowDefinitions.Count);
             if (mainGrid.ColumnDefinitions.Count < 1) return;
             Grid.SetColumnSpan(Loading, mainGrid.ColumnDefinitions.Count);
+
+
+            
+
         }
 
         private bool LaunchWizard()

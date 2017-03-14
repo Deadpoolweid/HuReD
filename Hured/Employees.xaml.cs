@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using Hured.DBModel;
@@ -14,10 +17,26 @@ namespace Hured
     {
         public Employees()
         {
+            Closing += Employees_OnClosing;
+
             InitializeComponent();
 
             SyncEmployeesList();
             Functions.FillTreeView(ref TvUnits);
+
+            (TvUnits.Items[0] as TreeViewItem).IsSelected = true;
+
+            Functions.AddSortingToListView(LvEmployees);
+
+        }
+
+        private void Employees_OnClosing(object sender, CancelEventArgs cancelEventArgs)
+        {
+            Controller.OpenConnection();
+            _tResult.RecordsCount = Controller.RecordsCount<Сотрудник>();
+            Controller.CloseConnection();
+
+            Tag = _tResult;
         }
 
         readonly TransactionResult _tResult = new TransactionResult();
@@ -99,12 +118,12 @@ namespace Hured
 
             foreach (var id in educationsId)
             {
-                Controller.Remove< Образование>(
+                Controller.Remove<Образование>(
                     q => q.ОбразованиеId == id);
             }
 
 
-            Controller.Remove< Сотрудник>(
+            Controller.Remove<Сотрудник>(
                 q => q.СотрудникId == index);
 
 
@@ -116,11 +135,7 @@ namespace Hured
 
         private void bClose_Click(object sender, RoutedEventArgs e)
         {
-            Controller.OpenConnection();
-            _tResult.RecordsCount = Controller.RecordsCount<Сотрудник>();
-            Controller.CloseConnection();
 
-            Tag = _tResult;
             Close();
         }
 
@@ -141,10 +156,14 @@ namespace Hured
                 {
                     if (item?.Tag != null)
                     {
-                        var unitId = (int)item.Tag;
+                        var unitId = (int) item.Tag;
                         списокСотрудников = Controller.Select<Сотрудник>(
                             q => q.ОсновнаяИнформация.Должность.Подразделение.ПодразделениеId == unitId);
                     }
+                }
+                else
+                {
+                    списокСотрудников = Controller.Select<Сотрудник>(q => q != null);
                 }
             } // Выбрана должность
             else
@@ -159,11 +178,39 @@ namespace Hured
 
             Controller.CloseConnection();
 
+            if (!tbSearch.IsHavePlaceholder() && tbSearch.Text != String.Empty)
+            {
+                var tags = tbSearch.Text.Split(' ');
+
+                списокСотрудников = FilterEmployeesByTags(tags, списокСотрудников);
+            }
+
             return списокСотрудников;
+        }
+
+        private List<Сотрудник> FilterEmployeesByTags(string[] tags, List<Сотрудник> employees)
+        {
+            var searchResult = employees.Where(
+                q => new Regex(string.Join("|", tags.Select(Regex.Escape)),RegexOptions.IgnoreCase).IsMatch(
+                    q.ОсновнаяИнформация.Имя + q.ОсновнаяИнформация.Фамилия +
+                    q.ОсновнаяИнформация.Отчество)
+                    );
+            if (searchResult != null)
+            {
+                employees = searchResult.ToList();
+            }
+
+            return employees;
         }
 
         private void TvUnits_OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
+            SyncEmployeesList();
+        }
+
+        private void TbSearch_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (tbSearch.IsHavePlaceholder()) return;
             SyncEmployeesList();
         }
     }

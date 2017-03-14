@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,6 +16,8 @@ namespace Hured
     {
         public Recruitment(ПриказПриём order = null)
         {
+            Closing += Recruitment_OnClosing;
+
             InitializeComponent();
             Functions.AddUnitsFromDB(ref CbUnit);
             CbUnit.SelectedIndex = CbPosition.SelectedIndex = 0;
@@ -40,6 +43,7 @@ namespace Hured
         }
 
 
+
         private void bCancel_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = false;
@@ -48,10 +52,18 @@ namespace Hured
 
         private void bOk_Click(object sender, RoutedEventArgs e)
         {
+
+            Close();
+        }
+
+
+        private void Recruitment_OnClosing(object sender, CancelEventArgs e)
+        {
             if (this.FindChildren<TextBox>().Where(
-                textbox => textbox.Name != "tbИспытательныйСрокДлительность" ||
-                ChIsTraineship.IsChecked != false).Any(Functions.IsEmpty))
+    textbox => textbox.Name != "tbИспытательныйСрокДлительность" ||
+    ChIsTraineship.IsChecked != false).Any(Functions.IsEmpty))
             {
+                e.Cancel = true;
                 return;
             }
 
@@ -91,7 +103,6 @@ namespace Hured
             }
 
             DialogResult = true;
-            Close();
         }
 
         private void CbUnit_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
