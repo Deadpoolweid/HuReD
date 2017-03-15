@@ -165,35 +165,35 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="BusinessTrip.xaml.cs">
+    <Compile Include="Modules\Module_Documents\BusinessTrip.xaml.cs">
       <DependentUpon>BusinessTrip.xaml</DependentUpon>
     </Compile>
     <Compile Include="DBModel\Controller.cs" />
     <Compile Include="DBModel\Model.cs" />
-    <Compile Include="Dismissal.xaml.cs">
+    <Compile Include="Modules\Module_Documents\Dismissal.xaml.cs">
       <DependentUpon>Dismissal.xaml</DependentUpon>
     </Compile>
     <Compile Include="Tools and extensions\DocumentsTypeComparer.cs" />
     <Compile Include="Tools and extensions\Functions.cs" />
     <Compile Include="Tools and extensions\Order.cs" />
-    <Compile Include="Position.xaml.cs">
+    <Compile Include="Modules\Module_Settings\Position.xaml.cs">
       <DependentUpon>Position.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Positions.xaml.cs">
+    <Compile Include="Modules\Module_Settings\Positions.xaml.cs">
       <DependentUpon>Positions.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Recruitment.xaml.cs">
+    <Compile Include="Modules\Module_Documents\Recruitment.xaml.cs">
       <DependentUpon>Recruitment.xaml</DependentUpon>
     </Compile>
     <Compile Include="Tools and extensions\AppSettings.cs" />
     <Compile Include="Tools and extensions\Security.cs" />
-    <Compile Include="Settings.xaml.cs">
+    <Compile Include="Modules\Module_Settings\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Status.xaml.cs">
+    <Compile Include="Modules\Module_Settings\Status.xaml.cs">
       <DependentUpon>Status.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Statuses.xaml.cs">
+    <Compile Include="Modules\Module_Settings\Statuses.xaml.cs">
       <DependentUpon>Statuses.xaml</DependentUpon>
     </Compile>
     <Compile Include="Tables templates\Адрес.cs" />
@@ -212,39 +212,39 @@
     <Compile Include="Tables templates\ТабельнаяЗапись.cs" />
     <Compile Include="Tables templates\УдостоверениеЛичности.cs" />
     <Compile Include="Tools and extensions\TextBoxExtensions.cs" />
-    <Compile Include="Timesheet.xaml.cs">
+    <Compile Include="Modules\Module_Timesheet\Timesheet.xaml.cs">
       <DependentUpon>Timesheet.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TimesheetEntry.xaml.cs">
+    <Compile Include="Modules\Module_Timesheet\TimesheetEntry.xaml.cs">
       <DependentUpon>TimesheetEntry.xaml</DependentUpon>
     </Compile>
     <Compile Include="Tools and extensions\TransactionResult.cs" />
-    <Compile Include="Units.xaml.cs">
+    <Compile Include="Modules\Module_Settings\Units.xaml.cs">
       <DependentUpon>Units.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Vacation.xaml.cs">
+    <Compile Include="Modules\Module_Documents\Vacation.xaml.cs">
       <DependentUpon>Vacation.xaml</DependentUpon>
     </Compile>
     <Compile Include="Wizard.xaml.cs">
       <DependentUpon>Wizard.xaml</DependentUpon>
     </Compile>
-    <Page Include="BusinessTrip.xaml">
+    <Page Include="Modules\Module_Documents\BusinessTrip.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Dismissal.xaml">
+    <Page Include="Modules\Module_Documents\Dismissal.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Education.xaml">
+    <Page Include="Modules\Module_Employees\Education.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Employee.xaml">
+    <Page Include="Modules\Module_Employees\Employee.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Employees.xaml">
+    <Page Include="Modules\Module_Employees\Employees.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -256,36 +256,36 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Education.xaml.cs">
+    <Compile Include="Modules\Module_Employees\Education.xaml.cs">
       <DependentUpon>Education.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Employee.xaml.cs">
+    <Compile Include="Modules\Module_Employees\Employee.xaml.cs">
       <DependentUpon>Employee.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Employees.xaml.cs">
+    <Compile Include="Modules\Module_Employees\Employees.xaml.cs">
       <DependentUpon>Employees.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Order.xaml">
+    <Page Include="Modules\Module_Documents\Order.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Orders.xaml">
+    <Page Include="Modules\Module_Documents\Orders.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Position.xaml">
+    <Page Include="Modules\Module_Settings\Position.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Positions.xaml">
+    <Page Include="Modules\Module_Settings\Positions.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Recruitment.xaml">
+    <Page Include="Modules\Module_Documents\Recruitment.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -301,15 +301,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Settings.xaml">
+    <Page Include="Modules\Module_Settings\Settings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Status.xaml">
+    <Page Include="Modules\Module_Settings\Status.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Statuses.xaml">
+    <Page Include="Modules\Module_Settings\Statuses.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -345,19 +345,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Timesheet.xaml">
+    <Page Include="Modules\Module_Timesheet\Timesheet.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TimesheetEntry.xaml">
+    <Page Include="Modules\Module_Timesheet\TimesheetEntry.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Units.xaml">
+    <Page Include="Modules\Module_Settings\Units.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Vacation.xaml">
+    <Page Include="Modules\Module_Documents\Vacation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -367,10 +367,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Order.xaml.cs">
+    <Compile Include="Modules\Module_Documents\Order.xaml.cs">
       <DependentUpon>Order.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Orders.xaml.cs">
+    <Compile Include="Modules\Module_Documents\Orders.xaml.cs">
       <DependentUpon>Orders.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">

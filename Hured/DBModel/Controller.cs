@@ -150,6 +150,24 @@ namespace Hured.DBModel
             return result;
         }
 
+        public static dynamic FindDocumentByNumberNotGeneric(int number, Type type)
+        {
+            var table = Context.Set(type);
+
+            dynamic result = Activator.CreateInstance(type);
+
+            foreach (var _element in table)
+            {
+                var element = _element as Приказ;
+                if (int.Parse(element.Номер) == number)
+                {
+                    result = _element;
+                }
+            }
+
+            return result;
+        }
+
         public static void Edit<T>(Expression<Func<T, bool>> predicate, T newItem) where T : class
         {
             var table = Context.Set<T>();
@@ -166,7 +184,22 @@ namespace Hured.DBModel
                 }
                 property.SetValue(item, value);
             }
+        }
 
+        public static void EditDocumentByNumberNotGeneric(int number, object newItem, Type type)
+        {
+            var item = FindDocumentByNumberNotGeneric(number, type);
+
+            foreach (var property in type.GetProperties())
+            {
+                var value = newItem.GetType().GetProperty(property.Name).GetValue(newItem);
+
+                if (property.Name.Contains("Id") || Equals(property.GetValue(newItem), null))
+                {
+                    continue;
+                }
+                property.SetValue(item, value);
+            }
         }
 
         public static void Remove<T>(Expression<Func<T, bool>> predicate) where T : class
@@ -209,6 +242,12 @@ namespace Hured.DBModel
         public static bool Exists<T>(Expression<Func<T, bool>> predicate) where T : class
         {
             var result = Find(predicate);
+            return result != null;
+        }
+
+        public static bool ExistsDocumentNotGenericByNumber(int number, Type type)
+        {
+            var result = FindDocumentByNumberNotGeneric(number, type);
             return result != null;
         }
 
