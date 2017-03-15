@@ -9,6 +9,8 @@ using Catel.IoC;
 using Catel.MVVM;
 using Catel.Services;
 using Hured.DBModel;
+using Hured.Tables_templates;
+using Hured.Tools_and_extensions;
 using MahApps.Metro.Controls;
 
 namespace Hured
@@ -47,20 +49,16 @@ namespace Hured
             Functions.ChangeTheme(settings?.Theme);
             Functions.ChangeAccent(settings?.Accent);
 
-            var buttons = this.FindChildren<Button>();
-            foreach (var button in buttons)
-            { 
-            }
-
             this.Unloaded += (sender, args) => Environment.Exit(0);
+
+            DocumentsTypeComparer.AddDocument<ПриказПриём>(OrderType.Recruitment);
+            DocumentsTypeComparer.AddDocument<ПриказУвольнение>(OrderType.Dismissal);
+            DocumentsTypeComparer.AddDocument<ПриказОтпуск>(OrderType.Vacation);
+            DocumentsTypeComparer.AddDocument<ПриказКомандировка>(OrderType.BusinessTrip);
 
             Grid.SetRowSpan(Loading, mainGrid.RowDefinitions.Count);
             if (mainGrid.ColumnDefinitions.Count < 1) return;
             Grid.SetColumnSpan(Loading, mainGrid.ColumnDefinitions.Count);
-
-
-            
-
         }
 
         private bool LaunchWizard()

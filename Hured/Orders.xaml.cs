@@ -1,12 +1,17 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
+using Catel.Collections;
 using Hured.DBModel;
 using Hured.Tables_templates;
+using Hured.Tools_and_extensions;
 using Microsoft.Win32;
 
 namespace Hured
@@ -45,12 +50,38 @@ namespace Hured
         {
             InitializeComponent();
 
+            bool isFirstElement = true;
+            foreach (var document in DocumentsTypeComparer.GetAllDocuments())
+            {
+                // Получаем название документа (Исключая слово приказ из имени)
+                var name = document.Name.Substring(6, document.Name.Length - 6);
+
+                var rb = new RadioButton()
+                {
+                    Content = name,
+                    GroupName = "DocumentTypes",
+                    Name = "rb" + DocumentsTypeComparer.GetTypeOfDocument(document.Name)
+                };
+                rb.Click += SelectedOrderType_OnChanged;
+
+                if (isFirstElement)
+                {
+                    rb.IsChecked = true;
+                    isFirstElement = false;
+                }
+
+                spDocumentTypes.Children.Add(rb);
+
+            }
+
             SyncOrders();
 
             Functions.AddSortingToListView(LvOrders);
+
+
         }
 
-        private List<T> FilterOrdersByTags<T>(string[] tags, List<T> employees) where T:Приказ
+        public List<T> FilterOrdersByTags<T>(string[] tags, List<T> employees) where T:Приказ
         {
             var searchResult = employees.Where(
                 q => new Regex(string.Join("|", tags.Select(Regex.Escape)), RegexOptions.IgnoreCase).IsMatch(
@@ -65,6 +96,27 @@ namespace Hured
             return employees;
         }
 
+        public ArrayList FilterOrdersByTagsNotGeneric(string[] tags, ArrayList employees, Type type)
+        {
+            var result = new ArrayList();
+
+            var regex = new Regex(string.Join("|",tags.Select(Regex.Escape)),RegexOptions.IgnoreCase);
+
+            foreach (var e in employees)
+            {
+                dynamic element = e as Приказ;
+                if (
+                    regex.IsMatch(element.Сотрудник.ОсновнаяИнформация.Имя +
+                                  element.Сотрудник.ОсновнаяИнформация.Фамилия +
+                                  element.Сотрудник.ОсновнаяИнформация.Отчество))
+                {
+                    result.Add(element);
+                }
+            }
+
+            return result;
+        }
+
         void SyncOrders()
         {
             LvOrders.Items.Clear();
@@ -74,95 +126,55 @@ namespace Hured
             bool needFilter = tbSearch.Text != String.Empty && !tbSearch.IsHavePlaceholder();
             var tags = tbSearch.Text.Split(' ');
 
-            if (rbRecruitment.IsChecked == true)
+            foreach (var child in spDocumentTypes.Children)
             {
-                var приказыПриём = Controller.Select<ПриказПриём>(e => e != null);
+                var rb = child as RadioButton;
 
-                if (needFilter)
-                {
-                    приказыПриём = FilterOrdersByTags(tags, приказыПриём);
-                }
 
-                foreach (var e in приказыПриём)
+                var type = DocumentsTypeComparer.GetDocumentType(rb.Name.Substring(2, rb.Name.Length - 2));
+                if (rb.IsChecked == true)
                 {
-                    LvOrders.Items.Add(new OrderInfo(e.Номер,
-                        e.Сотрудник.ОсновнаяИнформация.Фамилия + " " +
-                        e.Сотрудник.ОсновнаяИнформация.Имя + " " +
-                        e.Сотрудник.ОсновнаяИнформация.Отчество, "Приём", e.Дата.ToShortDateString())
+                    
+                    var selectMethod = typeof(Controller).GetMethod("SelectAll");
+
+
+                    //selectMethod.MakeGenericMethod(type);
+
+                    var listoftype = typeof(ArrayList);
+
+                    dynamic documents = Activator.CreateInstance(listoftype);
+
+                    object result = selectMethod.Invoke(null, new object[]
                     {
-                        Id = e.ПриказПриёмId,
-                        OrderType = OrderType.Recruitment,
-                        Type = e.GetType()
+                        type
                     });
-                }
-            }
-            if (rbDismissal.IsChecked == true)
-            {
-                var приказыУвольнение = Controller.Select<ПриказУвольнение>(e => e != null);
 
-                if (needFilter)
-                {
-                    приказыУвольнение = FilterOrdersByTags(tags, приказыУвольнение);
-                }
+                    documents = Convert.ChangeType(result,listoftype);
 
-                foreach (var e in приказыУвольнение)
-                {
-                    LvOrders.Items.Add(new OrderInfo(e.Номер,
-                        e.Сотрудник.ОсновнаяИнформация.Фамилия + " " +
-                        e.Сотрудник.ОсновнаяИнформация.Имя + " " +
-                        e.Сотрудник.ОсновнаяИнформация.Отчество, "Увольнение", e.Дата.ToShortDateString())
+                    if (needFilter)
                     {
-                        Id = e.ПриказУвольнениеId,
-                        OrderType = OrderType.Dismissal,
-                        Type = e.GetType()
-                    });
-                } 
-            }
+                        var filterOrdersByTags = typeof(Hured.Orders).GetMethod("FilterOrdersByTagsNotGeneric");
+                        //filterOrdersByTags.MakeGenericMethod(type);
+                        documents = Convert.ChangeType(filterOrdersByTags.Invoke(this,new object[] {tags,documents,type}),listoftype);
+                    }
 
-            if (rbVacation.IsChecked == true)
-            {
-                var приказыОтпуск = Controller.Select<ПриказОтпуск>(e => e != null);
-
-                if (needFilter)
-                {
-                    приказыОтпуск = FilterOrdersByTags(tags, приказыОтпуск);
-                }
-
-                foreach (var e in приказыОтпуск)
-                {
-                    LvOrders.Items.Add(new OrderInfo(e.Номер,
-                        e.Сотрудник.ОсновнаяИнформация.Фамилия + " " +
-                        e.Сотрудник.ОсновнаяИнформация.Имя + " " +
-                        e.Сотрудник.ОсновнаяИнформация.Отчество, "Отпуск", e.Дата.ToShortDateString())
+                    foreach (var e in documents)
                     {
-                        Id = e.ПриказОтпускId,
-                        OrderType = OrderType.Vacation,
-                        Type = e.GetType()
-                    });
-                } 
-            }
+                        //dynamic e = Convert.ChangeType(_e, type);
+                        var id = type.GetProperty(type.Name + "Id").GetValue(e);
 
-            if (rbBusinessTrip.IsChecked == true)
-            {
-                var приказыКомандировка = Controller.Select<ПриказКомандировка>(e => e != null);
+                        LvOrders.Items.Add(new OrderInfo(e.Номер,
+    e.Сотрудник.ОсновнаяИнформация.Фамилия + " " +
+    e.Сотрудник.ОсновнаяИнформация.Имя + " " +
+    e.Сотрудник.ОсновнаяИнформация.Отчество, type.Name.Substring(6,type.Name.Length - 6), e.Дата.ToShortDateString())
+                        {
+                            Id = id,
+                            OrderType = OrderType.Recruitment,
+                            Type = e.GetType()
+                        });
+                    }
 
-                if (needFilter)
-                {
-                    приказыКомандировка = FilterOrdersByTags(tags, приказыКомандировка);
                 }
-
-                foreach (var e in приказыКомандировка)
-                {
-                    LvOrders.Items.Add(new OrderInfo(e.Номер,
-                        e.Сотрудник.ОсновнаяИнформация.Фамилия + " " +
-                        e.Сотрудник.ОсновнаяИнформация.Имя + " " +
-                        e.Сотрудник.ОсновнаяИнформация.Отчество, "Командировка", e.Дата.ToShortDateString())
-                    {
-                        Id = e.ПриказКомандировкаId,
-                        OrderType = OrderType.BusinessTrip,
-                        Type = e.GetType()
-                    });
-                } 
             }
 
             Controller.CloseConnection();
@@ -200,39 +212,47 @@ namespace Hured
         private void BOpen_OnClick(object sender, RoutedEventArgs e)
         {
             var item = LvOrders.SelectedItem as OrderInfo;
-            Controller.OpenConnection();
             if (item != null)
             {
-                WordDocument document;
-                switch (item.OrderType)
-                {
-                    case OrderType.Recruitment:
-                        document = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказПриём>(
-                            q => q.ПриказПриёмId == item.Id));
-                        break;
-                    case OrderType.Dismissal:
-                        document = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказУвольнение>(
-                            q => q.ПриказУвольнениеId == item.Id));
-                        break;
-                    case OrderType.Vacation:
-                        document = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказОтпуск>(
-                            q => q.ПриказОтпускId == item.Id));
-                        break;
-                    case OrderType.BusinessTrip:
-                        document = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказКомандировка>(
-                            q => q.ПриказКомандировкаId == item.Id));
-                        break;
-                    default:
-                        document = null;
-                        break;
-                }
+                Controller.OpenConnection();
+
+
+                WordDocument wordDocument;
+
+                dynamic document = Controller.FindDocumentNotGeneric(item.Id,
+                    DocumentsTypeComparer.GetDocumentType(item.OrderType));
+
+                wordDocument = Functions.CreateOrder(item.OrderType, document);
+
+                //switch (item.OrderType)
+                //{
+                //    case OrderType.Recruitment:
+                //        wordDocument = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказПриём>(
+                //            q => q.ПриказПриёмId == item.Id));
+                //        break;
+                //    case OrderType.Dismissal:
+                //        wordDocument = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказУвольнение>(
+                //            q => q.ПриказУвольнениеId == item.Id));
+                //        break;
+                //    case OrderType.Vacation:
+                //        wordDocument = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказОтпуск>(
+                //            q => q.ПриказОтпускId == item.Id));
+                //        break;
+                //    case OrderType.BusinessTrip:
+                //        wordDocument = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказКомандировка>(
+                //            q => q.ПриказКомандировкаId == item.Id));
+                //        break;
+                //    default:
+                //        wordDocument = null;
+                //        break;
+                //}
                 var savePath = Directory.GetCurrentDirectory() + @"\Temp.docx";
-                if (document != null)
+                if (wordDocument != null)
                 {
-                    document.Save(savePath);
-                    document.Path = savePath;
-                    document.Close();
-                    document.OpenWithWord();
+                    wordDocument.Save(savePath);
+                    wordDocument.Path = savePath;
+                    wordDocument.Close();
+                    wordDocument.OpenWithWord();
                 }
                 Controller.CloseConnection();
             }
@@ -255,37 +275,45 @@ namespace Hured
             sfd.ShowDialog();
 
 
-            WordDocument document;
+            WordDocument wordDocument;
+
             Controller.OpenConnection();
-            switch (item.OrderType)
+
+
+            dynamic document = Controller.FindDocumentNotGeneric(item.Id,
+                DocumentsTypeComparer.GetDocumentType(item.OrderType));
+
+            wordDocument = Functions.CreateOrder(item.OrderType, document);
+
+            //switch (item.OrderType)
+            //{
+            //    case OrderType.Recruitment:
+            //        wordDocument = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказПриём>(
+            //            q => q.ПриказПриёмId == item.Id));
+            //        break;
+            //    case OrderType.Dismissal:
+            //        wordDocument = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказУвольнение>(
+            //            q => q.ПриказУвольнениеId == item.Id));
+            //        break;
+            //    case OrderType.Vacation:
+            //        wordDocument = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказОтпуск>(
+            //            q => q.ПриказОтпускId == item.Id));
+            //        break;
+            //    case OrderType.BusinessTrip:
+            //        wordDocument = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказКомандировка>(
+            //            q => q.ПриказКомандировкаId == item.Id));
+            //        break;
+            //    default:
+            //        wordDocument = null;
+            //        break;
+            //}
+
+
+            if (wordDocument != null)
             {
-                case OrderType.Recruitment:
-                    document = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказПриём>(
-                        q => q.ПриказПриёмId == item.Id));
-                    break;
-                case OrderType.Dismissal:
-                    document = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказУвольнение>(
-                        q => q.ПриказУвольнениеId == item.Id));
-                    break;
-                case OrderType.Vacation:
-                    document = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказОтпуск>(
-                        q => q.ПриказОтпускId == item.Id));
-                    break;
-                case OrderType.BusinessTrip:
-                    document = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказКомандировка>(
-                        q => q.ПриказКомандировкаId == item.Id));
-                    break;
-                default:
-                    document = null;
-                    break;
-            }
+                wordDocument.Save(sfd.FileName,false);
 
-
-            if (document != null)
-            {
-                document.Save(sfd.FileName,false);
-
-                document.Close();
+                wordDocument.Close();
             }
             Controller.CloseConnection();
         }
@@ -295,37 +323,42 @@ namespace Hured
             var item = LvOrders.SelectedItem as OrderInfo;
             if (item != null)
             {
-                WordDocument document;
+                WordDocument wordDocument;
                 Controller.OpenConnection();
-                switch (item.OrderType)
-                {
-                    case OrderType.Recruitment:
-                        document = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказПриём>(
-                            q => q.ПриказПриёмId == item.Id));
-                        break;
-                    case OrderType.Dismissal:
-                        document = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказУвольнение>(
-                            q => q.ПриказУвольнениеId == item.Id));
-                        break;
-                    case OrderType.Vacation:
-                        document = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказОтпуск>(
-                            q => q.ПриказОтпускId == item.Id));
-                        break;
-                    case OrderType.BusinessTrip:
-                        document = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказКомандировка>(
-                            q => q.ПриказКомандировкаId == item.Id));
-                        break;
-                    default:
-                        document = null;
-                        break;
-                }
+
+                dynamic document = Controller.FindDocumentNotGeneric(item.Id,
+                DocumentsTypeComparer.GetDocumentType(item.OrderType));
+
+                wordDocument = Functions.CreateOrder(item.OrderType, document);
+                //switch (item.OrderType)
+                //{
+                //    case OrderType.Recruitment:
+                //        wordDocument = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказПриём>(
+                //            q => q.ПриказПриёмId == item.Id));
+                //        break;
+                //    case OrderType.Dismissal:
+                //        wordDocument = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказУвольнение>(
+                //            q => q.ПриказУвольнениеId == item.Id));
+                //        break;
+                //    case OrderType.Vacation:
+                //        wordDocument = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказОтпуск>(
+                //            q => q.ПриказОтпускId == item.Id));
+                //        break;
+                //    case OrderType.BusinessTrip:
+                //        wordDocument = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказКомандировка>(
+                //            q => q.ПриказКомандировкаId == item.Id));
+                //        break;
+                //    default:
+                //        wordDocument = null;
+                //        break;
+                //}
                 var savePath = Directory.GetCurrentDirectory() + @"\Temp.docx";
-                if (document != null)
+                if (wordDocument != null)
                 {
-                    document.Save(savePath,false);
-                    document.Path = savePath;
-                    document.Print();
-                    document.Close();
+                    wordDocument.Save(savePath,false);
+                    wordDocument.Path = savePath;
+                    wordDocument.Print();
+                    wordDocument.Close();
                 }
                 Controller.CloseConnection();
             }
@@ -339,30 +372,36 @@ namespace Hured
             var item = LvOrders.SelectedItem as OrderInfo;
             if (item != null)
             {
-                if (item.Тип == "Приём")
-                {
-                    Controller.OpenConnection();
-                    Controller.Remove<ПриказПриём>(q => q.Номер == item.Номер);
-                    Controller.CloseConnection();
-                }
-                else if (item.Тип == "Увольнение")
-                {
-                    Controller.OpenConnection();
-                    Controller.Remove<ПриказУвольнение>( q => q.Номер == item.Номер);
-                    Controller.CloseConnection();
-                }
-                else if (item.Тип == "Отпуск")
-                {
-                    Controller.OpenConnection();
-                    Controller.Remove<ПриказОтпуск>( q => q.Номер == item.Номер);
-                    Controller.CloseConnection();
-                }
-                else if (item.Тип == "Командировка")
-                {
-                    Controller.OpenConnection();
-                    Controller.Remove<ПриказКомандировка>( q => q.Номер == item.Номер);
-                    Controller.CloseConnection();
-                }
+                Controller.OpenConnection();
+
+                Controller.RemoveDocumentNotGeneric(item.Id,DocumentsTypeComparer.GetDocumentType(item.OrderType));
+
+                Controller.CloseConnection();
+
+                //if (item.Тип == "Приём")
+                //{
+                //    Controller.OpenConnection();
+                //    Controller.Remove<ПриказПриём>(q => q.Номер == item.Номер);
+                //    Controller.CloseConnection();
+                //}
+                //else if (item.Тип == "Увольнение")
+                //{
+                //    Controller.OpenConnection();
+                //    Controller.Remove<ПриказУвольнение>( q => q.Номер == item.Номер);
+                //    Controller.CloseConnection();
+                //}
+                //else if (item.Тип == "Отпуск")
+                //{
+                //    Controller.OpenConnection();
+                //    Controller.Remove<ПриказОтпуск>( q => q.Номер == item.Номер);
+                //    Controller.CloseConnection();
+                //}
+                //else if (item.Тип == "Командировка")
+                //{
+                //    Controller.OpenConnection();
+                //    Controller.Remove<ПриказКомандировка>( q => q.Номер == item.Номер);
+                //    Controller.CloseConnection();
+                //}
             }
 
             IsHitTestVisible = true;

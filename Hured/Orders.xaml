@@ -21,11 +21,11 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" >
-                <RadioButton Click="SelectedOrderType_OnChanged" Name="rbRecruitment" GroupName="SelectedOrderType_OnChanged" IsChecked="True">Приём</RadioButton>
+            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Name="spDocumentTypes">
+                <!--<RadioButton Click="SelectedOrderType_OnChanged" Name="rbRecruitment" GroupName="SelectedOrderType_OnChanged" IsChecked="True">Приём</RadioButton>
                 <RadioButton Click="SelectedOrderType_OnChanged" Name="rbDismissal" GroupName="SelectedOrderType_OnChanged">Увольнение</RadioButton>
                 <RadioButton Click="SelectedOrderType_OnChanged" Name="rbVacation" GroupName="SelectedOrderType_OnChanged">Отпуск</RadioButton>
-                <RadioButton Click="SelectedOrderType_OnChanged" Name="rbBusinessTrip" GroupName="SelectedOrderType_OnChanged">Командировка</RadioButton>
+                <RadioButton Click="SelectedOrderType_OnChanged" Name="rbBusinessTrip" GroupName="SelectedOrderType_OnChanged">Командировка</RadioButton>-->
             </StackPanel>
             
             <ListView Grid.Row="1" Grid.Column="0" Name="LvOrders" d:DataContext="{d:DesignData OrderInfo}">

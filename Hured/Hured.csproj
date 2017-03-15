@@ -173,8 +173,9 @@
     <Compile Include="Dismissal.xaml.cs">
       <DependentUpon>Dismissal.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Functions.cs" />
-    <Compile Include="Order.cs" />
+    <Compile Include="Tools and extensions\DocumentsTypeComparer.cs" />
+    <Compile Include="Tools and extensions\Functions.cs" />
+    <Compile Include="Tools and extensions\Order.cs" />
     <Compile Include="Position.xaml.cs">
       <DependentUpon>Position.xaml</DependentUpon>
     </Compile>
@@ -184,8 +185,8 @@
     <Compile Include="Recruitment.xaml.cs">
       <DependentUpon>Recruitment.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AppSettings.cs" />
-    <Compile Include="Security.cs" />
+    <Compile Include="Tools and extensions\AppSettings.cs" />
+    <Compile Include="Tools and extensions\Security.cs" />
     <Compile Include="Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
@@ -210,14 +211,14 @@
     <Compile Include="Tables templates\Статус.cs" />
     <Compile Include="Tables templates\ТабельнаяЗапись.cs" />
     <Compile Include="Tables templates\УдостоверениеЛичности.cs" />
-    <Compile Include="TextBoxExtensions.cs" />
+    <Compile Include="Tools and extensions\TextBoxExtensions.cs" />
     <Compile Include="Timesheet.xaml.cs">
       <DependentUpon>Timesheet.xaml</DependentUpon>
     </Compile>
     <Compile Include="TimesheetEntry.xaml.cs">
       <DependentUpon>TimesheetEntry.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TransactionResult.cs" />
+    <Compile Include="Tools and extensions\TransactionResult.cs" />
     <Compile Include="Units.xaml.cs">
       <DependentUpon>Units.xaml</DependentUpon>
     </Compile>

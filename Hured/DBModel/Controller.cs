@@ -1,12 +1,16 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Windows.Documents;
 using System.Windows.Media.Animation;
+using Catel.Collections;
 using MySql.Data.MySqlClient;
 
 namespace Hured.DBModel
@@ -128,6 +132,24 @@ namespace Hured.DBModel
 
         }
 
+        public static dynamic FindDocumentNotGeneric(int id, Type type)
+        {
+            var table = Context.Set(type);
+
+            dynamic result = Activator.CreateInstance(type);
+
+            foreach (var _element in table)
+            {
+                var element = _element as Приказ;
+                if (element.GetId() == id)
+                {
+                    result = _element;
+                }
+            }
+
+            return result;
+        }
+
         public static void Edit<T>(Expression<Func<T, bool>> predicate, T newItem) where T : class
         {
             var table = Context.Set<T>();
@@ -156,11 +178,32 @@ namespace Hured.DBModel
             table.Remove(result);
         }
 
+        public static void RemoveDocumentNotGeneric(int id, Type type)
+        {
+            var table = Context.Set(type);
+
+            table.Remove(FindDocumentNotGeneric(id, type));
+        }
+
         public static List<T> Select<T>(Expression<Func<T, bool>> predicate) where T : class
         {
             var table = Context.Set<T>();
 
             return table.Where(predicate).ToList();
+        }
+
+        public static ArrayList SelectAll(Type type)
+        {
+            var table = Context.Set(type);
+
+            ArrayList result = new ArrayList();
+
+            foreach (var element in table)
+            {
+                result.Add(element);
+            }
+
+            return result;
         }
 
         public static bool Exists<T>(Expression<Func<T, bool>> predicate) where T : class

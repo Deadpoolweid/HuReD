@@ -23,5 +23,10 @@ namespace Hured.Tables_templates
         public DateTime ДатаТрудовогоДоговора { get; set; }
 
         public DateTime ДатаУвольнения { get; set; }
+
+        public int GetId()
+        {
+            return ПриказУвольнениеId;
+        }
     }
 }

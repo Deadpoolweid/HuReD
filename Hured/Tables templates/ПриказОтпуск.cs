@@ -23,5 +23,11 @@ namespace Hured.Tables_templates
         public DateTime ПериодРаботыКонец { get; set; }
 
         public string Вид { get; set; }
+
+        public int GetId()
+        {
+            return ПриказОтпускId;
+        }
     }
 }
+
