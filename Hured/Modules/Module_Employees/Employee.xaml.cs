@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
-using Hured.DBModel;
+using Hured.DataBase;
 using Hured.Tables_templates;
 using MahApps.Metro.Controls;
 using Microsoft.Win32;
@@ -24,7 +24,6 @@ namespace Hured
             Functions.AddUnitsFromDB(ref CbUnit);
 
             CbUnit.SelectedIndex = 0;
-            CbPosition.SelectedIndex = 0;
 
             if (employee != null)
             {
@@ -101,12 +100,12 @@ namespace Hured
 
         private void bChooseImage_Click(object sender, RoutedEventArgs e)
         {
-            var ofd = new OpenFileDialog();// создаем диалоговое окно
+            var ofd = new OpenFileDialog();
             if (ofd.ShowDialog() == true)
             {
                 IAvatar.Source = new BitmapImage(new Uri(ofd.FileName));
 
-            }// открываем окно
+            }
 
         }
 
@@ -137,6 +136,7 @@ namespace Hured
                 return;
             }
 
+            // TODO Заменить регуляркой
             if (TbФио.Text.Split(' ').Length < 3)
             {
                 Functions.ShowPopup(TbФио, "Введите фамилию, имя и отчество через пробел.");
@@ -160,26 +160,30 @@ namespace Hured
                 return;
             }
 
-            Controller.OpenConnection();
-
             string серия = TbСерия.Text, номер = Tbномер.Text;
 
-            if (Controller.Exists<Сотрудник>(q => q.УдостоверениеЛичности.Серия == серия) &&
-                Controller.Exists<Сотрудник>(q => q.УдостоверениеЛичности.Номер == номер))
-            {
-                Functions.ShowPopup(this,"Сотрудник с указанными паспотрными данными уже существует.");
-                Controller.CloseConnection();
-                return;
-            }
 
+            if (!_isEditMode)
+            {
+                Controller.OpenConnection();
+                if (Controller.Exists<Сотрудник>(q => q.УдостоверениеЛичности.Серия == серия) &&
+                    Controller.Exists<Сотрудник>(q => q.УдостоверениеЛичности.Номер == номер))
+                {
+                    Functions.ShowPopup(this, "Сотрудник с указанными паспортными данными уже существует.");
+                    Controller.CloseConnection();
+                    return;
+                }
+                Controller.CloseConnection(); 
+            }
 
             var xByte = Functions.ImageSourceToBytes(new PngBitmapEncoder(), IAvatar.Source);
 
-            var tag = (CbPosition.SelectedItem as ComboBoxItem)?.Tag;
-            if (tag != null)
+            var selectedPosition = (CbPosition.SelectedItem as ComboBoxItem)?.Tag;
+            if (selectedPosition != null)
             {
-                var positionId = (int)tag;
-                var chosenPosition = Controller.Select< Должность>(
+                var positionId = (int)selectedPosition;
+                Controller.OpenConnection();
+                var chosenPosition = Controller.Select<Должность>(
                     q => q.ДолжностьId == positionId).FirstOrDefault();
 
                 var employeeToAdd = new Сотрудник
@@ -296,7 +300,6 @@ namespace Hured
             {
                 _educations.Add(w.Tag as Образование);
             }
-
 
             IsHitTestVisible = true;
             SyncEducationList();

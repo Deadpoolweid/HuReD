@@ -6,7 +6,7 @@ using System.Linq;
 using Hured.Tables_templates;
 using MySql.Data.Entity;
 
-namespace Hured.DBModel
+namespace Hured.DataBase
 {
     [DbConfigurationType(typeof(MySqlEFConfiguration))]
     public class Hured : DbContext
@@ -52,6 +52,11 @@ namespace Hured.DBModel
         {
 
         }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+        }
     }
 
     public class MySqlInitializer : IDatabaseInitializer<Hured>
@@ -67,7 +72,7 @@ namespace Hured.DBModel
             {
                 // query to check if MigrationHistory table is present in the database 
                 var migrationHistoryTableExists = ((IObjectContextAdapter)context).ObjectContext.ExecuteStoreQuery<int>(
-                    $"SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = '{"helpcontext"}' AND table_name = '__MigrationHistory'");
+                    "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = \'helpcontext\' AND table_name = \'__MigrationHistory\'");
 
                 // if MigrationHistory table is not there (which is the case first time we run) - create it
                 if (migrationHistoryTableExists.FirstOrDefault() == 0)

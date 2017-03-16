@@ -9,9 +9,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using Catel.Collections;
-using Hured.DBModel;
+using Hured.DataBase;
 using Hured.Tables_templates;
-using Hured.Tools_and_extensions;
 using Microsoft.Win32;
 
 namespace Hured
@@ -51,16 +50,16 @@ namespace Hured
             InitializeComponent();
 
             bool isFirstElement = true;
-            foreach (var document in DocumentsTypeComparer.GetAllDocuments())
+            foreach (var document in DocumentsTypeDictionary.GetTypesOfAllDocuments())
             {
                 // Получаем название документа (Исключая слово приказ из имени)
-                var name = document.Name.Substring(6, document.Name.Length - 6);
+                var name = string.Concat(document.Name.Select((x, i) => i > 0 && char.IsUpper(x) ? " " + x.ToString() : x.ToString()));
 
                 var rb = new RadioButton()
                 {
                     Content = name,
                     GroupName = "DocumentTypes",
-                    Name = "rb" + DocumentsTypeComparer.GetTypeOfDocument(document.Name)
+                    Name = "rb" + DocumentsTypeDictionary.GetEnumTypeOfDocumentByName(document.Name)
                 };
                 rb.Click += SelectedOrderType_OnChanged;
 
@@ -71,29 +70,21 @@ namespace Hured
                 }
 
                 spDocumentTypes.Children.Add(rb);
-
             }
 
             SyncOrders();
 
             Functions.AddSortingToListView(LvOrders);
-
-
         }
 
-        public List<T> FilterOrdersByTags<T>(string[] tags, List<T> employees) where T:Приказ
+        public List<T> FilterOrdersByTags<T>(string[] tags, List<T> employees) where T:IДокумент
         {
             var searchResult = employees.Where(
                 q => new Regex(string.Join("|", tags.Select(Regex.Escape)), RegexOptions.IgnoreCase).IsMatch(
                     q.Сотрудник.ОсновнаяИнформация.Имя + q.Сотрудник.ОсновнаяИнформация.Фамилия +
                     q.Сотрудник.ОсновнаяИнформация.Отчество)
                     );
-            if (searchResult != null)
-            {
-                employees = searchResult.ToList();
-            }
-
-            return employees;
+            return searchResult.ToList();
         }
 
         public ArrayList FilterOrdersByTagsNotGeneric(string[] tags, ArrayList employees, Type type)
@@ -104,7 +95,7 @@ namespace Hured
 
             foreach (var e in employees)
             {
-                dynamic element = e as Приказ;
+                dynamic element = e as IДокумент;
                 if (
                     regex.IsMatch(element.Сотрудник.ОсновнаяИнформация.Имя +
                                   element.Сотрудник.ОсновнаяИнформация.Фамилия +
@@ -119,294 +110,265 @@ namespace Hured
 
         void SyncOrders()
         {
-            LvOrders.Items.Clear();
-
-            Controller.OpenConnection();
-
-            bool needFilter = tbSearch.Text != String.Empty && !tbSearch.IsHavePlaceholder();
-            var tags = tbSearch.Text.Split(' ');
-
-            foreach (var child in spDocumentTypes.Children)
+            try
             {
-                var rb = child as RadioButton;
+                LvOrders.Items.Clear();
 
 
-                var type = DocumentsTypeComparer.GetDocumentType(rb.Name.Substring(2, rb.Name.Length - 2));
-                if (rb.IsChecked == true)
+                bool needFilter = tbSearch.Text != String.Empty && !tbSearch.IsHavePlaceholder();
+                var tags = tbSearch.Text.Split(' ');
+
+                foreach (var child in spDocumentTypes.Children)
                 {
-                    
-                    var selectMethod = typeof(Controller).GetMethod("SelectAll");
+                    var rb = child as RadioButton;
 
-
-                    //selectMethod.MakeGenericMethod(type);
-
-                    var listoftype = typeof(ArrayList);
-
-                    dynamic documents = Activator.CreateInstance(listoftype);
-
-                    object result = selectMethod.Invoke(null, new object[]
+                    var type = DocumentsTypeDictionary.GetDocumentTypeByName(rb.Name.Substring(2, rb.Name.Length - 2));
+                    if (rb.IsChecked == true)
                     {
-                        type
-                    });
+                        var selectMethod = typeof(Controller).GetMethod("SelectAll");
 
-                    documents = Convert.ChangeType(result,listoftype);
+                        var listoftype = typeof(ArrayList);
 
-                    if (needFilter)
-                    {
-                        var filterOrdersByTags = typeof(Hured.Orders).GetMethod("FilterOrdersByTagsNotGeneric");
-                        //filterOrdersByTags.MakeGenericMethod(type);
-                        documents = Convert.ChangeType(filterOrdersByTags.Invoke(this,new object[] {tags,documents,type}),listoftype);
-                    }
+                        dynamic documents = Activator.CreateInstance(listoftype);
 
-                    foreach (var e in documents)
-                    {
-                        //dynamic e = Convert.ChangeType(_e, type);
-                        var id = type.GetProperty(type.Name + "Id").GetValue(e);
-
-                        LvOrders.Items.Add(new OrderInfo(e.Номер,
-    e.Сотрудник.ОсновнаяИнформация.Фамилия + " " +
-    e.Сотрудник.ОсновнаяИнформация.Имя + " " +
-    e.Сотрудник.ОсновнаяИнформация.Отчество, type.Name.Substring(6,type.Name.Length - 6), e.Дата.ToShortDateString())
+                        Controller.OpenConnection();
+                        object result = selectMethod.Invoke(null, new object[]
                         {
-                            Id = id,
-                            OrderType = OrderType.Recruitment,
-                            Type = e.GetType()
+                            type
                         });
-                    }
+                        Controller.CloseConnection();
 
+                        documents = Convert.ChangeType(result, listoftype);
+
+                        if (needFilter)
+                        {
+                            var filterOrdersByTags = typeof(Hured.Orders).GetMethod("FilterOrdersByTagsNotGeneric");
+                            documents =
+                                Convert.ChangeType(
+                                    filterOrdersByTags.Invoke(this, new object[] {tags, documents, type}), listoftype);
+                        }
+
+                        foreach (var e in documents)
+                        {
+                            var id = type.GetProperty(type.Name + "Id").GetValue(e);
+
+                            LvOrders.Items.Add(new OrderInfo(e.Номер,
+                                e.Сотрудник.ОсновнаяИнформация.Фамилия + " " +
+                                e.Сотрудник.ОсновнаяИнформация.Имя + " " +
+                                e.Сотрудник.ОсновнаяИнформация.Отчество, type.Name.Substring(6, type.Name.Length - 6),
+                                e.Дата.ToShortDateString())
+                            {
+                                Id = id,
+                                OrderType = OrderType.Recruitment,
+                                Type = e.GetType()
+                            });
+                        }
+
+                    }
                 }
             }
-
-            Controller.CloseConnection();
+            catch (Exception ex)
+            {
+                Close();
+                //throw;
+            }
+            finally
+            {
+                Controller.CloseConnection(true);
+            }
         }
 
         private void bAdd_Click(object sender, RoutedEventArgs e)
         {
-            IsHitTestVisible = false;
+            try
+            {
+                IsHitTestVisible = false;
 
-            var w = new Order();
-            w.ShowDialog();
+                var w = new Order();
+                w.ShowDialog();
 
-            IsHitTestVisible = true;
-
-            SyncOrders();
+                SyncOrders();
+            }
+            catch (Exception ex)
+            {
+                Functions.ShowPopup(sender as Button, "Не удалось добавить документ. Информация: " + ex);
+            }
+            finally
+            {
+                IsHitTestVisible = true;
+            }
         }
 
         private void bChange_Click(object sender, RoutedEventArgs e)
         {
-            IsHitTestVisible = false;
-
-
-            var item = LvOrders.SelectedItem as OrderInfo;
-            if (item != null)
+            try
             {
-                var w = new Order(item);
-                w.ShowDialog();
+                IsHitTestVisible = false;
+
+
+                var item = LvOrders.SelectedItem as OrderInfo;
+                if (item != null)
+                {
+                    var w = new Order(item);
+                    w.ShowDialog();
+                }
+
+                SyncOrders();
             }
-
-            IsHitTestVisible = true;
-
-            SyncOrders();
+            catch (Exception ex)
+            {
+                Functions.ShowPopup(sender as Button, "Не удалось изменить документ. Информация: " + ex);
+            }
+            finally
+            {
+                IsHitTestVisible = true;
+            }
         }
 
         private void BOpen_OnClick(object sender, RoutedEventArgs e)
         {
-            var item = LvOrders.SelectedItem as OrderInfo;
-            if (item != null)
+            try
             {
-                Controller.OpenConnection();
-
-
-                WordDocument wordDocument;
-
-                dynamic document = Controller.FindDocumentNotGeneric(item.Id,
-                    DocumentsTypeComparer.GetDocumentType(item.OrderType));
-
-                wordDocument = Functions.CreateOrder(item.OrderType, document);
-
-                //switch (item.OrderType)
-                //{
-                //    case OrderType.Recruitment:
-                //        wordDocument = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказПриём>(
-                //            q => q.ПриказПриёмId == item.Id));
-                //        break;
-                //    case OrderType.Dismissal:
-                //        wordDocument = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказУвольнение>(
-                //            q => q.ПриказУвольнениеId == item.Id));
-                //        break;
-                //    case OrderType.Vacation:
-                //        wordDocument = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказОтпуск>(
-                //            q => q.ПриказОтпускId == item.Id));
-                //        break;
-                //    case OrderType.BusinessTrip:
-                //        wordDocument = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказКомандировка>(
-                //            q => q.ПриказКомандировкаId == item.Id));
-                //        break;
-                //    default:
-                //        wordDocument = null;
-                //        break;
-                //}
-                var savePath = Directory.GetCurrentDirectory() + @"\Temp.docx";
-                if (wordDocument != null)
+                var item = LvOrders.SelectedItem as OrderInfo;
+                if (item != null)
                 {
-                    wordDocument.Save(savePath);
-                    wordDocument.Path = savePath;
-                    wordDocument.Close();
-                    wordDocument.OpenWithWord();
+                    WordDocument wordDocument;
+
+                    dynamic document = ControllerExtensions.FindDocumentNotGeneric(item.Id,
+                        DocumentsTypeDictionary.GetDocumentTypeByEnum(item.OrderType));
+
+                    Controller.OpenConnection();
+                    wordDocument = Functions.CreateOrder(item.OrderType, document);
+                    Controller.CloseConnection();
+
+                    var savePath = Directory.GetCurrentDirectory() + @"\Temp.docx";
+                    if (wordDocument != null)
+                    {
+                        wordDocument.Save(savePath);
+                        wordDocument.Path = savePath;
+                        wordDocument.Close();
+                        wordDocument.OpenWithWord();
+                    }
                 }
-                Controller.CloseConnection();
+            }
+            catch (Exception ex)
+            {
+                Functions.ShowPopup(sender as Button, "Не удалось открыть документ. Информация: " + ex);
+            }
+            finally
+            {
+                Controller.CloseConnection(true);
             }
         }
 
         private void BSave_OnClick(object sender, RoutedEventArgs e)
         {
-            var item = LvOrders.SelectedItem as OrderInfo;
-            if (item == null) return;
-            var sfd = new SaveFileDialog
+            try
             {
-                InitialDirectory = Directory.GetCurrentDirectory(),
+                var item = LvOrders.SelectedItem as OrderInfo;
+                if (item == null) return;
+                var sfd = new SaveFileDialog
+                {
+                    InitialDirectory = Directory.GetCurrentDirectory(),
                     //initialDirectory == null
                     //    ? Directory.GetCurrentDirectory() + @"\Documents"
                     //    : System.IO.Path.GetDirectoryName(initialDirectory),
-                Filter = "Word Document | *.docx | Все файлы (*.*)|*.*",
-                FileName = "Новый приказ"
-            };
+                    Filter = "Word Document | *.docx | Все файлы (*.*)|*.*",
+                    FileName = "Новый приказ"
+                };
 
-            sfd.ShowDialog();
-
-
-            WordDocument wordDocument;
-
-            Controller.OpenConnection();
+                sfd.ShowDialog();
 
 
-            dynamic document = Controller.FindDocumentNotGeneric(item.Id,
-                DocumentsTypeComparer.GetDocumentType(item.OrderType));
+                WordDocument wordDocument;
 
-            wordDocument = Functions.CreateOrder(item.OrderType, document);
+                Controller.OpenConnection();
+                dynamic document = ControllerExtensions.FindDocumentNotGeneric(item.Id,
+                    DocumentsTypeDictionary.GetDocumentTypeByEnum(item.OrderType));
+                Controller.CloseConnection();
 
-            //switch (item.OrderType)
-            //{
-            //    case OrderType.Recruitment:
-            //        wordDocument = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказПриём>(
-            //            q => q.ПриказПриёмId == item.Id));
-            //        break;
-            //    case OrderType.Dismissal:
-            //        wordDocument = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказУвольнение>(
-            //            q => q.ПриказУвольнениеId == item.Id));
-            //        break;
-            //    case OrderType.Vacation:
-            //        wordDocument = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказОтпуск>(
-            //            q => q.ПриказОтпускId == item.Id));
-            //        break;
-            //    case OrderType.BusinessTrip:
-            //        wordDocument = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказКомандировка>(
-            //            q => q.ПриказКомандировкаId == item.Id));
-            //        break;
-            //    default:
-            //        wordDocument = null;
-            //        break;
-            //}
+                wordDocument = Functions.CreateOrder(item.OrderType, document);
 
+                if (wordDocument != null)
+                {
+                    wordDocument.Save(sfd.FileName, false);
 
-            if (wordDocument != null)
-            {
-                wordDocument.Save(sfd.FileName,false);
-
-                wordDocument.Close();
+                    wordDocument.Close();
+                }
             }
-            Controller.CloseConnection();
+            catch (Exception ex)
+            {
+                Functions.ShowPopup(sender as Button, "Не удалось сохранить документ. Информация: " + ex);
+            }
+            finally
+            {
+                Controller.CloseConnection(true);
+            }
         }
 
         private void BPrint_OnClick(object sender, RoutedEventArgs e)
         {
-            var item = LvOrders.SelectedItem as OrderInfo;
-            if (item != null)
+            try
             {
-                WordDocument wordDocument;
-                Controller.OpenConnection();
-
-                dynamic document = Controller.FindDocumentNotGeneric(item.Id,
-                DocumentsTypeComparer.GetDocumentType(item.OrderType));
-
-                wordDocument = Functions.CreateOrder(item.OrderType, document);
-                //switch (item.OrderType)
-                //{
-                //    case OrderType.Recruitment:
-                //        wordDocument = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказПриём>(
-                //            q => q.ПриказПриёмId == item.Id));
-                //        break;
-                //    case OrderType.Dismissal:
-                //        wordDocument = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказУвольнение>(
-                //            q => q.ПриказУвольнениеId == item.Id));
-                //        break;
-                //    case OrderType.Vacation:
-                //        wordDocument = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказОтпуск>(
-                //            q => q.ПриказОтпускId == item.Id));
-                //        break;
-                //    case OrderType.BusinessTrip:
-                //        wordDocument = Functions.CreateOrder(item.OrderType, Controller.Find<ПриказКомандировка>(
-                //            q => q.ПриказКомандировкаId == item.Id));
-                //        break;
-                //    default:
-                //        wordDocument = null;
-                //        break;
-                //}
-                var savePath = Directory.GetCurrentDirectory() + @"\Temp.docx";
-                if (wordDocument != null)
+                var item = LvOrders.SelectedItem as OrderInfo;
+                if (item != null)
                 {
-                    wordDocument.Save(savePath,false);
-                    wordDocument.Path = savePath;
-                    wordDocument.Print();
-                    wordDocument.Close();
+                    WordDocument wordDocument;
+
+                    Controller.OpenConnection();
+                    dynamic document = ControllerExtensions.FindDocumentNotGeneric(item.Id,
+                        DocumentsTypeDictionary.GetDocumentTypeByEnum(item.OrderType));
+                    Controller.CloseConnection();
+
+                    wordDocument = Functions.CreateOrder(item.OrderType, document);
+                    var savePath = Directory.GetCurrentDirectory() + @"\Temp.docx";
+                    if (wordDocument != null)
+                    {
+                        wordDocument.Save(savePath, false);
+                        wordDocument.Path = savePath;
+                        wordDocument.Print();
+                        wordDocument.Close();
+                    }
                 }
-                Controller.CloseConnection();
+            }
+            catch (Exception ex)
+            {
+                Functions.ShowPopup(sender as Button, "Не удалось распечатать документ. Информация: " + ex);
+            }
+            finally
+            {
+                Controller.CloseConnection(true);
             }
         }
 
         private void bRemove_Click(object sender, RoutedEventArgs e)
         {
-            IsHitTestVisible = false;
-
-
-            var item = LvOrders.SelectedItem as OrderInfo;
-            if (item != null)
+            try
             {
-                Controller.OpenConnection();
+                IsHitTestVisible = false;
 
-                Controller.RemoveDocumentNotGeneric(item.Id,DocumentsTypeComparer.GetDocumentType(item.OrderType));
+                var item = LvOrders.SelectedItem as OrderInfo;
+                if (item != null)
+                {
+                    Controller.OpenConnection();
 
-                Controller.CloseConnection();
+                    ControllerExtensions.RemoveDocumentNotGeneric(item.Id,
+                        DocumentsTypeDictionary.GetDocumentTypeByEnum(item.OrderType));
 
-                //if (item.Тип == "Приём")
-                //{
-                //    Controller.OpenConnection();
-                //    Controller.Remove<ПриказПриём>(q => q.Номер == item.Номер);
-                //    Controller.CloseConnection();
-                //}
-                //else if (item.Тип == "Увольнение")
-                //{
-                //    Controller.OpenConnection();
-                //    Controller.Remove<ПриказУвольнение>( q => q.Номер == item.Номер);
-                //    Controller.CloseConnection();
-                //}
-                //else if (item.Тип == "Отпуск")
-                //{
-                //    Controller.OpenConnection();
-                //    Controller.Remove<ПриказОтпуск>( q => q.Номер == item.Номер);
-                //    Controller.CloseConnection();
-                //}
-                //else if (item.Тип == "Командировка")
-                //{
-                //    Controller.OpenConnection();
-                //    Controller.Remove<ПриказКомандировка>( q => q.Номер == item.Номер);
-                //    Controller.CloseConnection();
-                //}
+                    Controller.CloseConnection();
+                }
+
+                SyncOrders();
             }
+            catch (Exception ex)
+            {
+                Functions.ShowPopup(sender as Button, "Не удалось удалить документ. Информация: " + ex);
+            }
+            finally
+            {
+                IsHitTestVisible = true;
 
-            IsHitTestVisible = true;
-
-            SyncOrders();
+            }
         }
 
         private void bOk_Click(object sender, RoutedEventArgs e)

@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media;
-using Hured.DBModel;
+using Hured.DataBase;
 using Hured.Tables_templates;
 
 namespace Hured

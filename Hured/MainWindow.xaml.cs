@@ -8,9 +8,8 @@ using System.Windows.Controls;
 using Catel.IoC;
 using Catel.MVVM;
 using Catel.Services;
-using Hured.DBModel;
+using Hured.DataBase;
 using Hured.Tables_templates;
-using Hured.Tools_and_extensions;
 using MahApps.Metro.Controls;
 
 namespace Hured
@@ -20,8 +19,6 @@ namespace Hured
     /// </summary>
     public partial class MainWindow
     {
-
-
         public MainWindow()
         {
             InitializeComponent();
@@ -30,6 +27,7 @@ namespace Hured
 
             if (bool.Parse(appSettings["IsFirstLaunch"]))
             {
+                // Если был произведён выход из мастера настройки
                 if (!LaunchWizard()) Application.Current.Shutdown(1);
 
                 Controller.SetConnectionString(Functions.GetAppSettings().GetConnectionString());
@@ -37,7 +35,6 @@ namespace Hured
                 Controller.InitDb();
 
                 Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\Documents");
-
 
                 appSettings["IsFirstLaunch"] = false.ToString();
             }
@@ -51,39 +48,40 @@ namespace Hured
 
             this.Unloaded += (sender, args) => Environment.Exit(0);
 
-            DocumentsTypeComparer.AddDocument<ПриказПриём>(OrderType.Recruitment);
-            DocumentsTypeComparer.AddDocument<ПриказУвольнение>(OrderType.Dismissal);
-            DocumentsTypeComparer.AddDocument<ПриказОтпуск>(OrderType.Vacation);
-            DocumentsTypeComparer.AddDocument<ПриказКомандировка>(OrderType.BusinessTrip);
+            DocumentsTypeDictionary.AddDocumentType<ПриказПриём>(OrderType.Recruitment);
+            DocumentsTypeDictionary.AddDocumentType<ПриказУвольнение>(OrderType.Dismissal);
+            DocumentsTypeDictionary.AddDocumentType<ПриказОтпуск>(OrderType.Vacation);
+            DocumentsTypeDictionary.AddDocumentType<ПриказКомандировка>(OrderType.BusinessTrip);
 
             Grid.SetRowSpan(Loading, mainGrid.RowDefinitions.Count);
             if (mainGrid.ColumnDefinitions.Count < 1) return;
             Grid.SetColumnSpan(Loading, mainGrid.ColumnDefinitions.Count);
         }
 
-        private bool LaunchWizard()
+        private static bool LaunchWizard()
         {
             var w = new Wizard();
             w.ShowDialog();
             return w.IsFinished;
         }
 
-        public void BEmployees_OnClick(object sender, RoutedEventArgs e)
+        private bool CheckConnection()
         {
-            //Functions.AddProgressRing(this);
-
-            Loading.IsActive = true;
-
             if (!Controller.IsConnectionSucceded())
             {
                 Functions.ShowPopup(BEmployees, "Не удаётся подключиться к базе данных. " +
                                                "Проверьте настройки подключения.");
-                //Functions.RemoveProgressRing();
-                return;
+                return false;
             }
 
+            return true;
+        }
 
+        private void BEmployees_OnClick(object sender, RoutedEventArgs e)
+        {
+            Loading.IsActive = true;
 
+            if (!CheckConnection()) return;
 
             IsHitTestVisible = false;
             var w = new Employees();
@@ -91,50 +89,35 @@ namespace Hured
             IsHitTestVisible = true;
 
             Loading.IsActive = false;
-
-            //Functions.RemoveProgressRing();
         }
 
-        public void bOrders_Click(object sender, RoutedEventArgs e)
+        private void bOrders_Click(object sender, RoutedEventArgs e)
         {
-            Functions.AddProgressRing(this);
+            Loading.IsActive = true;
 
-
-            if (!Controller.IsConnectionSucceded())
-            {
-                Functions.ShowPopup(BEmployees, "Не удаётся подключиться к базе данных. " +
-                                               "Проверьте настройки подключения.");
-                return;
-            }
+            if (!CheckConnection()) return;
 
             IsHitTestVisible = false;
             var w = new Orders();
             w.ShowDialog();
             IsHitTestVisible = true;
 
-            Functions.RemoveProgressRing();
-
+            Loading.IsActive = false;
         }
 
-        public void bTimesheet_Click(object sender, RoutedEventArgs e)
+        private void bTimesheet_Click(object sender, RoutedEventArgs e)
         {
 
-            Functions.AddProgressRing(this);
+            Loading.IsActive = true;
 
-            if (!Controller.IsConnectionSucceded())
-            {
-                Functions.ShowPopup(BEmployees, "Не удаётся подключиться к базе данных. " +
-                                               "Проверьте настройки подключения.");
-                return;
-            }
+            if (!CheckConnection()) return;
 
             IsHitTestVisible = false;
             var w = new Timesheet();
             w.ShowDialog();
             IsHitTestVisible = true;
 
-            Functions.RemoveProgressRing();
-
+            Loading.IsActive = false;
         }
 
         private void bSettings_Click(object sender, RoutedEventArgs e)

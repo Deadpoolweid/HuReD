@@ -1,11 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
-using Hured.DBModel;
 
 namespace Hured.Tables_templates
 {
     [Table("ПриказыПриёма")]
-    public class ПриказПриём : Приказ
+    public class ПриказПриём : IДокумент
     {
         public int ПриказПриёмId { set; get; }
 

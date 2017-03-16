@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using Hured.DBModel;
+using Hured.DataBase;
 using Hured.Tables_templates;
 using MahApps.Metro.Controls;
 
@@ -20,12 +20,13 @@ namespace Hured
             InitializeComponent();
             Functions.AddUnitsFromDB(ref CbUnit);
             CbUnit.SelectedIndex = 0;
-            if (position == null) return;
-
-            _isEditMode = true;
-            TbName.Text = _oldName = position.Название;
-            TbРасписание.Text = position.Расписание;
-            CbUnit.SelectedItem = position.Подразделение.Название;
+            if (position != null)
+            {
+                _isEditMode = true;
+                TbName.Text = _oldName = position.Название;
+                TbРасписание.Text = position.Расписание;
+                CbUnit.SelectedItem = position.Подразделение.Название;
+            }
         }
 
         private readonly bool _isEditMode;
@@ -33,50 +34,56 @@ namespace Hured
 
         private void bOk_Click(object sender, RoutedEventArgs e)
         {
-
             Close();
         }
 
         private void Position_OnClosing(object sender, CancelEventArgs e)
         {
-            if (!Functions.ValidateAllTextboxes(this))
+            try
             {
-                return;
+                if (!Functions.ValidateAllTextboxes(this))
+                {
+                    return;
+                }
+
+
+                Controller.OpenConnection();
+
+                var tag = (CbUnit.SelectedItem as ComboBoxItem)?.Tag;
+                if (tag != null)
+                {
+                    var unitId = (int) tag;
+
+                    var unit = Controller.Select<Подразделение>(
+                        q => q.ПодразделениеId == unitId).FirstOrDefault();
+
+                    var position = new Должность
+                    {
+                        Название = TbName.Text,
+                        Расписание = TbРасписание.Text,
+                        Подразделение = unit
+                    };
+
+
+                    if (_isEditMode)
+                    {
+                        Controller.Edit(q => q.Название == _oldName, position);
+                    }
+                    else
+                    {
+                        Controller.Insert(position);
+
+                    }
+                }
+                Controller.CloseConnection();
+
+
+                DialogResult = true;
             }
-
-
-            Controller.OpenConnection();
-
-            var tag = (CbUnit.SelectedItem as ComboBoxItem)?.Tag;
-            if (tag != null)
+            finally
             {
-                var unitId = (int)tag;
-
-                var unit = Controller.Select<Подразделение>(
-                    q => q.ПодразделениеId == unitId).FirstOrDefault();
-
-                var position = new Должность
-                {
-                    Название = TbName.Text,
-                    Расписание = TbРасписание.Text,
-                    Подразделение = unit
-                };
-
-
-                if (_isEditMode)
-                {
-                    Controller.Edit(q => q.Название == _oldName, position);
-                }
-                else
-                {
-                    Controller.Insert(position);
-
-                }
+                Controller.CloseConnection(true);
             }
-            Controller.CloseConnection();
-
-
-            DialogResult = true;
         }
 
         private void bCancel_Click(object sender, RoutedEventArgs e)

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
-using Hured.DBModel;
+using Hured.DataBase;
 using Hured.Tables_templates;
 
 namespace Hured

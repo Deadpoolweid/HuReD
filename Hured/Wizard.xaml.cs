@@ -4,11 +4,11 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows;
 using System.Windows.Controls;
-using Hured.DBModel;
 using MahApps.Metro.Controls;
 using MySql.Data.MySqlClient;
 using Xceed.Wpf.Toolkit.Core;
 using System.Windows.Media;
+using Hured.DataBase;
 using Microsoft.Win32;
 using Xceed.Wpf.Toolkit;
 

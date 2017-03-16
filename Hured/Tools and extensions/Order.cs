@@ -7,7 +7,7 @@ using Hured.Tables_templates;
 
 namespace Hured
 {
-    public interface Приказ
+    public interface IДокумент
     {
         Сотрудник Сотрудник { get; set; }
 

@@ -9,7 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Threading;
-using Hured.DBModel;
+using Hured.DataBase;
 using Hured.Tables_templates;
 
 namespace Hured
@@ -36,7 +36,7 @@ namespace Hured
 
             (TvUnits.Items[0] as TreeViewItem).IsSelected = true;
 
-            SyncTimeSheet(firstDay:CurrentDate);
+            SyncTimeSheet(firstDay: CurrentDate);
         }
 
         readonly List<int> _employeesId = new List<int>();
@@ -61,131 +61,148 @@ namespace Hured
 
         void SyncTimeSheet(List<Сотрудник> сотрудники = null, DateTime firstDay = default(DateTime))
         {
-            if (firstDay == default(DateTime))
+            try
             {
-                firstDay = CurrentDate;
-            }
-
-            if (!_isGridCreated || CurrentDateChanged)
-            {
-                var name = new DataGridTextColumn { Header = "Сотрудник" };
-
-                DgTimeSheet.Columns.Clear();
-
-                DgTimeSheet.Columns.Add(name);
-
-                var now = firstDay;
-
-                for (var i = 0; i < DaysCount; i++)
+                if (firstDay == default(DateTime))
                 {
-                    var column = new DataGridTemplateColumn { Header = now.ToShortDateString() };
-
-                    DgTimeSheet.Columns.Add(column);
-
-                    now = now.AddDays(1);
+                    firstDay = CurrentDate;
                 }
-                _isGridCreated = true;
-                CurrentDateChanged = false;
-            }
 
-            DgTimeSheet.Items.Clear();
-
-            if (сотрудники == null)
-            {
-                сотрудники = FilterEmployees();
-            }
-
-            if (tbSearch.Text != String.Empty && !tbSearch.IsHavePlaceholder())
-            {
-                сотрудники = FilterEmployeesByTags(tbSearch.Text.Split(' '), сотрудники);
-            }
-
-            Controller.OpenConnection();
-            foreach (var employee in сотрудники)
-            {
-                var entries = Controller.Select<ТабельнаяЗапись>(
-                    q => q.Сотрудник.СотрудникId == employee.СотрудникId);
-                entries = entries.OrderBy(q => q.Дата).ToList();
-
-                var sEntries = new object[DgTimeSheet.Columns.Count];
-
-                sEntries[0] = employee.ОсновнаяИнформация.Фамилия + " " +
-                employee.ОсновнаяИнформация.Имя + " " +
-                employee.ОсновнаяИнформация.Отчество + " ";
-
-                for (var i = 1; i < sEntries.Length; i++)
+                if (!_isGridCreated || CurrentDateChanged)
                 {
-                    foreach (var entry in entries)
+                    var name = new DataGridTextColumn { Header = "Сотрудник" };
+
+                    DgTimeSheet.Columns.Clear();
+
+                    DgTimeSheet.Columns.Add(name);
+
+                    var now = firstDay;
+
+                    for (var i = 0; i < DaysCount; i++)
                     {
-                        if (DgTimeSheet.Columns[i].Header.ToString() == entry.Дата.ToShortDateString())
+                        var column = new DataGridTemplateColumn { Header = now.ToShortDateString() };
+
+                        DgTimeSheet.Columns.Add(column);
+
+                        now = now.AddDays(1);
+                    }
+                    _isGridCreated = true;
+                    CurrentDateChanged = false;
+                }
+
+                DgTimeSheet.Items.Clear();
+
+                if (сотрудники == null)
+                {
+                    сотрудники = FilterEmployees();
+                }
+
+                if (tbSearch.Text != String.Empty && !tbSearch.IsHavePlaceholder())
+                {
+                    сотрудники = FilterEmployeesByTags(tbSearch.Text.Split(' '), сотрудники);
+                }
+
+                foreach (var employee in сотрудники)
+                {
+                    Controller.OpenConnection();
+                    var entries = Controller.Select<ТабельнаяЗапись>(
+                        q => q.Сотрудник.СотрудникId == employee.СотрудникId);
+                    Controller.CloseConnection();
+                    entries = entries.OrderBy(q => q.Дата).ToList();
+
+                    var sEntries = new object[DgTimeSheet.Columns.Count];
+
+                    sEntries[0] = employee.ОсновнаяИнформация.Фамилия + " " +
+                                  employee.ОсновнаяИнформация.Имя + " " +
+                                  employee.ОсновнаяИнформация.Отчество + " ";
+
+                    for (var i = 1; i < sEntries.Length; i++)
+                    {
+                        foreach (var entry in entries)
                         {
-                            sEntries[i] = entry;
-                            break;
+                            if (DgTimeSheet.Columns[i].Header.ToString() == entry.Дата.ToShortDateString())
+                            {
+                                sEntries[i] = entry;
+                                break;
+                            }
                         }
                     }
+
+                    DgTimeSheet.Items.Add(sEntries);
+                    _employeesId.Add(employee.СотрудникId);
                 }
 
-                DgTimeSheet.Items.Add(sEntries);
-                _employeesId.Add(employee.СотрудникId);
+                DgTimeSheet.ItemContainerGenerator.StatusChanged += OnItemContainerGeneratorStautsChanged;
+
+                DgTimeSheet.UpdateLayout();
             }
-
-            Controller.CloseConnection();
-
-            
-
-
-            DgTimeSheet.ItemContainerGenerator.StatusChanged += OnItemContainerGeneratorStautsChanged;
-
-            DgTimeSheet.UpdateLayout();
+            catch (Exception ex)
+            {
+                Close();
+            }
+            finally
+            {
+                Controller.CloseConnection(true);
+            }
         }
 
         private List<Сотрудник> FilterEmployees()
         {
-            var tvUnits = TvUnits;
-
-            List<Сотрудник> списокСотрудников = null;
-
-            var item = tvUnits?.SelectedItem as TreeViewItem;
-
-            Controller.OpenConnection();
-
-            //Выбрано подразделение
-            if (tvUnits != null && tvUnits.Items.Contains(tvUnits.SelectedItem))
+            try
             {
-                if (item?.Header.ToString() != "Все подразделения")
+                var tvUnits = TvUnits;
+
+                List<Сотрудник> списокСотрудников = null;
+
+                var item = tvUnits?.SelectedItem as TreeViewItem;
+
+                //Выбрано подразделение
+                if (tvUnits != null && tvUnits.Items.Contains(tvUnits.SelectedItem))
                 {
-                    if (item?.Tag != null)
+                    if (item?.Header.ToString() != "Все подразделения")
                     {
-                        var unitId = (int)item.Tag;
-                        списокСотрудников = Controller.Select<Сотрудник>(
-                            q => q.ОсновнаяИнформация.Должность.Подразделение.ПодразделениеId == unitId);
+                        if (item?.Tag != null)
+                        {
+                            var unitId = (int) item.Tag;
+                            Controller.OpenConnection();
+                            списокСотрудников = Controller.Select<Сотрудник>(
+                                q => q.ОсновнаяИнформация.Должность.Подразделение.ПодразделениеId == unitId);
+                            Controller.CloseConnection();
+                        }
                     }
-                }
+                    else
+                    {
+                        Controller.OpenConnection();
+                        списокСотрудников = Controller.Select<Сотрудник>(q => q != null);
+                        Controller.CloseConnection();
+                    }
+                } // Выбрана должность
                 else
                 {
-                    списокСотрудников = Controller.Select<Сотрудник>(q => q != null);
+                    if (item != null)
+                    {
+                        var positionId = (int) item.Tag;
+                        Controller.OpenConnection();
+                        списокСотрудников = Controller.Select<Сотрудник>(
+                            q => q.ОсновнаяИнформация.Должность.ДолжностьId == positionId);
+                        Controller.CloseConnection();
+                    }
                 }
-            } // Выбрана должность
-            else
-            {
-                if (item != null)
+
+
+                if (!tbSearch.IsHavePlaceholder() && tbSearch.Text != String.Empty)
                 {
-                    var positionId = (int)item.Tag;
-                    списокСотрудников = Controller.Select<Сотрудник>(
-                        q => q.ОсновнаяИнформация.Должность.ДолжностьId == positionId);
+                    var tags = tbSearch.Text.Split(' ');
+
+                    списокСотрудников = FilterEmployeesByTags(tags, списокСотрудников);
                 }
+
+                return списокСотрудников;
             }
-
-            Controller.CloseConnection();
-
-            if (!tbSearch.IsHavePlaceholder() && tbSearch.Text != String.Empty)
+            finally
             {
-                var tags = tbSearch.Text.Split(' ');
-
-                списокСотрудников = FilterEmployeesByTags(tags, списокСотрудников);
+                Controller.CloseConnection(true);
             }
-
-            return списокСотрудников;
         }
 
 
@@ -221,8 +238,6 @@ namespace Hured
 
                 for (var column = 0; column < DgTimeSheet.Columns.Count; column++)
                 {
-                    //var cell = GetCell(row, column);
-
                     var cell = DgTimeSheet.GetCellOfColumn(row, column);
 
                     if (items != null && items[column] == null)
@@ -271,7 +286,7 @@ namespace Hured
 
 
                 DgTimeSheet.ScrollIntoView(rowContainer, DgTimeSheet.Columns[column]);
-                    var cell = (DataGridCell)presenter.ItemContainerGenerator.ContainerFromIndex(column);
+                var cell = (DataGridCell)presenter.ItemContainerGenerator.ContainerFromIndex(column);
 
                 return cell;
             }
@@ -378,19 +393,19 @@ namespace Hured
             }
             e.Cancel = true;
 
-            SyncTimeSheet(firstDay:CurrentDate);
+            SyncTimeSheet(firstDay: CurrentDate);
         }
 
         private void Back_OnClick(object sender, RoutedEventArgs e)
         {
             CurrentDate = CurrentDate.AddDays(-7);
-            SyncTimeSheet(firstDay:CurrentDate);
+            SyncTimeSheet(firstDay: CurrentDate);
         }
 
         private void Next_OnClick(object sender, RoutedEventArgs e)
         {
             CurrentDate = CurrentDate.AddDays(7);
-            SyncTimeSheet(firstDay:CurrentDate);
+            SyncTimeSheet(firstDay: CurrentDate);
         }
 
         private void TbSearch_OnTextChanged(object sender, TextChangedEventArgs e)
@@ -505,7 +520,7 @@ namespace Hured
             ValidateRowIndex(dataGrid, rowIndex);
 
             var container = dataGrid.ItemContainerGenerator.ContainerFromIndex(rowIndex);
-            var result = (DataGridRow) container;
+            var result = (DataGridRow)container;
 
             if (result == null)
             {

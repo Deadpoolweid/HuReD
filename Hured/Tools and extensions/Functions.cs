@@ -21,7 +21,7 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Catel.Windows.Data;
-using Hured.DBModel;
+using Hured.DataBase;
 using Hured.Tables_templates;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
@@ -41,14 +41,16 @@ namespace Hured
         public static void AddUnitsFromDB(ref ListView lvUnits)
         {
             Controller.OpenConnection();
-            var units = Controller.Select<Подразделение>(e => e != null);
+            var units = Controller.SelectAll<Подразделение>();
             Controller.CloseConnection();
 
             foreach (var unit in units)
             {
-                var newItem = new ListViewItem();
-                newItem.Content = unit;
-                newItem.Tag = unit.ПодразделениеId;
+                var newItem = new ListViewItem
+                {
+                    Content = unit,
+                    Tag = unit.ПодразделениеId
+                };
                 lvUnits.Items.Add(newItem);
             }
         }
@@ -56,14 +58,16 @@ namespace Hured
         public static void AddUnitsFromDB(ref ComboBox cbUnits)
         {
             Controller.OpenConnection();
-            var units = Controller.Select<Подразделение>(e => e != null);
+            var units = Controller.SelectAll<Подразделение>();
             Controller.CloseConnection();
 
             foreach (var unit in units)
             {
-                var newItem = new ComboBoxItem();
-                newItem.Content = unit;
-                newItem.Tag = unit.ПодразделениеId;
+                var newItem = new ComboBoxItem
+                {
+                    Content = unit,
+                    Tag = unit.ПодразделениеId
+                };
                 cbUnits.Items.Add(newItem);
             }
         }
@@ -73,7 +77,7 @@ namespace Hured
             lbUnits.Items.Clear();
 
             Controller.OpenConnection();
-            var units = Controller.Select<Подразделение>(e => e != null);
+            var units = Controller.SelectAll<Подразделение>();
             Controller.CloseConnection();
 
             foreach (var newItem in units.Select(unit => new ListBoxItem
@@ -102,9 +106,8 @@ namespace Hured
             if (unitId == -1)
             {
                 Controller.OpenConnection();
-                positions = Controller.Select<Должность>(e => e != null);
+                positions = Controller.SelectAll<Должность>();
                 Controller.CloseConnection();
-
             }
             else
             {
@@ -115,13 +118,10 @@ namespace Hured
             if (filter != null)
             {
                 var searchResult = positions.Where(
-q => new Regex(string.Join("|", filter.Select(Regex.Escape)), RegexOptions.IgnoreCase).IsMatch(
-    q.Название + q.Расписание)
-    );
-                if (searchResult != null)
-                {
-                    positions = searchResult.ToList();
-                } 
+                        q => new Regex(string.Join("|", filter.Select(Regex.Escape)), RegexOptions.IgnoreCase).IsMatch(
+                        q.Название + q.Расписание)
+                    );
+                positions = searchResult.ToList();
             }
 
             foreach (var item in positions.Select(
@@ -141,30 +141,34 @@ q => new Regex(string.Join("|", filter.Select(Regex.Escape)), RegexOptions.Ignor
             if (unitId == -1)
             {
                 Controller.OpenConnection();
-                positions = Controller.Select<Должность>(e => e != null);
+                positions = Controller.SelectAll<Должность>();
                 Controller.CloseConnection();
-
             }
             else
             {
                 positions = GetPositionsForUnit(unitId);
             }
+
             foreach (var должность in positions)
             {
-                var newItem = new ComboBoxItem();
-                newItem.Content = должность.Название;
-                newItem.Tag = должность.ДолжностьId;
+                var newItem = new ComboBoxItem
+                {
+                    Content = должность.Название,
+                    Tag = должность.ДолжностьId
+                };
                 cbPositions.Items.Add(newItem);
             }
         }
 
+
+        #region Sorting
         public static void AddSortingToListView(ListView lw)
         {
             lw.AddHandler(GridViewColumnHeader.ClickEvent, new RoutedEventHandler(ListViewHeader_OnClick));
         }
 
         // Global objects
-        static ICollectionView blcv;
+        static ICollectionView _collectionView;
         static GridViewColumnHeader _lastHeaderClicked = null;
         static ListSortDirection _lastDirection = ListSortDirection.Ascending;
 
@@ -195,7 +199,7 @@ q => new Regex(string.Join("|", filter.Select(Regex.Escape)), RegexOptions.Ignor
                         }
                     }
 
-                    blcv  = CollectionViewSource.GetDefaultView((sender as ListView).Items);
+                    _collectionView = CollectionViewSource.GetDefaultView((sender as ListView).Items);
 
                     string header = headerClicked.Column.Header as string;
                     Sort(header, direction);
@@ -223,15 +227,16 @@ q => new Regex(string.Join("|", filter.Select(Regex.Escape)), RegexOptions.Ignor
             }
         }
 
-// Sort code
+        // Sort code
         private static void Sort(string sortBy, ListSortDirection direction)
         {
 
-            blcv.SortDescriptions.Clear();
+            _collectionView.SortDescriptions.Clear();
             SortDescription sd = new SortDescription(sortBy, direction);
-            blcv.SortDescriptions.Add(sd);
-            blcv.Refresh();
-        }
+            _collectionView.SortDescriptions.Add(sd);
+            _collectionView.Refresh();
+        } 
+        #endregion
 
         /// <summary>
         /// Создаёт приказ с заданными параметрами
@@ -415,13 +420,12 @@ q => new Regex(string.Join("|", filter.Select(Regex.Escape)), RegexOptions.Ignor
         public static void FillTreeView(ref TreeView tv)
         {
 
+            var item = new TreeViewItem {Header = "Все подразделения"};
+
             Controller.OpenConnection();
-            var подразделения = Controller.Select<Подразделение>(e => e != null);
+            var подразделения = Controller.SelectAll<Подразделение>();
 
-            var item = new TreeViewItem();
-
-            item.Header = "Все подразделения";
-            foreach (var должность in Controller.Select<Должность>(e => e != null))
+            foreach (var должность in Controller.SelectAll<Должность>())
             {
                 item.Items.Add(new TreeViewItem
                 {
@@ -434,9 +438,11 @@ q => new Regex(string.Join("|", filter.Select(Regex.Escape)), RegexOptions.Ignor
 
             foreach (var подразделение in подразделения)
             {
-                item = new TreeViewItem();
-                item.Tag = подразделение.ПодразделениеId;
-                item.Header = подразделение.Название;
+                item = new TreeViewItem
+                {
+                    Tag = подразделение.ПодразделениеId,
+                    Header = подразделение.Название
+                };
                 var subItems = Controller.Select<Должность>(
                     e => e.Подразделение.ПодразделениеId == подразделение.ПодразделениеId).Select(должность => new TreeViewItem
                     {
@@ -593,7 +599,7 @@ q => new Regex(string.Join("|", filter.Select(Regex.Escape)), RegexOptions.Ignor
             };
             popup.Opened += (o, args) =>
             {
-                var timer = new Timer(2000);
+                var timer = new Timer(4000);
                 timer.Elapsed += (sender1, eventArgs) =>
                 {
                     popup.Dispatcher.Invoke(() =>

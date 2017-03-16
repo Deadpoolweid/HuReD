@@ -4,9 +4,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
-using Hured.DBModel;
+using Hured.DataBase;
 using Hured.Tables_templates;
-using Hured.Tools_and_extensions;
 
 namespace Hured
 {
@@ -21,8 +20,6 @@ namespace Hured
 
             InitializeComponent();
 
-
-
             Controller.OpenConnection();
             var сотрудники = Controller.Select<Сотрудник>(e => e != null);
             var имена = new List<string>();
@@ -35,7 +32,7 @@ namespace Hured
             }
             CbEmployee.ItemsSource = имена;
 
-            var allDocuments = DocumentsTypeComparer.GetAllDocuments().Select(q => q.Name.Substring(6));
+            var allDocuments = DocumentsTypeDictionary.GetTypesOfAllDocuments().Select(q => q.Name.Substring(6));
 
             foreach (var document in allDocuments)
             {
@@ -70,8 +67,8 @@ namespace Hured
         {
             Controller.OpenConnection();
 
-            var result = Controller.ExistsDocumentNotGenericByNumber(number,
-                DocumentsTypeComparer.GetDocumentType(ordertype));
+            var result = ControllerExtensions.ExistsDocumentNotGenericByNumber(number,
+                DocumentsTypeDictionary.GetDocumentTypeByEnum(ordertype));
 
             Controller.CloseConnection();
             return result;
@@ -99,7 +96,7 @@ namespace Hured
 
             var windowType = assembly.GetTypes().Where(t => String.Equals(t.Namespace, "Hured", StringComparison.Ordinal)).ToList()
                 .FirstOrDefault(q => q.Name == swindowType);
-            var type = DocumentsTypeComparer.GetDocumentType((OrderType)CbOrderType.SelectedIndex);
+            var type = DocumentsTypeDictionary.GetDocumentTypeByEnum((OrderType)CbOrderType.SelectedIndex);
 
 
             dynamic window;
@@ -124,7 +121,7 @@ namespace Hured
                 Controller.OpenConnection();
                 var number = TbНомерПриказа.Text;
 
-                var order = Controller.FindDocumentByNumberNotGeneric(int.Parse(number),
+                var order = ControllerExtensions.FindDocumentByNumberNotGeneric(int.Parse(number),
                     type);
                 
                 Controller.CloseConnection();
@@ -156,7 +153,7 @@ namespace Hured
 
                     if (_isEditMode)
                     {
-                        Controller.EditDocumentByNumberNotGeneric(order.Номер,order,type);
+                        ControllerExtensions.EditDocumentByNumberNotGeneric(order.Номер,order,type);
                     }
                     else
                     {

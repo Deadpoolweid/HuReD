@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using Hured.DBModel;
+using Hured.DataBase;
 using Hured.Tables_templates;
 using MahApps.Metro.Controls;
 

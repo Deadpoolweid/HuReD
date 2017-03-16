@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using Hured.DBModel;
 
 namespace Hured.Tables_templates
 {

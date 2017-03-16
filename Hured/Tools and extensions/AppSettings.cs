@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.Serialization;
-using MahApps.Metro;
 using MySql.Data.MySqlClient;
 
 namespace Hured
@@ -108,10 +107,12 @@ namespace Hured
         public string GetConnectionString()
         {
 
-            var result = new MySqlConnectionStringBuilder(_builder.GetConnectionString(true));
+            var result = new MySqlConnectionStringBuilder(_builder.GetConnectionString(true))
+            {
+                Password = Security.Decrypt(_builder.Password, _decryptKey)
+            };
 
 
-            result.Password = Security.Decrypt(_builder.Password, _decryptKey);
             return result.GetConnectionString(true);
         }
 
@@ -133,8 +134,6 @@ namespace Hured
                   {
                       return info.GetValue(a).Equals(info.GetValue(b));
                   }
-
-                  //return info.GetValue(a) == info.GetValue(b);
 
                   var valA = info.GetValue(a);
                   var valB = info.GetValue(b);

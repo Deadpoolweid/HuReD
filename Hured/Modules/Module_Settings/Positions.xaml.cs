@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using Hured.DBModel;
+using Hured.DataBase;
 using Hured.Tables_templates;
 
 namespace Hured
@@ -38,58 +38,89 @@ namespace Hured
 
         private void bAdd_Click(object sender, RoutedEventArgs e)
         {
-            IsHitTestVisible = false;
+            try
+            {
+                IsHitTestVisible = false;
 
-            var w = new Position();
-            w.ShowDialog();
+                var w = new Position();
+                w.ShowDialog();
 
-            IsHitTestVisible = true;
 
-            _tResult.RecordsAdded++;
+                _tResult.RecordsAdded++;
 
-            SyncPositions();
+                SyncPositions();
+            }
+            catch (Exception ex)
+            {
+                Functions.ShowPopup(sender as Button, "Не удалось добавить должность. Информация: " + ex);
+            }
+            finally
+            {
+                IsHitTestVisible = true;
+            }
+
         }
 
         private void bChange_Click(object sender, RoutedEventArgs e)
         {
-            IsHitTestVisible = false;
-
-
-            var listViewItem = LvPositions.SelectedItem as ListViewItem;
-            if (listViewItem != null)
+            try
             {
-                var position = listViewItem.Content as Должность;
+                IsHitTestVisible = false;
 
-                var w = new Position(position);
-                w.ShowDialog();
-                _tResult.RecordsChanged++;
+
+                var listViewItem = LvPositions.SelectedItem as ListViewItem;
+                if (listViewItem != null)
+                {
+                    var position = listViewItem.Content as Должность;
+
+                    var w = new Position(position);
+                    w.ShowDialog();
+                    _tResult.RecordsChanged++;
+                }
+
+                SyncPositions();
             }
-            IsHitTestVisible = true;
-
-
-            SyncPositions();
+            catch (Exception ex)
+            {
+                Functions.ShowPopup(sender as Button, "Не удалось изменить должность. Информация: " + ex);
+            }
+            finally
+            {
+                IsHitTestVisible = true;
+            }
         }
 
         private void bRemove_Click(object sender, RoutedEventArgs e)
         {
-            IsHitTestVisible = false;
-
-            Controller.OpenConnection();
-
-
-            var tag = (LvPositions.SelectedItem as ListViewItem)?.Tag;
-            if (tag != null)
+            try
             {
-                int positionId = (int) tag;
+                IsHitTestVisible = false;
 
-                Controller.Remove<Должность>(
-                    q => q.ДолжностьId == positionId);
-                Controller.CloseConnection();
+                Controller.OpenConnection();
+
+
+                var tag = (LvPositions.SelectedItem as ListViewItem)?.Tag;
+                if (tag != null)
+                {
+                    int positionId = (int)tag;
+
+                    Controller.Remove<Должность>(
+                        q => q.ДолжностьId == positionId);
+                    Controller.CloseConnection();
+                }
+                _tResult.RecordsDeleted++;
+
+                SyncPositions();
             }
-            _tResult.RecordsDeleted++;
-
-            IsHitTestVisible = true;
-            SyncPositions();
+            catch (Exception ex)
+            {
+                Functions.ShowPopup(sender as Button, "Не удалось удалить должность. Информация: " + ex);
+            }
+            finally
+            {
+                Controller.CloseConnection(true);
+                IsHitTestVisible = true;
+            }
         }
 
         private void bClose_Click(object sender, RoutedEventArgs e)
@@ -110,25 +141,37 @@ namespace Hured
 
         private void SyncPositions()
         {
-            LvPositions.Items.Clear();
-
-            string[] filter = null;
-
-            if (tbSearch.Text != String.Empty && !tbSearch.IsHavePlaceholder())
+            try
             {
-                filter = tbSearch.Text.Split(' ');
+                LvPositions.Items.Clear();
+
+                string[] filter = null;
+
+                if (tbSearch.Text != String.Empty && !tbSearch.IsHavePlaceholder())
+                {
+                    filter = tbSearch.Text.Split(' ');
+                }
+
+                if (LbUnits.SelectedIndex == 0)
+                {
+                    Functions.AddPositionsFromDB(ref LvPositions, filter: filter);
+                }
+                else
+                {
+                    var tag = (LbUnits.SelectedItem as ListBoxItem)?.Tag;
+                    if (tag != null)
+                        Functions.AddPositionsFromDB(ref LvPositions,
+                            (int) tag, filter);
+                }
             }
-
-            if (LbUnits.SelectedIndex == 0)
+            catch (Exception ex)
             {
-                Functions.AddPositionsFromDB(ref LvPositions, filter: filter);
+                Functions.ShowPopup(this, "Не удалось обновить список должностей. Окно будет закрыто. Информация: " + ex);
+                Close();
             }
-            else
+            finally
             {
-                var tag = (LbUnits.SelectedItem as ListBoxItem)?.Tag;
-                if (tag != null)
-                    Functions.AddPositionsFromDB(ref LvPositions,
-                        (int)tag, filter);
+                Controller.CloseConnection(true);
             }
         }
 

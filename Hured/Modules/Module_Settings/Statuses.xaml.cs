@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
-using Hured.DBModel;
+using Hured.DataBase;
 using Hured.Tables_templates;
 
 namespace Hured
@@ -69,71 +70,116 @@ namespace Hured
 
         void SyncStatuses()
         {
-            Items.Clear();
-            _statusesId.Clear();
-
-            Controller.OpenConnection();
-
-            var statuses = Controller.Select<Статус>( q => q != null);
-
-            foreach (var status in statuses)
+            try
             {
-                _statusesId.Add(status.СтатусId);
+                Items.Clear();
+                _statusesId.Clear();
+
+                Controller.OpenConnection();
+                var statuses = Controller.Select<Статус>(q => q != null);
+                Controller.CloseConnection();
+
+                foreach (var status in statuses)
+                {
+                    _statusesId.Add(status.СтатусId);
 
 
-                var r = Convert.ToByte(status.Цвет.Split(' ')[0]);
-                var g = Convert.ToByte(status.Цвет.Split(' ')[1]);
-                var b = Convert.ToByte(status.Цвет.Split(' ')[2]);
+                    var r = Convert.ToByte(status.Цвет.Split(' ')[0]);
+                    var g = Convert.ToByte(status.Цвет.Split(' ')[1]);
+                    var b = Convert.ToByte(status.Цвет.Split(' ')[2]);
 
 
-                Items.Add(new ItemVm(status.Название, Color.FromRgb(r, g, b)));
+                    Items.Add(new ItemVm(status.Название, Color.FromRgb(r, g, b)));
+
+                }
+
+
+                LvStatuses.Items.Refresh();
+            }
+            catch (Exception ex)
+            {
+                Functions.ShowPopup(this, "Не удалось обновить список статусов. Окно будет закрыто.");
+                Close();
+            }
+            finally
+            {
+                Controller.CloseConnection(true);
 
             }
-
-            Controller.CloseConnection();
-
-            LvStatuses.Items.Refresh();
         }
 
         private void bAdd_Click(object sender, RoutedEventArgs e)
         {
-            IsHitTestVisible = false;
+            try
+            {
+                IsHitTestVisible = false;
 
-            var w = new Status();
-            w.ShowDialog();
+                var w = new Status();
+                w.ShowDialog();
 
-            _tResult.RecordsAdded++;
+                _tResult.RecordsAdded++;
 
-            SyncStatuses();
-            IsHitTestVisible = true;
+                SyncStatuses();
+            }
+            catch (Exception ex)
+            {
+                Functions.ShowPopup(sender as Button, "Не удалось добавить статус. Информация: " + ex);
+            }
+            finally
+            {
+                IsHitTestVisible = true;
+            }
         }
 
         private void bChange_Click(object sender, RoutedEventArgs e)
         {
-            IsHitTestVisible = false;
+            try
+            {
+                IsHitTestVisible = false;
 
-            var id = _statusesId[LvStatuses.SelectedIndex];
-            Controller.OpenConnection();
-            var w = new Status(Controller.Find<Статус>(q => q.СтатусId == id));
-            Controller.CloseConnection();
-            w.ShowDialog();
+                var id = _statusesId[LvStatuses.SelectedIndex];
+                Controller.OpenConnection();
+                var w = new Status(Controller.Find<Статус>(q => q.СтатусId == id));
+                Controller.CloseConnection();
+                w.ShowDialog();
 
-            _tResult.RecordsChanged++;
+                _tResult.RecordsChanged++;
 
-            SyncStatuses();
-            IsHitTestVisible = true;
+                SyncStatuses();
+            }
+            catch (Exception ex)
+            {
+                Functions.ShowPopup(sender as Button, "Не удалось изменить статус. Информация: " + ex);
+            }
+            finally
+            {
+                IsHitTestVisible = true;
+            }
         }
 
         private void bRemove_Click(object sender, RoutedEventArgs e)
         {
-            Controller.OpenConnection();
-            var id = _statusesId[LvStatuses.SelectedIndex];
-            Controller.Remove<Статус>(q => q.СтатусId == id);
-            Controller.CloseConnection();
+            try
+            {
+                IsHitTestVisible = false;
+                Controller.OpenConnection();
+                var id = _statusesId[LvStatuses.SelectedIndex];
+                Controller.Remove<Статус>(q => q.СтатусId == id);
+                Controller.CloseConnection();
 
-            _tResult.RecordsDeleted++;
+                _tResult.RecordsDeleted++;
 
-            SyncStatuses();
+                SyncStatuses();
+            }
+            catch (Exception ex)
+            {
+                Functions.ShowPopup(sender as Button, "Не удалось удалить статус. Информация: " + ex);
+            }
+            finally
+            {
+                Controller.CloseConnection(true);
+                IsHitTestVisible = true;
+            }
         }
 
         private void bClose_Click(object sender, RoutedEventArgs e)

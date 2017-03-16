@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using Hured.DBModel;
+using Hured.DataBase;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
@@ -58,8 +58,6 @@ namespace Hured
 
         }
 
-
-
         private readonly AppSettings _loadedSettings;
 
         public void bUnits_Click(object sender, RoutedEventArgs e)
@@ -71,10 +69,21 @@ namespace Hured
                 return;
             }
 
-            IsHitTestVisible = false;
-            var w = new Units();
-            w.ShowDialog();
-            IsHitTestVisible = true;
+            try
+            {
+                IsHitTestVisible = false;
+                var w = new Units();
+                w.ShowDialog();
+                IsHitTestVisible = true;
+            }
+            catch (Exception ex)
+            {
+                Functions.ShowPopup(sender as Button, "Возникла ошибка при работе с подразделениями. Информация: " + ex);
+            }
+            finally
+            {
+                IsHitTestVisible = true;
+            }
         }
 
         public void bPositions_Click(object sender, RoutedEventArgs e)
@@ -87,10 +96,20 @@ namespace Hured
                 return;
             }
 
-            IsHitTestVisible = false;
-            var w = new Positions();
-            w.ShowDialog();
-            IsHitTestVisible = true;
+            try
+            {
+                IsHitTestVisible = false;
+                var w = new Positions();
+                w.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                Functions.ShowPopup(sender as Button, "Возникла ошибка при работе с должностями. Информация: " + ex);
+            }
+            finally
+            {
+                IsHitTestVisible = true;
+            }
         }
 
         public void bStatuses_Click(object sender, RoutedEventArgs e)
@@ -103,76 +122,132 @@ namespace Hured
                 return;
             }
 
-            IsHitTestVisible = false;
-            var w = new Statuses();
-            w.ShowDialog();
-            IsHitTestVisible = true;
+            try
+            {
+                IsHitTestVisible = false;
+                var w = new Statuses();
+                w.ShowDialog();
+            }
+            //catch (Exception ex)
+            //{
+            //    Functions.ShowPopup(sender as Button, "Возникла ошибка при работе со статусами. Информация: " + ex);
+            //    throw;
+            //}
+            finally
+            {
+                IsHitTestVisible = true;
+            }
         }
 
         private void bClose_Click(object sender, RoutedEventArgs e)
         {
-           
-
             Close();
         }
 
 
         private void BCheckDbConnection_OnClick(object sender, RoutedEventArgs e)
         {
-            var connectionStringBuilder = new MySqlConnectionStringBuilder()
-            {
-                Server = TbServer.Text,
-                Port = (uint) NtbPort.Value,
-                UserID = tbUid.Text,
-                Password = PbPassword.Password,
-                PersistSecurityInfo = ChbPersistSecurityInfo.IsChecked.Value
-            };
-            if (Controller.IsConnectionSucceded(connectionStringBuilder.ConnectionString))
+            if (IsDBConnectionSucceded())
             {
                 BCheckDbConnection.Background = Brushes.ForestGreen;
-                Functions.ShowPopup(BCheckDbConnection,"Соединение установлено.");
+                Functions.ShowPopup(BCheckDbConnection, "Соединение установлено.");
             }
             else
             {
                 BCheckDbConnection.Background = Brushes.Red;
-                Functions.ShowPopup(BCheckDbConnection,"Соединение не установлено.");
+                Functions.ShowPopup(BCheckDbConnection, "Соединение не установлено.");
             }
+        }
+
+        private bool IsDBConnectionSucceded()
+        {
+            var connectionStringBuilder = new MySqlConnectionStringBuilder()
+            {
+                Server = TbServer.Text,
+                Port = (uint)NtbPort.Value,
+                UserID = tbUid.Text,
+                Password = PbPassword.Password,
+                PersistSecurityInfo = ChbPersistSecurityInfo.IsChecked.Value
+            };
+
+            return Controller.IsConnectionSucceded(connectionStringBuilder.ConnectionString);
         }
 
         private void BExportDb_OnClick(object sender, RoutedEventArgs e)
         {
-            string backUpDirectory = Directory.GetCurrentDirectory() + @"\Backup";
-            Directory.CreateDirectory(backUpDirectory);
-
-            var sfd = new SaveFileDialog
+            try
             {
-                InitialDirectory = backUpDirectory,
-                Filter = "SQL Query | *.sql | Все файлы (*.*)|*.*",
-                FileName = "Backup"
-            };
+                IsHitTestVisible = false;
 
-            if (sfd.ShowDialog() == false) return;
+                if (!IsDBConnectionSucceded())
+                {
+                    throw new Exception("Соединение с базой данных не установлено.");
+                }
 
-            Controller.ExportDataBase(sfd.FileName);
+                string backUpDirectory = Directory.GetCurrentDirectory() + @"\Backup";
+                Directory.CreateDirectory(backUpDirectory);
+
+                var sfd = new SaveFileDialog
+                {
+                    InitialDirectory = backUpDirectory,
+                    Filter = "SQL Query | *.sql | Все файлы (*.*)|*.*",
+                    FileName = "Backup"
+                };
+
+                if (sfd.ShowDialog() == false) return;
+
+                Functions.AddProgressRing(this);
+
+                Controller.ExportDataBase(sfd.FileName);
+
+                Functions.RemoveProgressRing();
+            }
+            catch (Exception ex)
+            {
+                Functions.ShowPopup(sender as Button, "Не удалось экспортировать базу данных. Информация: " + ex);
+            }
+            finally
+            {
+                IsHitTestVisible = true;
+            }
         }
 
         private void BImportDb_OnClick(object sender, RoutedEventArgs e)
         {
-            string backUpDirectory = Directory.GetCurrentDirectory() + @"\Backup";
-            
-            var ofd = new OpenFileDialog()
+            try
             {
-                InitialDirectory = backUpDirectory,
-                Filter = "SQL |*.sql|Все файлы (*.*)|*.*"
-            };
+                IsHitTestVisible = false;
 
-            if (ofd.ShowDialog() == false) return;
 
-            Functions.AddProgressRing(this);
+                if (!IsDBConnectionSucceded())
+                {
+                    throw new Exception("Соединение с базой данных не установлено.");
+                }
 
-            Controller.ImportDataBase(ofd.FileName);
+                string backUpDirectory = Directory.GetCurrentDirectory() + @"\Backup";
 
-            Functions.RemoveProgressRing();
+                var ofd = new OpenFileDialog()
+                {
+                    InitialDirectory = backUpDirectory,
+                    Filter = "SQL |*.sql|Все файлы (*.*)|*.*"
+                };
+
+                if (ofd.ShowDialog() == false) return;
+
+                Functions.AddProgressRing(this);
+
+                Controller.ImportDataBase(ofd.FileName);
+
+                Functions.RemoveProgressRing();
+            }
+            catch (Exception ex)
+            {
+                Functions.ShowPopup(sender as Button, "Не удалось экспортировать базу данных. Информация: " + ex);
+            }
+            finally
+            {
+                IsHitTestVisible = true;
+            }
         }
 
         private async void Settings_OnClosing(object sender, CancelEventArgs e)
@@ -189,8 +264,6 @@ namespace Hured
                 e.Cancel = true;
                 return;
             }
-
-
 
             var s = new AppSettings
             {
@@ -240,34 +313,41 @@ namespace Hured
 
         private async void SaveCurrentSettings(AppSettings s)
         {
-            var mySettings = new MetroDialogSettings
+            try
             {
-                AffirmativeButtonText = "Да",
-                NegativeButtonText = "Нет",
-                AnimateShow = true,
-                AnimateHide = false
-            };
-
-            var result = await this.ShowMessageAsync("Предупреждение", "Сохранить настройки?",
-    MessageDialogStyle.AffirmativeAndNegative, mySettings);
-
-            if (result == MessageDialogResult.Affirmative)
-            {
-                var formatter = new BinaryFormatter();
-                // Сохранить объект в локальном файле.
-                using (Stream fStream = new FileStream("settings.dat",
-                   FileMode.Create, FileAccess.Write, FileShare.None))
+                var mySettings = new MetroDialogSettings
                 {
-                    formatter.Serialize(fStream, s);
+                    AffirmativeButtonText = "Да",
+                    NegativeButtonText = "Нет",
+                    AnimateShow = true,
+                    AnimateHide = false
+                };
+
+                var result = await this.ShowMessageAsync("Предупреждение", "Сохранить настройки?",
+        MessageDialogStyle.AffirmativeAndNegative, mySettings);
+
+                if (result == MessageDialogResult.Affirmative)
+                {
+                    var formatter = new BinaryFormatter();
+                    // Сохранить объект в локальном файле.
+                    using (Stream fStream = new FileStream("settings.dat",
+                       FileMode.Create, FileAccess.Write, FileShare.None))
+                    {
+                        formatter.Serialize(fStream, s);
+                    }
+
+                    Functions.ChangeTheme((cbTheme.SelectedItem as AppTheme).Name);
+                    Functions.ChangeAccent((cbAccent.SelectedItem as Accent).Name);
                 }
 
-                Functions.ChangeTheme((cbTheme.SelectedItem as AppTheme).Name);
-                Functions.ChangeAccent((cbAccent.SelectedItem as Accent).Name);
+                Controller.SetConnectionString(s.GetConnectionString());
+
+                CanExit = true;
             }
-
-            Controller.SetConnectionString(s.GetConnectionString());
-
-            CanExit = true;
+            catch (Exception ex)
+            {
+                Functions.ShowPopup(this,"Не удалось сохранить настройки. Информация: " + ex);
+            }
             Close();
         }
     }
