@@ -49,6 +49,8 @@ namespace Hured
 
         public static Type GetDocumentTypeByName(string name)
         {
+            //return Assembly.GetExecutingAssembly().GetTypes().FirstOrDefault(q => q.Name.Contains(name));
+
             return Documents.Keys.FirstOrDefault(q => q.Name.Contains(name));
         }
     }

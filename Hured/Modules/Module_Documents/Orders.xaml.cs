@@ -122,10 +122,10 @@ namespace Hured
                 {
                     var rb = child as RadioButton;
 
-                    var type = DocumentsTypeDictionary.GetDocumentTypeByName(rb.Name.Substring(2, rb.Name.Length - 2));
+                    var type = DocumentsTypeDictionary.GetDocumentTypeByEnumName(rb.Name.Substring(2));
                     if (rb.IsChecked == true)
                     {
-                        var selectMethod = typeof(Controller).GetMethod("SelectAll");
+                        var selectMethod = typeof(ControllerExtensions).GetMethod("SelectAll");
 
                         var listoftype = typeof(ArrayList);
 
@@ -155,7 +155,7 @@ namespace Hured
                             LvOrders.Items.Add(new OrderInfo(e.Номер,
                                 e.Сотрудник.ОсновнаяИнформация.Фамилия + " " +
                                 e.Сотрудник.ОсновнаяИнформация.Имя + " " +
-                                e.Сотрудник.ОсновнаяИнформация.Отчество, type.Name.Substring(6, type.Name.Length - 6),
+                                e.Сотрудник.ОсновнаяИнформация.Отчество, type.Name.Substring(6),
                                 e.Дата.ToShortDateString())
                             {
                                 Id = id,
@@ -170,7 +170,7 @@ namespace Hured
             catch (Exception ex)
             {
                 Close();
-                //throw;
+                throw;
             }
             finally
             {
