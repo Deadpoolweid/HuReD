@@ -166,6 +166,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DataBase\ControllerExtensions.cs" />
+    <Compile Include="Modules\Module_Auth\Auth.xaml.cs">
+      <DependentUpon>Auth.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Modules\Module_Documents\BusinessTrip.xaml.cs">
       <DependentUpon>BusinessTrip.xaml</DependentUpon>
     </Compile>
@@ -229,6 +232,10 @@
     <Compile Include="Wizard.xaml.cs">
       <DependentUpon>Wizard.xaml</DependentUpon>
     </Compile>
+    <Page Include="Modules\Module_Auth\Auth.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Modules\Module_Documents\BusinessTrip.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -9,6 +9,7 @@ using Catel.IoC;
 using Catel.MVVM;
 using Catel.Services;
 using Hured.DataBase;
+using Hured.Modules;
 using Hured.Tables_templates;
 using MahApps.Metro.Controls;
 
@@ -126,6 +127,13 @@ namespace Hured
             var w = new Settings();
             w.ShowDialog();
             IsHitTestVisible = true;
+        }
+
+        private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            var w = new Auth();
+            w.ShowDialog();
+            Environment.Exit(0);
         }
     }
 }

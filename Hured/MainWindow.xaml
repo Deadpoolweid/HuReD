@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="Отдел кадров - Главное меню" 
                       WindowStartupLocation="CenterScreen"
+                      Loaded="MainWindow_OnLoaded"
                       >
 
     <Grid Name="mainGrid">
