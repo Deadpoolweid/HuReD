@@ -4,8 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:controls1="http://catel.codeplex.com"
 
-                      mc:Ignorable="d"
+        mc:Ignorable="d"
         Title="Настройки" Height="490" Width="450" ResizeMode="CanMinimize">
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl>
@@ -59,12 +60,11 @@
                     </Grid>
                 </Border>
             </controls:Flyout>
-
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>
     
     <Border>
-        <Grid>
+        <controls1:StackGrid>
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition />
@@ -82,25 +82,23 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <Label Grid.Row="0" Grid.Column="0">Норма рабочего дня</Label>
-            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+            <Label>Норма рабочего дня</Label>
+            <StackPanel Orientation="Horizontal">
                 <TextBox x:Name="TbНормаРабочегоДня" />
                 <Label>часов</Label>
             </StackPanel>
 
-            <Label Grid.Row="1" Grid.Column="0">Название организации</Label>
-            <TextBox x:Name="TbНазваниеОрганизации" Grid.Row="1" Grid.Column="1" />
+            <Label>Название организации</Label>
+            <TextBox x:Name="TbНазваниеОрганизации"/>
 
-            <Label Grid.Row="2" Grid.Column="0">Руководитель</Label>
-            <TextBox x:Name="TbРуководитель" Grid.Row="2" Grid.Column="1" />
+            <Label >Руководитель</Label>
+            <TextBox x:Name="TbРуководитель" />
 
-            <Label Grid.Row="3" Grid.Column="0">Должность руководителя</Label>
-            <TextBox x:Name="TbДолжностьРуководителя" Grid.Row="3" Grid.Column="1" />
+            <Label >Должность руководителя</Label>
+            <TextBox x:Name="TbДолжностьРуководителя"/>
 
-            <CheckBox Grid.Row="4" Grid.Column="0" Name="ChbСтрогаяПроеркаПолей" IsChecked="True">Строгая проверка полей</CheckBox>
-
-            <Label Grid.Row="5" Grid.Column="0">Тема</Label>
-            <ComboBox x:Name="cbTheme" Grid.Row="5" Grid.Column="1">
+            <Label >Тема</Label>
+            <ComboBox x:Name="cbTheme" >
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Name}" />
@@ -108,8 +106,8 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
 
-            <Label Grid.Row="6" Grid.Column="0">Оттенок</Label>
-            <ComboBox x:Name="cbAccent" Grid.Row="6" Grid.Column="1" >
+            <Label >Оттенок</Label>
+            <ComboBox x:Name="cbAccent">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Name}" />
@@ -117,17 +115,19 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
 
-            <Button x:Name="BUnits" Grid.Row="7" Grid.Column="0" Click="bUnits_Click" Content="Подразделения"/>
-            <Button x:Name="BPositions" Grid.Row="7" Grid.Column="1" Click="bPositions_Click">Должности</Button>
+            <CheckBox  Name="ChbСтрогаяПроеркаПолей" IsChecked="True">Строгая проверка полей</CheckBox>
+            <Button x:Name="BAccountSettings" Click="BAccountSettings_OnClick" Content="Управление аккаунтами"/>
 
-            <Button x:Name="BStatuses" Grid.Row="8" Grid.Column="0" Click="bStatuses_Click">Статусы</Button>
-            <ToggleButton x:Name="BdbSettings" Grid.Row="8" Grid.Column="1" 
-                          IsChecked="{Binding ElementName=FDbSettings, Path=IsOpen}" Cursor="Hand" Content="Настройки базы данных"/>
+            <Button x:Name="BUnits" Click="bUnits_Click" Content="Подразделения"/>
+            <Button x:Name="BPositions" Click="bPositions_Click">Должности</Button>
+
+            <Button x:Name="BStatuses" Click="bStatuses_Click">Статусы</Button>
+            <Button x:Name="BdbSettings" Click="BdbSettings_OnClick" Content="Настройки базы данных"/>
 
             
 
-
-            <Button x:Name="BClose" Grid.Row="9" Grid.Column="1" Click="bClose_Click">Закрыть</Button>
-        </Grid>
+            <controls1:EmptyCell></controls1:EmptyCell>
+            <Button x:Name="BClose" Click="bClose_Click">Закрыть</Button>
+        </controls1:StackGrid>
     </Border>
 </controls:MetroWindow>

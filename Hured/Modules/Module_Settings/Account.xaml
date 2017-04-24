@@ -1,0 +1,46 @@
+﻿<controls:MetroWindow x:Class="Hured.Modules.Module_Settings.Account"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Hured.Modules.Module_Settings"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:controls1="http://catel.codeplex.com"
+        mc:Ignorable="d"
+        Title="Управление аккаунтом" Height="330"  Width="300" ResizeMode="CanMinimize">
+    <Border>
+        <controls1:StackGrid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            
+            <Label >Имя пользователя</Label>
+            <TextBox  Name="tbLogin"></TextBox>
+
+            <Label Name="lOldPassword" Visibility="Collapsed">Старый пароль</Label>
+            <PasswordBox Name="pboldPassword" Visibility="Collapsed"></PasswordBox>
+            
+            <Label Name="lPassword">Пароль</Label>
+            <PasswordBox Name="pbPassword"></PasswordBox>
+
+            <Label>Подтверждение пароля</Label>
+            <PasswordBox Name="pbPasswordConfirmation"></PasswordBox>
+
+            <RadioButton Name="rbIsNotAdmin" GroupName="AdminStatus" IsChecked="True" HorizontalAlignment="Center">Обычный пользователь</RadioButton>
+            <RadioButton Name="rbIsAdmin" GroupName="AdminStatus" HorizontalAlignment="Center">Администратор</RadioButton>
+
+            <Button Name="bOK" Click="BOK_OnClick">OK</Button>
+            <Button Name="bCancel" Click="BCancel_OnClick">Отмена</Button>
+        </controls1:StackGrid>
+    </Border>
+</controls:MetroWindow>
+

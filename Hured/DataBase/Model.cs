@@ -41,6 +41,8 @@ namespace Hured.DataBase
 
         public DbSet<ДополнительнаяИнформация> СписокДополнительнойИнформации { get; set; }
 
+        public DbSet<УчётнаяЗапись> УчётныеЗаписи { get; set; }
+
         public Hured()
         {
             Database.SetInitializer(new MySqlInitializer());

@@ -10,6 +10,7 @@ using Catel.MVVM;
 using Catel.Services;
 using Hured.DataBase;
 using Hured.Modules;
+using Hured.Modules.Module_Auth;
 using Hured.Tables_templates;
 using MahApps.Metro.Controls;
 
@@ -37,6 +38,13 @@ namespace Hured
 
                 Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\Documents");
 
+                AuthController.AddUser(new УчётнаяЗапись()
+                {
+                    Login = "admin",
+                    Password = "",
+                    IsAdmin = true
+                });
+
                 appSettings["IsFirstLaunch"] = false.ToString();
             }
 
@@ -46,6 +54,16 @@ namespace Hured
 
             Functions.ChangeTheme(settings?.Theme);
             Functions.ChangeAccent(settings?.Accent);
+
+            var w = new Auth();
+            w.ShowDialog();
+
+            if (w.DialogResult != true)
+            {
+                Environment.Exit(0);
+            }
+
+            
 
             this.Unloaded += (sender, args) => Environment.Exit(0);
 
@@ -131,9 +149,7 @@ namespace Hured
 
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            var w = new Auth();
-            w.ShowDialog();
-            Environment.Exit(0);
+
         }
     }
 }

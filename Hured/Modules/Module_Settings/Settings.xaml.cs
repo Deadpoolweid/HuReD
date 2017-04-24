@@ -10,6 +10,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Hured.DataBase;
+using Hured.Modules.Module_Auth;
+using Hured.Modules.Module_Settings;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
@@ -349,6 +351,31 @@ namespace Hured
                 Functions.ShowPopup(this,"Не удалось сохранить настройки. Информация: " + ex);
             }
             Close();
+        }
+
+        private void BAccountSettings_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (!AuthController.IsAdmin(AuthController.CurrentUser))
+            {
+                Functions.ShowPopup(BAccountSettings,"Для работы с аккаунтами нужно обладать правами администратора.");
+                return;
+            }
+
+            IsHitTestVisible = false;
+            var w = new AccountSettings();
+            w.ShowDialog();
+            IsHitTestVisible = true;
+        }
+
+        private void BdbSettings_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (!AuthController.IsAdmin(AuthController.CurrentUser))
+            {
+                Functions.ShowPopup(BAccountSettings, "Для работы с настройками базы данных нужно обладать правами администратора.");
+                return;
+            }
+
+            FDbSettings.IsOpen = true;
         }
     }
 }

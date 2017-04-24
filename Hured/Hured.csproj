@@ -169,6 +169,7 @@
     <Compile Include="Modules\Module_Auth\Auth.xaml.cs">
       <DependentUpon>Auth.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Modules\Module_Auth\AuthController.cs" />
     <Compile Include="Modules\Module_Documents\BusinessTrip.xaml.cs">
       <DependentUpon>BusinessTrip.xaml</DependentUpon>
     </Compile>
@@ -177,6 +178,13 @@
     <Compile Include="Modules\Module_Documents\Dismissal.xaml.cs">
       <DependentUpon>Dismissal.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Modules\Module_Settings\Account.xaml.cs">
+      <DependentUpon>Account.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Module_Settings\AccountSettings.xaml.cs">
+      <DependentUpon>AccountSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Tables templates\УчётнаяЗапись.cs" />
     <Compile Include="Tools and extensions\DocumentsTypeComparer.cs" />
     <Compile Include="Tools and extensions\Functions.cs" />
     <Compile Include="Tools and extensions\Order.cs" />
@@ -282,6 +290,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Modules\Module_Documents\Orders.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Module_Settings\Account.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Module_Settings\AccountSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -7,36 +7,25 @@
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:controls1="http://catel.codeplex.com"
         mc:Ignorable="d"
-        Title="Auth" Height="150" Width="150">
+        Title="Вход в систему" MinHeight="150" MinWidth="150" Height="200" Width="400" ResizeMode="CanMinimize"> 
     <Border>
         <controls1:StackGrid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition ></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            
-
-            <controls1:EmptyCell/>
             <Label>Логин</Label>
-            <TextBox></TextBox>
-            <controls1:EmptyCell/>
+            <TextBox Name="tbLogin"></TextBox>
 
-
-            <controls1:EmptyCell/>
             <Label>Пароль</Label>
-            <PasswordBox></PasswordBox>
-            <controls1:EmptyCell/>
-
-            <controls1:EmptyCell/>
-            <Button Grid.ColumnSpan="2">Войти</Button>
-            <controls1:EmptyCell></controls1:EmptyCell>
+            <PasswordBox Name="pbPassword"></PasswordBox>
+            
+            <Button Grid.ColumnSpan="2" Name="bSignin" Click="BSignin_OnClick">Войти</Button>
         </controls1:StackGrid>
     </Border>
 </controls:MetroWindow>
