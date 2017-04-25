@@ -43,6 +43,8 @@ namespace Hured.DataBase
 
         public DbSet<УчётнаяЗапись> УчётныеЗаписи { get; set; }
 
+        public DbSet<Session> Sessions { get; set; }
+
         public Hured()
         {
             Database.SetInitializer(new MySqlInitializer());

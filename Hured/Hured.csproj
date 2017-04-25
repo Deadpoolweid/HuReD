@@ -63,6 +63,9 @@
   <PropertyGroup>
     <SignManifests>false</SignManifests>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Catel.Core, Version=4.5.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\Catel.Core.4.5.4\lib\net45\Catel.Core.dll</HintPath>
@@ -184,6 +187,7 @@
     <Compile Include="Modules\Module_Settings\AccountSettings.xaml.cs">
       <DependentUpon>AccountSettings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Tables templates\Session.cs" />
     <Compile Include="Tables templates\УчётнаяЗапись.cs" />
     <Compile Include="Tools and extensions\DocumentsTypeComparer.cs" />
     <Compile Include="Tools and extensions\Functions.cs" />
@@ -472,7 +476,9 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="icon.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -667,6 +667,12 @@ namespace Hured
         BusinessTrip
     }
 
+    public enum UserStatus
+    {
+        Working,
+        Free
+    }
+
     /// <summary>
     /// Класс для управления файлом Word
     /// </summary>

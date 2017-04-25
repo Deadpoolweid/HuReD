@@ -63,7 +63,15 @@ namespace Hured
                 Environment.Exit(0);
             }
 
-            
+            Controller.ConnectionOpened += () =>
+            {
+                Controller.Insert(new Session(AuthController.CurrentUser, DateTime.Now, UserStatus.Working));
+            };
+
+            Controller.ConnectionClosing += () =>
+            {
+                Controller.Insert(new Session(AuthController.CurrentUser, DateTime.Now, UserStatus.Free));
+            };
 
             this.Unloaded += (sender, args) => Environment.Exit(0);
 

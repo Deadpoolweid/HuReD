@@ -2,10 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using Hured.Tables_templates;
 using MySql.Data.MySqlClient;
 
 namespace Hured.DataBase
@@ -28,6 +30,8 @@ namespace Hured.DataBase
                 throw new Exception("Соединение уже открыто. Вы не можете открыть больше одного соединения за раз.");
             }
 
+
+
             _connection = new MySqlConnection(_connectionString);
             Context = new Hured(_connection, false);
             _connection.Open();
@@ -49,9 +53,25 @@ namespace Hured.DataBase
 
             Context.Configuration.LazyLoadingEnabled = true;
 
-            
+
+            var countOfRows = Context.Sessions.Count();
+            if (countOfRows != 0)
+            {
+                var lastSession = Context.Sessions.OrderBy(c => 1 == 1).Skip(countOfRows - 1).FirstOrDefault();
+                if (lastSession.Status == UserStatus.Working)
+                {
+                    _connection.Close();
+                    Context = null;
+
+                    IsConnectionOpened = false;
+                    return;
+                }
+            }
+
 
             IsConnectionOpened = true;
+
+            ConnectionOpened?.Invoke();
         }
 
         private static MySqlTransaction _transaction;
@@ -59,6 +79,8 @@ namespace Hured.DataBase
         public static void CloseConnection(bool force = false)
         {
             if (!IsConnectionOpened) return;
+
+            ConnectionClosing?.Invoke();
 
             if (!force)
             {
@@ -250,5 +272,11 @@ namespace Hured.DataBase
                 }
             }
         }
+
+        public delegate void DataAccessed();
+
+        public static event DataAccessed ConnectionOpened;
+
+        public static event DataAccessed ConnectionClosing;
     }
 }
