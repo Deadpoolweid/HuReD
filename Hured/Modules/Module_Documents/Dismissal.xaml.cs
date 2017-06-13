@@ -64,6 +64,7 @@ namespace Hured
             Tag = order;
 
             DialogResult = true;
+
             Close();
         }
 

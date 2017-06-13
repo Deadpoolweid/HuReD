@@ -72,6 +72,8 @@ namespace Hured
                 if (listViewItem != null)
                 {
                     var position = listViewItem.Content as Должность;
+                    position.Подразделение = (LbUnits.SelectedItem as ListBoxItem).Content as Подразделение;
+
 
                     var w = new Position(position);
                     w.ShowDialog();
@@ -125,7 +127,7 @@ namespace Hured
 
         private void bClose_Click(object sender, RoutedEventArgs e)
         {
-
+            DialogResult = false;
             Close();
         }
 

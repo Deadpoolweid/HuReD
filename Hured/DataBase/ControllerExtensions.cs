@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Catel.Collections;
 
 namespace Hured.DataBase
 {
@@ -34,6 +35,8 @@ namespace Hured.DataBase
 
             dynamic result = Activator.CreateInstance(type);
 
+            if (table.Local.Count < 1) return null;
+
             foreach (var _element in table)
             {
                 var element = _element as IДокумент;
@@ -41,6 +44,11 @@ namespace Hured.DataBase
                 if (int.Parse(element.Номер) == number)
                 {
                     result = _element;
+                    break;
+                }
+                else
+                {
+                    result = null;
                 }
             }
 

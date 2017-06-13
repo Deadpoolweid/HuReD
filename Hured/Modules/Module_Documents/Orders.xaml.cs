@@ -234,10 +234,10 @@ namespace Hured
                 {
                     WordDocument wordDocument;
 
+                    Controller.OpenConnection();
                     dynamic document = ControllerExtensions.FindDocumentNotGeneric(item.Id,
                         DocumentsTypeDictionary.GetDocumentTypeByEnum(item.OrderType));
 
-                    Controller.OpenConnection();
                     wordDocument = Functions.CreateOrder(item.OrderType, document);
                     Controller.CloseConnection();
 

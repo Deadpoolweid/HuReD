@@ -55,6 +55,25 @@ namespace Hured
             Functions.ChangeTheme(settings?.Theme);
             Functions.ChangeAccent(settings?.Accent);
 
+
+            try
+            {
+                AuthController.AddUser(new УчётнаяЗапись()
+                {
+                    Login = "admin",
+                    Password = "",
+                    IsAdmin = true
+                });
+            }
+            catch (Exception ex)
+            {
+                // Пользователь уже существует
+            }
+            finally
+            {
+                Controller.CloseConnection(true);
+            }
+
             var w = new Auth();
             w.ShowDialog();
 

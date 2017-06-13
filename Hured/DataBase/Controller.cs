@@ -9,6 +9,11 @@ using System.Linq;
 using System.Linq.Expressions;
 using Hured.Tables_templates;
 using MySql.Data.MySqlClient;
+using System.Data.Entity.Infrastructure;
+using System.Text;
+using System.Xml;
+
+// namespace for the EdmxWriter class
 
 namespace Hured.DataBase
 {
@@ -72,6 +77,7 @@ namespace Hured.DataBase
             IsConnectionOpened = true;
 
             ConnectionOpened?.Invoke();
+
         }
 
         private static MySqlTransaction _transaction;
@@ -256,7 +262,7 @@ namespace Hured.DataBase
             }
 
             InitDb();
-            
+
 
             using (MySqlConnection conn = new MySqlConnection(_connectionString))
             {

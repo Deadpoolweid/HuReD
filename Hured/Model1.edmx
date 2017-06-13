@@ -1,0 +1,1292 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище HuredModel" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.7" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="__MigrationHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+          </Key>
+          <Property Name="MigrationId" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="ContextKey" Type="varchar" MaxLength="300" Nullable="false" />
+          <Property Name="Model" Type="longblob" Nullable="false" />
+          <Property Name="ProductVersion" Type="varchar" MaxLength="32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Sessions">
+          <Key>
+            <PropertyRef Name="SessionId" />
+          </Key>
+          <Property Name="SessionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="longtext" />
+          <Property Name="DateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Адреса">
+          <Key>
+            <PropertyRef Name="АдресId" />
+          </Key>
+          <Property Name="АдресId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Индекс" Type="longtext" />
+          <Property Name="НаселённыйПункт" Type="longtext" />
+          <Property Name="Улица" Type="longtext" />
+          <Property Name="Дом" Type="longtext" />
+          <Property Name="Корпус" Type="longtext" />
+          <Property Name="Квартира" Type="longtext" />
+        </EntityType>
+        <EntityType Name="Должности">
+          <Key>
+            <PropertyRef Name="ДолжностьId" />
+          </Key>
+          <Property Name="ДолжностьId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Название" Type="longtext" />
+          <Property Name="Расписание" Type="longtext" />
+          <Property Name="Подразделение_ПодразделениеId" Type="int" />
+        </EntityType>
+        <EntityType Name="Подразделения">
+          <Key>
+            <PropertyRef Name="ПодразделениеId" />
+          </Key>
+          <Property Name="ПодразделениеId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Название" Type="longtext" />
+        </EntityType>
+        <EntityType Name="ПриказыКомандировка">
+          <Key>
+            <PropertyRef Name="ПриказКомандировкаId" />
+          </Key>
+          <Property Name="ПриказКомандировкаId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Номер" Type="longtext" />
+          <Property Name="Дата" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="Место" Type="longtext" />
+          <Property Name="НачалоКомандировки" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="КонецКомандировки" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="Цель" Type="longtext" />
+          <Property Name="Основание" Type="longtext" />
+          <Property Name="ЗаСчёт" Type="longtext" />
+          <Property Name="Сотрудник_СотрудникId" Type="int" />
+        </EntityType>
+        <EntityType Name="ПриказыОтпуск">
+          <Key>
+            <PropertyRef Name="ПриказОтпускId" />
+          </Key>
+          <Property Name="ПриказОтпускId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Номер" Type="longtext" />
+          <Property Name="Дата" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="НачалоОтпуска" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="КонецОтпуска" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="ПериодРаботыНачало" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="ПериодРаботыКонец" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="Вид" Type="longtext" />
+          <Property Name="Сотрудник_СотрудникId" Type="int" />
+        </EntityType>
+        <EntityType Name="ПриказыПриёма">
+          <Key>
+            <PropertyRef Name="ПриказПриёмId" />
+          </Key>
+          <Property Name="ПриказПриёмId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Номер" Type="longtext" />
+          <Property Name="Дата" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="НачалоРаботы" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="КонецРаботы" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="ИспытательныйСрок" Type="bool" Nullable="false" />
+          <Property Name="ИспытательныйСрокДлительность" Type="longtext" />
+          <Property Name="Оклад" Type="longtext" />
+          <Property Name="Надбавка" Type="longtext" />
+          <Property Name="Примечания" Type="longtext" />
+          <Property Name="НомерТрудовогоДоговора" Type="longtext" />
+          <Property Name="ДатаТрудовогоДоговора" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="Должность_ДолжностьId" Type="int" />
+          <Property Name="Сотрудник_СотрудникId" Type="int" />
+        </EntityType>
+        <EntityType Name="ПриказыУвольнение">
+          <Key>
+            <PropertyRef Name="ПриказУвольнениеId" />
+          </Key>
+          <Property Name="ПриказУвольнениеId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Номер" Type="longtext" />
+          <Property Name="Дата" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="Основание" Type="longtext" />
+          <Property Name="ОснованиеДокумент" Type="longtext" />
+          <Property Name="НомерТрудовогоДоговора" Type="longtext" />
+          <Property Name="ДатаТрудовогоДоговора" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="ДатаУвольнения" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="Сотрудник_СотрудникId" Type="int" />
+        </EntityType>
+        <EntityType Name="Сотрудники">
+          <Key>
+            <PropertyRef Name="СотрудникId" />
+          </Key>
+          <Property Name="СотрудникId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ВоинскийУчёт_ВоинскийУчётId" Type="int" />
+          <Property Name="ДополнительнаяИнформация_ДополнительнаяИнформацияId" Type="int" />
+          <Property Name="ОсновнаяИнформация_ОсновнаяИнформацияId" Type="int" />
+          <Property Name="УдостоверениеЛичности_УдостоверениеЛичностиId" Type="int" />
+        </EntityType>
+        <EntityType Name="СписокВоинскогоУчёта">
+          <Key>
+            <PropertyRef Name="ВоинскийУчётId" />
+          </Key>
+          <Property Name="ВоинскийУчётId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="КатегорияЗапаса" Type="longtext" />
+          <Property Name="Звание" Type="longtext" />
+          <Property Name="Профиль" Type="longtext" />
+          <Property Name="КодВус" Type="longtext" />
+          <Property Name="КатегорияГодности" Type="longtext" />
+          <Property Name="НаименованиеВоенкомата" Type="longtext" />
+          <Property Name="СостоитНаУчете" Type="longtext" />
+        </EntityType>
+        <EntityType Name="СписокДополнительнойИнформации">
+          <Key>
+            <PropertyRef Name="ДополнительнаяИнформацияId" />
+          </Key>
+          <Property Name="ДополнительнаяИнформацияId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EMail" Type="longtext" />
+          <Property Name="Skype" Type="longtext" />
+        </EntityType>
+        <EntityType Name="СписокОбразований">
+          <Key>
+            <PropertyRef Name="ОбразованиеId" />
+          </Key>
+          <Property Name="ОбразованиеId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Тип" Type="longtext" />
+          <Property Name="Учреждение" Type="longtext" />
+          <Property Name="Дополнительно" Type="longtext" />
+          <Property Name="Документ" Type="longtext" />
+          <Property Name="НачалоОбучения" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="КонецОбучения" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="Серия" Type="longtext" />
+          <Property Name="Номер" Type="longtext" />
+          <Property Name="Специальность" Type="longtext" />
+          <Property Name="Квалификация" Type="longtext" />
+          <Property Name="Сотрудник_СотрудникId" Type="int" />
+        </EntityType>
+        <EntityType Name="СписокОсновнойИнформации">
+          <Key>
+            <PropertyRef Name="ОсновнаяИнформацияId" />
+          </Key>
+          <Property Name="ОсновнаяИнформацияId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Фамилия" Type="longtext" />
+          <Property Name="Имя" Type="longtext" />
+          <Property Name="Отчество" Type="longtext" />
+          <Property Name="ДатаПриема" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="Инн" Type="longtext" />
+          <Property Name="ТабельныйНомер" Type="longtext" />
+          <Property Name="Пол" Type="longtext" />
+          <Property Name="ДомашнийТелефон" Type="longtext" />
+          <Property Name="МобильныйТелефон" Type="longtext" />
+          <Property Name="Дополнительно" Type="longtext" />
+          <Property Name="Фото" Type="longblob" />
+          <Property Name="Должность_ДолжностьId" Type="int" />
+        </EntityType>
+        <EntityType Name="Статусы">
+          <Key>
+            <PropertyRef Name="СтатусId" />
+          </Key>
+          <Property Name="СтатусId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Название" Type="longtext" />
+          <Property Name="Цвет" Type="longtext" />
+        </EntityType>
+        <EntityType Name="ТабельныеЗаписи">
+          <Key>
+            <PropertyRef Name="ТабельнаяЗаписьId" />
+          </Key>
+          <Property Name="ТабельнаяЗаписьId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Дата" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="Часы" Type="longtext" />
+          <Property Name="Примечание" Type="longtext" />
+          <Property Name="Сотрудник_СотрудникId" Type="int" />
+          <Property Name="Статус_СтатусId" Type="int" />
+        </EntityType>
+        <EntityType Name="УдостоверенияЛичности">
+          <Key>
+            <PropertyRef Name="УдостоверениеЛичностиId" />
+          </Key>
+          <Property Name="УдостоверениеЛичностиId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Серия" Type="longtext" />
+          <Property Name="Номер" Type="longtext" />
+          <Property Name="ДатаРождения" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="МестоРождения" Type="longtext" />
+          <Property Name="КемВыдан" Type="longtext" />
+          <Property Name="КогдаВыдан" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="Прописка_АдресId" Type="int" />
+          <Property Name="ФактическоеМестоЖительства_АдресId" Type="int" />
+        </EntityType>
+        <EntityType Name="УчётнаяЗапись">
+          <Key>
+            <PropertyRef Name="УчётнаяЗаписьId" />
+          </Key>
+          <Property Name="УчётнаяЗаписьId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Login" Type="longtext" />
+          <Property Name="Password" Type="longtext" />
+          <Property Name="IsAdmin" Type="bool" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_1d9ed013ccf14d0bbaf61537f7973374">
+          <End Role="Адреса" Type="Self.Адреса" Multiplicity="0..1" />
+          <End Role="УдостоверенияЛичности" Type="Self.УдостоверенияЛичности" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Адреса">
+              <PropertyRef Name="АдресId" />
+            </Principal>
+            <Dependent Role="УдостоверенияЛичности">
+              <PropertyRef Name="ФактическоеМестоЖительства_АдресId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_82661c53ed774ca7988fa98213490c07">
+          <End Role="СписокОсновнойИнформации" Type="Self.СписокОсновнойИнформации" Multiplicity="0..1" />
+          <End Role="Сотрудники" Type="Self.Сотрудники" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="СписокОсновнойИнформации">
+              <PropertyRef Name="ОсновнаяИнформацияId" />
+            </Principal>
+            <Dependent Role="Сотрудники">
+              <PropertyRef Name="ОсновнаяИнформация_ОсновнаяИнформацияId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_a653f5f575044420b1ec10717432abe1">
+          <End Role="УдостоверенияЛичности" Type="Self.УдостоверенияЛичности" Multiplicity="0..1" />
+          <End Role="Сотрудники" Type="Self.Сотрудники" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="УдостоверенияЛичности">
+              <PropertyRef Name="УдостоверениеЛичностиId" />
+            </Principal>
+            <Dependent Role="Сотрудники">
+              <PropertyRef Name="УдостоверениеЛичности_УдостоверениеЛичностиId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_c8d3f43d5e7b432b913c20d82c99c82f">
+          <End Role="СписокДополнительнойИнформации" Type="Self.СписокДополнительнойИнформации" Multiplicity="0..1" />
+          <End Role="Сотрудники" Type="Self.Сотрудники" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="СписокДополнительнойИнформации">
+              <PropertyRef Name="ДополнительнаяИнформацияId" />
+            </Principal>
+            <Dependent Role="Сотрудники">
+              <PropertyRef Name="ДополнительнаяИнформация_ДополнительнаяИнформацияId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_d51e218896ea41ecbd4cf99ff13d8b28">
+          <End Role="СписокВоинскогоУчёта" Type="Self.СписокВоинскогоУчёта" Multiplicity="0..1" />
+          <End Role="Сотрудники" Type="Self.Сотрудники" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="СписокВоинскогоУчёта">
+              <PropertyRef Name="ВоинскийУчётId" />
+            </Principal>
+            <Dependent Role="Сотрудники">
+              <PropertyRef Name="ВоинскийУчёт_ВоинскийУчётId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_def7e0fb8d9d435da0267eff8107e60b">
+          <End Role="Должности" Type="Self.Должности" Multiplicity="0..1" />
+          <End Role="СписокОсновнойИнформации" Type="Self.СписокОсновнойИнформации" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Должности">
+              <PropertyRef Name="ДолжностьId" />
+            </Principal>
+            <Dependent Role="СписокОсновнойИнформации">
+              <PropertyRef Name="Должность_ДолжностьId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Должности_Подразделения_Подразделение_ПодразделениеId">
+          <End Role="Подразделения" Type="Self.Подразделения" Multiplicity="0..1" />
+          <End Role="Должности" Type="Self.Должности" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Подразделения">
+              <PropertyRef Name="ПодразделениеId" />
+            </Principal>
+            <Dependent Role="Должности">
+              <PropertyRef Name="Подразделение_ПодразделениеId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ПриказыКомандировка_Сотрудники_Сотрудник_СотрудникId">
+          <End Role="Сотрудники" Type="Self.Сотрудники" Multiplicity="0..1" />
+          <End Role="ПриказыКомандировка" Type="Self.ПриказыКомандировка" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Сотрудники">
+              <PropertyRef Name="СотрудникId" />
+            </Principal>
+            <Dependent Role="ПриказыКомандировка">
+              <PropertyRef Name="Сотрудник_СотрудникId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ПриказыОтпуск_Сотрудники_Сотрудник_СотрудникId">
+          <End Role="Сотрудники" Type="Self.Сотрудники" Multiplicity="0..1" />
+          <End Role="ПриказыОтпуск" Type="Self.ПриказыОтпуск" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Сотрудники">
+              <PropertyRef Name="СотрудникId" />
+            </Principal>
+            <Dependent Role="ПриказыОтпуск">
+              <PropertyRef Name="Сотрудник_СотрудникId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ПриказыПриёма_Должности_Должность_ДолжностьId">
+          <End Role="Должности" Type="Self.Должности" Multiplicity="0..1" />
+          <End Role="ПриказыПриёма" Type="Self.ПриказыПриёма" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Должности">
+              <PropertyRef Name="ДолжностьId" />
+            </Principal>
+            <Dependent Role="ПриказыПриёма">
+              <PropertyRef Name="Должность_ДолжностьId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ПриказыПриёма_Сотрудники_Сотрудник_СотрудникId">
+          <End Role="Сотрудники" Type="Self.Сотрудники" Multiplicity="0..1" />
+          <End Role="ПриказыПриёма" Type="Self.ПриказыПриёма" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Сотрудники">
+              <PropertyRef Name="СотрудникId" />
+            </Principal>
+            <Dependent Role="ПриказыПриёма">
+              <PropertyRef Name="Сотрудник_СотрудникId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ПриказыУвольнение_Сотрудники_Сотрудник_СотрудникId">
+          <End Role="Сотрудники" Type="Self.Сотрудники" Multiplicity="0..1" />
+          <End Role="ПриказыУвольнение" Type="Self.ПриказыУвольнение" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Сотрудники">
+              <PropertyRef Name="СотрудникId" />
+            </Principal>
+            <Dependent Role="ПриказыУвольнение">
+              <PropertyRef Name="Сотрудник_СотрудникId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_СписокОбразований_Сотрудники_Сотрудник_СотрудникId">
+          <End Role="Сотрудники" Type="Self.Сотрудники" Multiplicity="0..1" />
+          <End Role="СписокОбразований" Type="Self.СписокОбразований" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Сотрудники">
+              <PropertyRef Name="СотрудникId" />
+            </Principal>
+            <Dependent Role="СписокОбразований">
+              <PropertyRef Name="Сотрудник_СотрудникId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ТабельныеЗаписи_Сотрудники_Сотрудник_СотрудникId">
+          <End Role="Сотрудники" Type="Self.Сотрудники" Multiplicity="0..1" />
+          <End Role="ТабельныеЗаписи" Type="Self.ТабельныеЗаписи" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Сотрудники">
+              <PropertyRef Name="СотрудникId" />
+            </Principal>
+            <Dependent Role="ТабельныеЗаписи">
+              <PropertyRef Name="Сотрудник_СотрудникId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ТабельныеЗаписи_Статусы_Статус_СтатусId">
+          <End Role="Статусы" Type="Self.Статусы" Multiplicity="0..1" />
+          <End Role="ТабельныеЗаписи" Type="Self.ТабельныеЗаписи" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Статусы">
+              <PropertyRef Name="СтатусId" />
+            </Principal>
+            <Dependent Role="ТабельныеЗаписи">
+              <PropertyRef Name="Статус_СтатусId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_УдостоверенияЛичности_Адреса_Прописка_АдресId">
+          <End Role="Адреса" Type="Self.Адреса" Multiplicity="0..1" />
+          <End Role="УдостоверенияЛичности" Type="Self.УдостоверенияЛичности" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Адреса">
+              <PropertyRef Name="АдресId" />
+            </Principal>
+            <Dependent Role="УдостоверенияЛичности">
+              <PropertyRef Name="Прописка_АдресId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище HuredModelContainer">
+          <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="hured" store:Type="Tables" />
+          <EntitySet Name="Sessions" EntityType="Self.Sessions" Schema="hured" store:Type="Tables" />
+          <EntitySet Name="Адреса" EntityType="Self.Адреса" Schema="hured" store:Type="Tables" />
+          <EntitySet Name="Должности" EntityType="Self.Должности" Schema="hured" store:Type="Tables" />
+          <EntitySet Name="Подразделения" EntityType="Self.Подразделения" Schema="hured" store:Type="Tables" />
+          <EntitySet Name="ПриказыКомандировка" EntityType="Self.ПриказыКомандировка" Schema="hured" store:Type="Tables" />
+          <EntitySet Name="ПриказыОтпуск" EntityType="Self.ПриказыОтпуск" Schema="hured" store:Type="Tables" />
+          <EntitySet Name="ПриказыПриёма" EntityType="Self.ПриказыПриёма" Schema="hured" store:Type="Tables" />
+          <EntitySet Name="ПриказыУвольнение" EntityType="Self.ПриказыУвольнение" Schema="hured" store:Type="Tables" />
+          <EntitySet Name="Сотрудники" EntityType="Self.Сотрудники" Schema="hured" store:Type="Tables" />
+          <EntitySet Name="СписокВоинскогоУчёта" EntityType="Self.СписокВоинскогоУчёта" Schema="hured" store:Type="Tables" />
+          <EntitySet Name="СписокДополнительнойИнформации" EntityType="Self.СписокДополнительнойИнформации" Schema="hured" store:Type="Tables" />
+          <EntitySet Name="СписокОбразований" EntityType="Self.СписокОбразований" Schema="hured" store:Type="Tables" />
+          <EntitySet Name="СписокОсновнойИнформации" EntityType="Self.СписокОсновнойИнформации" Schema="hured" store:Type="Tables" />
+          <EntitySet Name="Статусы" EntityType="Self.Статусы" Schema="hured" store:Type="Tables" />
+          <EntitySet Name="ТабельныеЗаписи" EntityType="Self.ТабельныеЗаписи" Schema="hured" store:Type="Tables" />
+          <EntitySet Name="УдостоверенияЛичности" EntityType="Self.УдостоверенияЛичности" Schema="hured" store:Type="Tables" />
+          <EntitySet Name="УчётнаяЗапись" EntityType="Self.УчётнаяЗапись" Schema="hured" store:Type="Tables" />
+          <AssociationSet Name="FK_1d9ed013ccf14d0bbaf61537f7973374" Association="Self.FK_1d9ed013ccf14d0bbaf61537f7973374">
+            <End Role="Адреса" EntitySet="Адреса" />
+            <End Role="УдостоверенияЛичности" EntitySet="УдостоверенияЛичности" />
+          </AssociationSet>
+          <AssociationSet Name="FK_82661c53ed774ca7988fa98213490c07" Association="Self.FK_82661c53ed774ca7988fa98213490c07">
+            <End Role="СписокОсновнойИнформации" EntitySet="СписокОсновнойИнформации" />
+            <End Role="Сотрудники" EntitySet="Сотрудники" />
+          </AssociationSet>
+          <AssociationSet Name="FK_a653f5f575044420b1ec10717432abe1" Association="Self.FK_a653f5f575044420b1ec10717432abe1">
+            <End Role="УдостоверенияЛичности" EntitySet="УдостоверенияЛичности" />
+            <End Role="Сотрудники" EntitySet="Сотрудники" />
+          </AssociationSet>
+          <AssociationSet Name="FK_c8d3f43d5e7b432b913c20d82c99c82f" Association="Self.FK_c8d3f43d5e7b432b913c20d82c99c82f">
+            <End Role="СписокДополнительнойИнформации" EntitySet="СписокДополнительнойИнформации" />
+            <End Role="Сотрудники" EntitySet="Сотрудники" />
+          </AssociationSet>
+          <AssociationSet Name="FK_d51e218896ea41ecbd4cf99ff13d8b28" Association="Self.FK_d51e218896ea41ecbd4cf99ff13d8b28">
+            <End Role="СписокВоинскогоУчёта" EntitySet="СписокВоинскогоУчёта" />
+            <End Role="Сотрудники" EntitySet="Сотрудники" />
+          </AssociationSet>
+          <AssociationSet Name="FK_def7e0fb8d9d435da0267eff8107e60b" Association="Self.FK_def7e0fb8d9d435da0267eff8107e60b">
+            <End Role="Должности" EntitySet="Должности" />
+            <End Role="СписокОсновнойИнформации" EntitySet="СписокОсновнойИнформации" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Должности_Подразделения_Подразделение_ПодразделениеId" Association="Self.FK_Должности_Подразделения_Подразделение_ПодразделениеId">
+            <End Role="Подразделения" EntitySet="Подразделения" />
+            <End Role="Должности" EntitySet="Должности" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ПриказыКомандировка_Сотрудники_Сотрудник_СотрудникId" Association="Self.FK_ПриказыКомандировка_Сотрудники_Сотрудник_СотрудникId">
+            <End Role="Сотрудники" EntitySet="Сотрудники" />
+            <End Role="ПриказыКомандировка" EntitySet="ПриказыКомандировка" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ПриказыОтпуск_Сотрудники_Сотрудник_СотрудникId" Association="Self.FK_ПриказыОтпуск_Сотрудники_Сотрудник_СотрудникId">
+            <End Role="Сотрудники" EntitySet="Сотрудники" />
+            <End Role="ПриказыОтпуск" EntitySet="ПриказыОтпуск" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ПриказыПриёма_Должности_Должность_ДолжностьId" Association="Self.FK_ПриказыПриёма_Должности_Должность_ДолжностьId">
+            <End Role="Должности" EntitySet="Должности" />
+            <End Role="ПриказыПриёма" EntitySet="ПриказыПриёма" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ПриказыПриёма_Сотрудники_Сотрудник_СотрудникId" Association="Self.FK_ПриказыПриёма_Сотрудники_Сотрудник_СотрудникId">
+            <End Role="Сотрудники" EntitySet="Сотрудники" />
+            <End Role="ПриказыПриёма" EntitySet="ПриказыПриёма" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ПриказыУвольнение_Сотрудники_Сотрудник_СотрудникId" Association="Self.FK_ПриказыУвольнение_Сотрудники_Сотрудник_СотрудникId">
+            <End Role="Сотрудники" EntitySet="Сотрудники" />
+            <End Role="ПриказыУвольнение" EntitySet="ПриказыУвольнение" />
+          </AssociationSet>
+          <AssociationSet Name="FK_СписокОбразований_Сотрудники_Сотрудник_СотрудникId" Association="Self.FK_СписокОбразований_Сотрудники_Сотрудник_СотрудникId">
+            <End Role="Сотрудники" EntitySet="Сотрудники" />
+            <End Role="СписокОбразований" EntitySet="СписокОбразований" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ТабельныеЗаписи_Сотрудники_Сотрудник_СотрудникId" Association="Self.FK_ТабельныеЗаписи_Сотрудники_Сотрудник_СотрудникId">
+            <End Role="Сотрудники" EntitySet="Сотрудники" />
+            <End Role="ТабельныеЗаписи" EntitySet="ТабельныеЗаписи" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ТабельныеЗаписи_Статусы_Статус_СтатусId" Association="Self.FK_ТабельныеЗаписи_Статусы_Статус_СтатусId">
+            <End Role="Статусы" EntitySet="Статусы" />
+            <End Role="ТабельныеЗаписи" EntitySet="ТабельныеЗаписи" />
+          </AssociationSet>
+          <AssociationSet Name="FK_УдостоверенияЛичности_Адреса_Прописка_АдресId" Association="Self.FK_УдостоверенияЛичности_Адреса_Прописка_АдресId">
+            <End Role="Адреса" EntitySet="Адреса" />
+            <End Role="УдостоверенияЛичности" EntitySet="УдостоверенияЛичности" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="HuredModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="C__MigrationHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+          </Key>
+          <Property Name="MigrationId" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ContextKey" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Model" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <Property Name="ProductVersion" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Sessions">
+          <Key>
+            <PropertyRef Name="SessionId" />
+          </Key>
+          <Property Name="SessionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="DateTime" Type="DateTime" Nullable="false" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Адреса">
+          <Key>
+            <PropertyRef Name="АдресId" />
+          </Key>
+          <Property Name="АдресId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Индекс" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="НаселённыйПункт" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Улица" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Дом" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Корпус" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Квартира" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="УдостоверенияЛичности" Relationship="Self.FK_1d9ed013ccf14d0bbaf61537f7973374" FromRole="Адреса" ToRole="УдостоверенияЛичности" />
+          <NavigationProperty Name="УдостоверенияЛичности1" Relationship="Self.FK_УдостоверенияЛичности_Адреса_Прописка_АдресId" FromRole="Адреса" ToRole="УдостоверенияЛичности" />
+        </EntityType>
+        <EntityType Name="Должности">
+          <Key>
+            <PropertyRef Name="ДолжностьId" />
+          </Key>
+          <Property Name="ДолжностьId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Название" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Расписание" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Подразделение_ПодразделениеId" Type="Int32" />
+          <NavigationProperty Name="СписокОсновнойИнформации" Relationship="Self.FK_def7e0fb8d9d435da0267eff8107e60b" FromRole="Должности" ToRole="СписокОсновнойИнформации" />
+          <NavigationProperty Name="Подразделения" Relationship="Self.FK_Должности_Подразделения_Подразделение_ПодразделениеId" FromRole="Должности" ToRole="Подразделения" />
+          <NavigationProperty Name="ПриказыПриёма" Relationship="Self.FK_ПриказыПриёма_Должности_Должность_ДолжностьId" FromRole="Должности" ToRole="ПриказыПриёма" />
+        </EntityType>
+        <EntityType Name="Подразделения">
+          <Key>
+            <PropertyRef Name="ПодразделениеId" />
+          </Key>
+          <Property Name="ПодразделениеId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Название" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Должности" Relationship="Self.FK_Должности_Подразделения_Подразделение_ПодразделениеId" FromRole="Подразделения" ToRole="Должности" />
+        </EntityType>
+        <EntityType Name="ПриказыКомандировка">
+          <Key>
+            <PropertyRef Name="ПриказКомандировкаId" />
+          </Key>
+          <Property Name="ПриказКомандировкаId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Номер" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Дата" Type="DateTime" Nullable="false" />
+          <Property Name="Место" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="НачалоКомандировки" Type="DateTime" Nullable="false" />
+          <Property Name="КонецКомандировки" Type="DateTime" Nullable="false" />
+          <Property Name="Цель" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Основание" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="ЗаСчёт" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Сотрудник_СотрудникId" Type="Int32" />
+          <NavigationProperty Name="Сотрудники" Relationship="Self.FK_ПриказыКомандировка_Сотрудники_Сотрудник_СотрудникId" FromRole="ПриказыКомандировка" ToRole="Сотрудники" />
+        </EntityType>
+        <EntityType Name="ПриказыОтпуск">
+          <Key>
+            <PropertyRef Name="ПриказОтпускId" />
+          </Key>
+          <Property Name="ПриказОтпускId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Номер" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Дата" Type="DateTime" Nullable="false" />
+          <Property Name="НачалоОтпуска" Type="DateTime" Nullable="false" />
+          <Property Name="КонецОтпуска" Type="DateTime" Nullable="false" />
+          <Property Name="ПериодРаботыНачало" Type="DateTime" Nullable="false" />
+          <Property Name="ПериодРаботыКонец" Type="DateTime" Nullable="false" />
+          <Property Name="Вид" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Сотрудник_СотрудникId" Type="Int32" />
+          <NavigationProperty Name="Сотрудники" Relationship="Self.FK_ПриказыОтпуск_Сотрудники_Сотрудник_СотрудникId" FromRole="ПриказыОтпуск" ToRole="Сотрудники" />
+        </EntityType>
+        <EntityType Name="ПриказыПриёма">
+          <Key>
+            <PropertyRef Name="ПриказПриёмId" />
+          </Key>
+          <Property Name="ПриказПриёмId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Номер" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Дата" Type="DateTime" Nullable="false" />
+          <Property Name="НачалоРаботы" Type="DateTime" Nullable="false" />
+          <Property Name="КонецРаботы" Type="DateTime" Nullable="false" />
+          <Property Name="ИспытательныйСрок" Type="Boolean" Nullable="false" />
+          <Property Name="ИспытательныйСрокДлительность" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Оклад" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Надбавка" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Примечания" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="НомерТрудовогоДоговора" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="ДатаТрудовогоДоговора" Type="DateTime" Nullable="false" />
+          <Property Name="Должность_ДолжностьId" Type="Int32" />
+          <Property Name="Сотрудник_СотрудникId" Type="Int32" />
+          <NavigationProperty Name="Должности" Relationship="Self.FK_ПриказыПриёма_Должности_Должность_ДолжностьId" FromRole="ПриказыПриёма" ToRole="Должности" />
+          <NavigationProperty Name="Сотрудники" Relationship="Self.FK_ПриказыПриёма_Сотрудники_Сотрудник_СотрудникId" FromRole="ПриказыПриёма" ToRole="Сотрудники" />
+        </EntityType>
+        <EntityType Name="ПриказыУвольнение">
+          <Key>
+            <PropertyRef Name="ПриказУвольнениеId" />
+          </Key>
+          <Property Name="ПриказУвольнениеId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Номер" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Дата" Type="DateTime" Nullable="false" />
+          <Property Name="Основание" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="ОснованиеДокумент" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="НомерТрудовогоДоговора" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="ДатаТрудовогоДоговора" Type="DateTime" Nullable="false" />
+          <Property Name="ДатаУвольнения" Type="DateTime" Nullable="false" />
+          <Property Name="Сотрудник_СотрудникId" Type="Int32" />
+          <NavigationProperty Name="Сотрудники" Relationship="Self.FK_ПриказыУвольнение_Сотрудники_Сотрудник_СотрудникId" FromRole="ПриказыУвольнение" ToRole="Сотрудники" />
+        </EntityType>
+        <EntityType Name="Сотрудники">
+          <Key>
+            <PropertyRef Name="СотрудникId" />
+          </Key>
+          <Property Name="СотрудникId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ВоинскийУчёт_ВоинскийУчётId" Type="Int32" />
+          <Property Name="ДополнительнаяИнформация_ДополнительнаяИнформацияId" Type="Int32" />
+          <Property Name="ОсновнаяИнформация_ОсновнаяИнформацияId" Type="Int32" />
+          <Property Name="УдостоверениеЛичности_УдостоверениеЛичностиId" Type="Int32" />
+          <NavigationProperty Name="ПриказыКомандировка" Relationship="Self.FK_ПриказыКомандировка_Сотрудники_Сотрудник_СотрудникId" FromRole="Сотрудники" ToRole="ПриказыКомандировка" />
+          <NavigationProperty Name="ПриказыОтпуск" Relationship="Self.FK_ПриказыОтпуск_Сотрудники_Сотрудник_СотрудникId" FromRole="Сотрудники" ToRole="ПриказыОтпуск" />
+          <NavigationProperty Name="ПриказыПриёма" Relationship="Self.FK_ПриказыПриёма_Сотрудники_Сотрудник_СотрудникId" FromRole="Сотрудники" ToRole="ПриказыПриёма" />
+          <NavigationProperty Name="ПриказыУвольнение" Relationship="Self.FK_ПриказыУвольнение_Сотрудники_Сотрудник_СотрудникId" FromRole="Сотрудники" ToRole="ПриказыУвольнение" />
+          <NavigationProperty Name="СписокОсновнойИнформации" Relationship="Self.FK_82661c53ed774ca7988fa98213490c07" FromRole="Сотрудники" ToRole="СписокОсновнойИнформации" />
+          <NavigationProperty Name="УдостоверенияЛичности" Relationship="Self.FK_a653f5f575044420b1ec10717432abe1" FromRole="Сотрудники" ToRole="УдостоверенияЛичности" />
+          <NavigationProperty Name="СписокДополнительнойИнформации" Relationship="Self.FK_c8d3f43d5e7b432b913c20d82c99c82f" FromRole="Сотрудники" ToRole="СписокДополнительнойИнформации" />
+          <NavigationProperty Name="СписокВоинскогоУчёта" Relationship="Self.FK_d51e218896ea41ecbd4cf99ff13d8b28" FromRole="Сотрудники" ToRole="СписокВоинскогоУчёта" />
+          <NavigationProperty Name="СписокОбразований" Relationship="Self.FK_СписокОбразований_Сотрудники_Сотрудник_СотрудникId" FromRole="Сотрудники" ToRole="СписокОбразований" />
+          <NavigationProperty Name="ТабельныеЗаписи" Relationship="Self.FK_ТабельныеЗаписи_Сотрудники_Сотрудник_СотрудникId" FromRole="Сотрудники" ToRole="ТабельныеЗаписи" />
+        </EntityType>
+        <EntityType Name="СписокВоинскогоУчёта">
+          <Key>
+            <PropertyRef Name="ВоинскийУчётId" />
+          </Key>
+          <Property Name="ВоинскийУчётId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="КатегорияЗапаса" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Звание" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Профиль" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="КодВус" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="КатегорияГодности" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="НаименованиеВоенкомата" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="СостоитНаУчете" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Сотрудники" Relationship="Self.FK_d51e218896ea41ecbd4cf99ff13d8b28" FromRole="СписокВоинскогоУчёта" ToRole="Сотрудники" />
+        </EntityType>
+        <EntityType Name="СписокДополнительнойИнформации">
+          <Key>
+            <PropertyRef Name="ДополнительнаяИнформацияId" />
+          </Key>
+          <Property Name="ДополнительнаяИнформацияId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EMail" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Skype" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Сотрудники" Relationship="Self.FK_c8d3f43d5e7b432b913c20d82c99c82f" FromRole="СписокДополнительнойИнформации" ToRole="Сотрудники" />
+        </EntityType>
+        <EntityType Name="СписокОбразований">
+          <Key>
+            <PropertyRef Name="ОбразованиеId" />
+          </Key>
+          <Property Name="ОбразованиеId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Тип" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Учреждение" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Дополнительно" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Документ" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="НачалоОбучения" Type="DateTime" Nullable="false" />
+          <Property Name="КонецОбучения" Type="DateTime" Nullable="false" />
+          <Property Name="Серия" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Номер" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Специальность" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Квалификация" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Сотрудник_СотрудникId" Type="Int32" />
+          <NavigationProperty Name="Сотрудники" Relationship="Self.FK_СписокОбразований_Сотрудники_Сотрудник_СотрудникId" FromRole="СписокОбразований" ToRole="Сотрудники" />
+        </EntityType>
+        <EntityType Name="СписокОсновнойИнформации">
+          <Key>
+            <PropertyRef Name="ОсновнаяИнформацияId" />
+          </Key>
+          <Property Name="ОсновнаяИнформацияId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Фамилия" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Имя" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Отчество" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="ДатаПриема" Type="DateTime" Nullable="false" />
+          <Property Name="Инн" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="ТабельныйНомер" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Пол" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="ДомашнийТелефон" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="МобильныйТелефон" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Дополнительно" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Фото" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Должность_ДолжностьId" Type="Int32" />
+          <NavigationProperty Name="Должности" Relationship="Self.FK_def7e0fb8d9d435da0267eff8107e60b" FromRole="СписокОсновнойИнформации" ToRole="Должности" />
+          <NavigationProperty Name="Сотрудники" Relationship="Self.FK_82661c53ed774ca7988fa98213490c07" FromRole="СписокОсновнойИнформации" ToRole="Сотрудники" />
+        </EntityType>
+        <EntityType Name="Статусы">
+          <Key>
+            <PropertyRef Name="СтатусId" />
+          </Key>
+          <Property Name="СтатусId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Название" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Цвет" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ТабельныеЗаписи" Relationship="Self.FK_ТабельныеЗаписи_Статусы_Статус_СтатусId" FromRole="Статусы" ToRole="ТабельныеЗаписи" />
+        </EntityType>
+        <EntityType Name="ТабельныеЗаписи">
+          <Key>
+            <PropertyRef Name="ТабельнаяЗаписьId" />
+          </Key>
+          <Property Name="ТабельнаяЗаписьId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Дата" Type="DateTime" Nullable="false" />
+          <Property Name="Часы" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Примечание" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Сотрудник_СотрудникId" Type="Int32" />
+          <Property Name="Статус_СтатусId" Type="Int32" />
+          <NavigationProperty Name="Сотрудники" Relationship="Self.FK_ТабельныеЗаписи_Сотрудники_Сотрудник_СотрудникId" FromRole="ТабельныеЗаписи" ToRole="Сотрудники" />
+          <NavigationProperty Name="Статусы" Relationship="Self.FK_ТабельныеЗаписи_Статусы_Статус_СтатусId" FromRole="ТабельныеЗаписи" ToRole="Статусы" />
+        </EntityType>
+        <EntityType Name="УдостоверенияЛичности">
+          <Key>
+            <PropertyRef Name="УдостоверениеЛичностиId" />
+          </Key>
+          <Property Name="УдостоверениеЛичностиId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Серия" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Номер" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="ДатаРождения" Type="DateTime" Nullable="false" />
+          <Property Name="МестоРождения" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="КемВыдан" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="КогдаВыдан" Type="DateTime" Nullable="false" />
+          <Property Name="Прописка_АдресId" Type="Int32" />
+          <Property Name="ФактическоеМестоЖительства_АдресId" Type="Int32" />
+          <NavigationProperty Name="Адреса" Relationship="Self.FK_1d9ed013ccf14d0bbaf61537f7973374" FromRole="УдостоверенияЛичности" ToRole="Адреса" />
+          <NavigationProperty Name="Адреса1" Relationship="Self.FK_УдостоверенияЛичности_Адреса_Прописка_АдресId" FromRole="УдостоверенияЛичности" ToRole="Адреса" />
+          <NavigationProperty Name="Сотрудники" Relationship="Self.FK_a653f5f575044420b1ec10717432abe1" FromRole="УдостоверенияЛичности" ToRole="Сотрудники" />
+        </EntityType>
+        <EntityType Name="УчётнаяЗапись">
+          <Key>
+            <PropertyRef Name="УчётнаяЗаписьId" />
+          </Key>
+          <Property Name="УчётнаяЗаписьId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Login" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="IsAdmin" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_1d9ed013ccf14d0bbaf61537f7973374">
+          <End Role="Адреса" Type="Self.Адреса" Multiplicity="0..1" />
+          <End Role="УдостоверенияЛичности" Type="Self.УдостоверенияЛичности" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Адреса">
+              <PropertyRef Name="АдресId" />
+            </Principal>
+            <Dependent Role="УдостоверенияЛичности">
+              <PropertyRef Name="ФактическоеМестоЖительства_АдресId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_УдостоверенияЛичности_Адреса_Прописка_АдресId">
+          <End Role="Адреса" Type="Self.Адреса" Multiplicity="0..1" />
+          <End Role="УдостоверенияЛичности" Type="Self.УдостоверенияЛичности" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Адреса">
+              <PropertyRef Name="АдресId" />
+            </Principal>
+            <Dependent Role="УдостоверенияЛичности">
+              <PropertyRef Name="Прописка_АдресId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_def7e0fb8d9d435da0267eff8107e60b">
+          <End Role="Должности" Type="Self.Должности" Multiplicity="0..1" />
+          <End Role="СписокОсновнойИнформации" Type="Self.СписокОсновнойИнформации" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Должности">
+              <PropertyRef Name="ДолжностьId" />
+            </Principal>
+            <Dependent Role="СписокОсновнойИнформации">
+              <PropertyRef Name="Должность_ДолжностьId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Должности_Подразделения_Подразделение_ПодразделениеId">
+          <End Role="Подразделения" Type="Self.Подразделения" Multiplicity="0..1" />
+          <End Role="Должности" Type="Self.Должности" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Подразделения">
+              <PropertyRef Name="ПодразделениеId" />
+            </Principal>
+            <Dependent Role="Должности">
+              <PropertyRef Name="Подразделение_ПодразделениеId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ПриказыПриёма_Должности_Должность_ДолжностьId">
+          <End Role="Должности" Type="Self.Должности" Multiplicity="0..1" />
+          <End Role="ПриказыПриёма" Type="Self.ПриказыПриёма" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Должности">
+              <PropertyRef Name="ДолжностьId" />
+            </Principal>
+            <Dependent Role="ПриказыПриёма">
+              <PropertyRef Name="Должность_ДолжностьId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ПриказыКомандировка_Сотрудники_Сотрудник_СотрудникId">
+          <End Role="Сотрудники" Type="Self.Сотрудники" Multiplicity="0..1" />
+          <End Role="ПриказыКомандировка" Type="Self.ПриказыКомандировка" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Сотрудники">
+              <PropertyRef Name="СотрудникId" />
+            </Principal>
+            <Dependent Role="ПриказыКомандировка">
+              <PropertyRef Name="Сотрудник_СотрудникId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ПриказыОтпуск_Сотрудники_Сотрудник_СотрудникId">
+          <End Role="Сотрудники" Type="Self.Сотрудники" Multiplicity="0..1" />
+          <End Role="ПриказыОтпуск" Type="Self.ПриказыОтпуск" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Сотрудники">
+              <PropertyRef Name="СотрудникId" />
+            </Principal>
+            <Dependent Role="ПриказыОтпуск">
+              <PropertyRef Name="Сотрудник_СотрудникId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ПриказыПриёма_Сотрудники_Сотрудник_СотрудникId">
+          <End Role="Сотрудники" Type="Self.Сотрудники" Multiplicity="0..1" />
+          <End Role="ПриказыПриёма" Type="Self.ПриказыПриёма" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Сотрудники">
+              <PropertyRef Name="СотрудникId" />
+            </Principal>
+            <Dependent Role="ПриказыПриёма">
+              <PropertyRef Name="Сотрудник_СотрудникId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ПриказыУвольнение_Сотрудники_Сотрудник_СотрудникId">
+          <End Role="Сотрудники" Type="Self.Сотрудники" Multiplicity="0..1" />
+          <End Role="ПриказыУвольнение" Type="Self.ПриказыУвольнение" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Сотрудники">
+              <PropertyRef Name="СотрудникId" />
+            </Principal>
+            <Dependent Role="ПриказыУвольнение">
+              <PropertyRef Name="Сотрудник_СотрудникId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_82661c53ed774ca7988fa98213490c07">
+          <End Role="СписокОсновнойИнформации" Type="Self.СписокОсновнойИнформации" Multiplicity="0..1" />
+          <End Role="Сотрудники" Type="Self.Сотрудники" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="СписокОсновнойИнформации">
+              <PropertyRef Name="ОсновнаяИнформацияId" />
+            </Principal>
+            <Dependent Role="Сотрудники">
+              <PropertyRef Name="ОсновнаяИнформация_ОсновнаяИнформацияId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_a653f5f575044420b1ec10717432abe1">
+          <End Role="УдостоверенияЛичности" Type="Self.УдостоверенияЛичности" Multiplicity="0..1" />
+          <End Role="Сотрудники" Type="Self.Сотрудники" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="УдостоверенияЛичности">
+              <PropertyRef Name="УдостоверениеЛичностиId" />
+            </Principal>
+            <Dependent Role="Сотрудники">
+              <PropertyRef Name="УдостоверениеЛичности_УдостоверениеЛичностиId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_c8d3f43d5e7b432b913c20d82c99c82f">
+          <End Role="СписокДополнительнойИнформации" Type="Self.СписокДополнительнойИнформации" Multiplicity="0..1" />
+          <End Role="Сотрудники" Type="Self.Сотрудники" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="СписокДополнительнойИнформации">
+              <PropertyRef Name="ДополнительнаяИнформацияId" />
+            </Principal>
+            <Dependent Role="Сотрудники">
+              <PropertyRef Name="ДополнительнаяИнформация_ДополнительнаяИнформацияId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_d51e218896ea41ecbd4cf99ff13d8b28">
+          <End Role="СписокВоинскогоУчёта" Type="Self.СписокВоинскогоУчёта" Multiplicity="0..1" />
+          <End Role="Сотрудники" Type="Self.Сотрудники" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="СписокВоинскогоУчёта">
+              <PropertyRef Name="ВоинскийУчётId" />
+            </Principal>
+            <Dependent Role="Сотрудники">
+              <PropertyRef Name="ВоинскийУчёт_ВоинскийУчётId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_СписокОбразований_Сотрудники_Сотрудник_СотрудникId">
+          <End Role="Сотрудники" Type="Self.Сотрудники" Multiplicity="0..1" />
+          <End Role="СписокОбразований" Type="Self.СписокОбразований" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Сотрудники">
+              <PropertyRef Name="СотрудникId" />
+            </Principal>
+            <Dependent Role="СписокОбразований">
+              <PropertyRef Name="Сотрудник_СотрудникId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ТабельныеЗаписи_Сотрудники_Сотрудник_СотрудникId">
+          <End Role="Сотрудники" Type="Self.Сотрудники" Multiplicity="0..1" />
+          <End Role="ТабельныеЗаписи" Type="Self.ТабельныеЗаписи" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Сотрудники">
+              <PropertyRef Name="СотрудникId" />
+            </Principal>
+            <Dependent Role="ТабельныеЗаписи">
+              <PropertyRef Name="Сотрудник_СотрудникId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ТабельныеЗаписи_Статусы_Статус_СтатусId">
+          <End Role="Статусы" Type="Self.Статусы" Multiplicity="0..1" />
+          <End Role="ТабельныеЗаписи" Type="Self.ТабельныеЗаписи" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Статусы">
+              <PropertyRef Name="СтатусId" />
+            </Principal>
+            <Dependent Role="ТабельныеЗаписи">
+              <PropertyRef Name="Статус_СтатусId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="HuredEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
+          <EntitySet Name="Sessions" EntityType="Self.Sessions" />
+          <EntitySet Name="Адреса" EntityType="Self.Адреса" />
+          <EntitySet Name="Должности" EntityType="Self.Должности" />
+          <EntitySet Name="Подразделения" EntityType="Self.Подразделения" />
+          <EntitySet Name="ПриказыКомандировка" EntityType="Self.ПриказыКомандировка" />
+          <EntitySet Name="ПриказыОтпуск" EntityType="Self.ПриказыОтпуск" />
+          <EntitySet Name="ПриказыПриёма" EntityType="Self.ПриказыПриёма" />
+          <EntitySet Name="ПриказыУвольнение" EntityType="Self.ПриказыУвольнение" />
+          <EntitySet Name="Сотрудники" EntityType="Self.Сотрудники" />
+          <EntitySet Name="СписокВоинскогоУчёта" EntityType="Self.СписокВоинскогоУчёта" />
+          <EntitySet Name="СписокДополнительнойИнформации" EntityType="Self.СписокДополнительнойИнформации" />
+          <EntitySet Name="СписокОбразований" EntityType="Self.СписокОбразований" />
+          <EntitySet Name="СписокОсновнойИнформации" EntityType="Self.СписокОсновнойИнформации" />
+          <EntitySet Name="Статусы" EntityType="Self.Статусы" />
+          <EntitySet Name="ТабельныеЗаписи" EntityType="Self.ТабельныеЗаписи" />
+          <EntitySet Name="УдостоверенияЛичности" EntityType="Self.УдостоверенияЛичности" />
+          <EntitySet Name="УчётнаяЗапись" EntityType="Self.УчётнаяЗапись" />
+          <AssociationSet Name="FK_1d9ed013ccf14d0bbaf61537f7973374" Association="Self.FK_1d9ed013ccf14d0bbaf61537f7973374">
+            <End Role="Адреса" EntitySet="Адреса" />
+            <End Role="УдостоверенияЛичности" EntitySet="УдостоверенияЛичности" />
+          </AssociationSet>
+          <AssociationSet Name="FK_УдостоверенияЛичности_Адреса_Прописка_АдресId" Association="Self.FK_УдостоверенияЛичности_Адреса_Прописка_АдресId">
+            <End Role="Адреса" EntitySet="Адреса" />
+            <End Role="УдостоверенияЛичности" EntitySet="УдостоверенияЛичности" />
+          </AssociationSet>
+          <AssociationSet Name="FK_def7e0fb8d9d435da0267eff8107e60b" Association="Self.FK_def7e0fb8d9d435da0267eff8107e60b">
+            <End Role="Должности" EntitySet="Должности" />
+            <End Role="СписокОсновнойИнформации" EntitySet="СписокОсновнойИнформации" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Должности_Подразделения_Подразделение_ПодразделениеId" Association="Self.FK_Должности_Подразделения_Подразделение_ПодразделениеId">
+            <End Role="Подразделения" EntitySet="Подразделения" />
+            <End Role="Должности" EntitySet="Должности" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ПриказыПриёма_Должности_Должность_ДолжностьId" Association="Self.FK_ПриказыПриёма_Должности_Должность_ДолжностьId">
+            <End Role="Должности" EntitySet="Должности" />
+            <End Role="ПриказыПриёма" EntitySet="ПриказыПриёма" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ПриказыКомандировка_Сотрудники_Сотрудник_СотрудникId" Association="Self.FK_ПриказыКомандировка_Сотрудники_Сотрудник_СотрудникId">
+            <End Role="Сотрудники" EntitySet="Сотрудники" />
+            <End Role="ПриказыКомандировка" EntitySet="ПриказыКомандировка" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ПриказыОтпуск_Сотрудники_Сотрудник_СотрудникId" Association="Self.FK_ПриказыОтпуск_Сотрудники_Сотрудник_СотрудникId">
+            <End Role="Сотрудники" EntitySet="Сотрудники" />
+            <End Role="ПриказыОтпуск" EntitySet="ПриказыОтпуск" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ПриказыПриёма_Сотрудники_Сотрудник_СотрудникId" Association="Self.FK_ПриказыПриёма_Сотрудники_Сотрудник_СотрудникId">
+            <End Role="Сотрудники" EntitySet="Сотрудники" />
+            <End Role="ПриказыПриёма" EntitySet="ПриказыПриёма" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ПриказыУвольнение_Сотрудники_Сотрудник_СотрудникId" Association="Self.FK_ПриказыУвольнение_Сотрудники_Сотрудник_СотрудникId">
+            <End Role="Сотрудники" EntitySet="Сотрудники" />
+            <End Role="ПриказыУвольнение" EntitySet="ПриказыУвольнение" />
+          </AssociationSet>
+          <AssociationSet Name="FK_82661c53ed774ca7988fa98213490c07" Association="Self.FK_82661c53ed774ca7988fa98213490c07">
+            <End Role="СписокОсновнойИнформации" EntitySet="СписокОсновнойИнформации" />
+            <End Role="Сотрудники" EntitySet="Сотрудники" />
+          </AssociationSet>
+          <AssociationSet Name="FK_a653f5f575044420b1ec10717432abe1" Association="Self.FK_a653f5f575044420b1ec10717432abe1">
+            <End Role="УдостоверенияЛичности" EntitySet="УдостоверенияЛичности" />
+            <End Role="Сотрудники" EntitySet="Сотрудники" />
+          </AssociationSet>
+          <AssociationSet Name="FK_c8d3f43d5e7b432b913c20d82c99c82f" Association="Self.FK_c8d3f43d5e7b432b913c20d82c99c82f">
+            <End Role="СписокДополнительнойИнформации" EntitySet="СписокДополнительнойИнформации" />
+            <End Role="Сотрудники" EntitySet="Сотрудники" />
+          </AssociationSet>
+          <AssociationSet Name="FK_d51e218896ea41ecbd4cf99ff13d8b28" Association="Self.FK_d51e218896ea41ecbd4cf99ff13d8b28">
+            <End Role="СписокВоинскогоУчёта" EntitySet="СписокВоинскогоУчёта" />
+            <End Role="Сотрудники" EntitySet="Сотрудники" />
+          </AssociationSet>
+          <AssociationSet Name="FK_СписокОбразований_Сотрудники_Сотрудник_СотрудникId" Association="Self.FK_СписокОбразований_Сотрудники_Сотрудник_СотрудникId">
+            <End Role="Сотрудники" EntitySet="Сотрудники" />
+            <End Role="СписокОбразований" EntitySet="СписокОбразований" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ТабельныеЗаписи_Сотрудники_Сотрудник_СотрудникId" Association="Self.FK_ТабельныеЗаписи_Сотрудники_Сотрудник_СотрудникId">
+            <End Role="Сотрудники" EntitySet="Сотрудники" />
+            <End Role="ТабельныеЗаписи" EntitySet="ТабельныеЗаписи" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ТабельныеЗаписи_Статусы_Статус_СтатусId" Association="Self.FK_ТабельныеЗаписи_Статусы_Статус_СтатусId">
+            <End Role="Статусы" EntitySet="Статусы" />
+            <End Role="ТабельныеЗаписи" EntitySet="ТабельныеЗаписи" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище HuredModelContainer" CdmEntityContainer="HuredEntities1">
+          <EntitySetMapping Name="C__MigrationHistory">
+            <EntityTypeMapping TypeName="HuredModel.C__MigrationHistory">
+              <MappingFragment StoreEntitySet="__MigrationHistory">
+                <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
+                <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sessions">
+            <EntityTypeMapping TypeName="HuredModel.Sessions">
+              <MappingFragment StoreEntitySet="Sessions">
+                <ScalarProperty Name="SessionId" ColumnName="SessionId" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Адреса">
+            <EntityTypeMapping TypeName="HuredModel.Адреса">
+              <MappingFragment StoreEntitySet="Адреса">
+                <ScalarProperty Name="АдресId" ColumnName="АдресId" />
+                <ScalarProperty Name="Индекс" ColumnName="Индекс" />
+                <ScalarProperty Name="НаселённыйПункт" ColumnName="НаселённыйПункт" />
+                <ScalarProperty Name="Улица" ColumnName="Улица" />
+                <ScalarProperty Name="Дом" ColumnName="Дом" />
+                <ScalarProperty Name="Корпус" ColumnName="Корпус" />
+                <ScalarProperty Name="Квартира" ColumnName="Квартира" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Должности">
+            <EntityTypeMapping TypeName="HuredModel.Должности">
+              <MappingFragment StoreEntitySet="Должности">
+                <ScalarProperty Name="ДолжностьId" ColumnName="ДолжностьId" />
+                <ScalarProperty Name="Название" ColumnName="Название" />
+                <ScalarProperty Name="Расписание" ColumnName="Расписание" />
+                <ScalarProperty Name="Подразделение_ПодразделениеId" ColumnName="Подразделение_ПодразделениеId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Подразделения">
+            <EntityTypeMapping TypeName="HuredModel.Подразделения">
+              <MappingFragment StoreEntitySet="Подразделения">
+                <ScalarProperty Name="ПодразделениеId" ColumnName="ПодразделениеId" />
+                <ScalarProperty Name="Название" ColumnName="Название" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ПриказыКомандировка">
+            <EntityTypeMapping TypeName="HuredModel.ПриказыКомандировка">
+              <MappingFragment StoreEntitySet="ПриказыКомандировка">
+                <ScalarProperty Name="ПриказКомандировкаId" ColumnName="ПриказКомандировкаId" />
+                <ScalarProperty Name="Номер" ColumnName="Номер" />
+                <ScalarProperty Name="Дата" ColumnName="Дата" />
+                <ScalarProperty Name="Место" ColumnName="Место" />
+                <ScalarProperty Name="НачалоКомандировки" ColumnName="НачалоКомандировки" />
+                <ScalarProperty Name="КонецКомандировки" ColumnName="КонецКомандировки" />
+                <ScalarProperty Name="Цель" ColumnName="Цель" />
+                <ScalarProperty Name="Основание" ColumnName="Основание" />
+                <ScalarProperty Name="ЗаСчёт" ColumnName="ЗаСчёт" />
+                <ScalarProperty Name="Сотрудник_СотрудникId" ColumnName="Сотрудник_СотрудникId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ПриказыОтпуск">
+            <EntityTypeMapping TypeName="HuredModel.ПриказыОтпуск">
+              <MappingFragment StoreEntitySet="ПриказыОтпуск">
+                <ScalarProperty Name="ПриказОтпускId" ColumnName="ПриказОтпускId" />
+                <ScalarProperty Name="Номер" ColumnName="Номер" />
+                <ScalarProperty Name="Дата" ColumnName="Дата" />
+                <ScalarProperty Name="НачалоОтпуска" ColumnName="НачалоОтпуска" />
+                <ScalarProperty Name="КонецОтпуска" ColumnName="КонецОтпуска" />
+                <ScalarProperty Name="ПериодРаботыНачало" ColumnName="ПериодРаботыНачало" />
+                <ScalarProperty Name="ПериодРаботыКонец" ColumnName="ПериодРаботыКонец" />
+                <ScalarProperty Name="Вид" ColumnName="Вид" />
+                <ScalarProperty Name="Сотрудник_СотрудникId" ColumnName="Сотрудник_СотрудникId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ПриказыПриёма">
+            <EntityTypeMapping TypeName="HuredModel.ПриказыПриёма">
+              <MappingFragment StoreEntitySet="ПриказыПриёма">
+                <ScalarProperty Name="ПриказПриёмId" ColumnName="ПриказПриёмId" />
+                <ScalarProperty Name="Номер" ColumnName="Номер" />
+                <ScalarProperty Name="Дата" ColumnName="Дата" />
+                <ScalarProperty Name="НачалоРаботы" ColumnName="НачалоРаботы" />
+                <ScalarProperty Name="КонецРаботы" ColumnName="КонецРаботы" />
+                <ScalarProperty Name="ИспытательныйСрок" ColumnName="ИспытательныйСрок" />
+                <ScalarProperty Name="ИспытательныйСрокДлительность" ColumnName="ИспытательныйСрокДлительность" />
+                <ScalarProperty Name="Оклад" ColumnName="Оклад" />
+                <ScalarProperty Name="Надбавка" ColumnName="Надбавка" />
+                <ScalarProperty Name="Примечания" ColumnName="Примечания" />
+                <ScalarProperty Name="НомерТрудовогоДоговора" ColumnName="НомерТрудовогоДоговора" />
+                <ScalarProperty Name="ДатаТрудовогоДоговора" ColumnName="ДатаТрудовогоДоговора" />
+                <ScalarProperty Name="Должность_ДолжностьId" ColumnName="Должность_ДолжностьId" />
+                <ScalarProperty Name="Сотрудник_СотрудникId" ColumnName="Сотрудник_СотрудникId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ПриказыУвольнение">
+            <EntityTypeMapping TypeName="HuredModel.ПриказыУвольнение">
+              <MappingFragment StoreEntitySet="ПриказыУвольнение">
+                <ScalarProperty Name="ПриказУвольнениеId" ColumnName="ПриказУвольнениеId" />
+                <ScalarProperty Name="Номер" ColumnName="Номер" />
+                <ScalarProperty Name="Дата" ColumnName="Дата" />
+                <ScalarProperty Name="Основание" ColumnName="Основание" />
+                <ScalarProperty Name="ОснованиеДокумент" ColumnName="ОснованиеДокумент" />
+                <ScalarProperty Name="НомерТрудовогоДоговора" ColumnName="НомерТрудовогоДоговора" />
+                <ScalarProperty Name="ДатаТрудовогоДоговора" ColumnName="ДатаТрудовогоДоговора" />
+                <ScalarProperty Name="ДатаУвольнения" ColumnName="ДатаУвольнения" />
+                <ScalarProperty Name="Сотрудник_СотрудникId" ColumnName="Сотрудник_СотрудникId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Сотрудники">
+            <EntityTypeMapping TypeName="HuredModel.Сотрудники">
+              <MappingFragment StoreEntitySet="Сотрудники">
+                <ScalarProperty Name="СотрудникId" ColumnName="СотрудникId" />
+                <ScalarProperty Name="ВоинскийУчёт_ВоинскийУчётId" ColumnName="ВоинскийУчёт_ВоинскийУчётId" />
+                <ScalarProperty Name="ДополнительнаяИнформация_ДополнительнаяИнформацияId" ColumnName="ДополнительнаяИнформация_ДополнительнаяИнформацияId" />
+                <ScalarProperty Name="ОсновнаяИнформация_ОсновнаяИнформацияId" ColumnName="ОсновнаяИнформация_ОсновнаяИнформацияId" />
+                <ScalarProperty Name="УдостоверениеЛичности_УдостоверениеЛичностиId" ColumnName="УдостоверениеЛичности_УдостоверениеЛичностиId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="СписокВоинскогоУчёта">
+            <EntityTypeMapping TypeName="HuredModel.СписокВоинскогоУчёта">
+              <MappingFragment StoreEntitySet="СписокВоинскогоУчёта">
+                <ScalarProperty Name="ВоинскийУчётId" ColumnName="ВоинскийУчётId" />
+                <ScalarProperty Name="КатегорияЗапаса" ColumnName="КатегорияЗапаса" />
+                <ScalarProperty Name="Звание" ColumnName="Звание" />
+                <ScalarProperty Name="Профиль" ColumnName="Профиль" />
+                <ScalarProperty Name="КодВус" ColumnName="КодВус" />
+                <ScalarProperty Name="КатегорияГодности" ColumnName="КатегорияГодности" />
+                <ScalarProperty Name="НаименованиеВоенкомата" ColumnName="НаименованиеВоенкомата" />
+                <ScalarProperty Name="СостоитНаУчете" ColumnName="СостоитНаУчете" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="СписокДополнительнойИнформации">
+            <EntityTypeMapping TypeName="HuredModel.СписокДополнительнойИнформации">
+              <MappingFragment StoreEntitySet="СписокДополнительнойИнформации">
+                <ScalarProperty Name="ДополнительнаяИнформацияId" ColumnName="ДополнительнаяИнформацияId" />
+                <ScalarProperty Name="EMail" ColumnName="EMail" />
+                <ScalarProperty Name="Skype" ColumnName="Skype" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="СписокОбразований">
+            <EntityTypeMapping TypeName="HuredModel.СписокОбразований">
+              <MappingFragment StoreEntitySet="СписокОбразований">
+                <ScalarProperty Name="ОбразованиеId" ColumnName="ОбразованиеId" />
+                <ScalarProperty Name="Тип" ColumnName="Тип" />
+                <ScalarProperty Name="Учреждение" ColumnName="Учреждение" />
+                <ScalarProperty Name="Дополнительно" ColumnName="Дополнительно" />
+                <ScalarProperty Name="Документ" ColumnName="Документ" />
+                <ScalarProperty Name="НачалоОбучения" ColumnName="НачалоОбучения" />
+                <ScalarProperty Name="КонецОбучения" ColumnName="КонецОбучения" />
+                <ScalarProperty Name="Серия" ColumnName="Серия" />
+                <ScalarProperty Name="Номер" ColumnName="Номер" />
+                <ScalarProperty Name="Специальность" ColumnName="Специальность" />
+                <ScalarProperty Name="Квалификация" ColumnName="Квалификация" />
+                <ScalarProperty Name="Сотрудник_СотрудникId" ColumnName="Сотрудник_СотрудникId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="СписокОсновнойИнформации">
+            <EntityTypeMapping TypeName="HuredModel.СписокОсновнойИнформации">
+              <MappingFragment StoreEntitySet="СписокОсновнойИнформации">
+                <ScalarProperty Name="ОсновнаяИнформацияId" ColumnName="ОсновнаяИнформацияId" />
+                <ScalarProperty Name="Фамилия" ColumnName="Фамилия" />
+                <ScalarProperty Name="Имя" ColumnName="Имя" />
+                <ScalarProperty Name="Отчество" ColumnName="Отчество" />
+                <ScalarProperty Name="ДатаПриема" ColumnName="ДатаПриема" />
+                <ScalarProperty Name="Инн" ColumnName="Инн" />
+                <ScalarProperty Name="ТабельныйНомер" ColumnName="ТабельныйНомер" />
+                <ScalarProperty Name="Пол" ColumnName="Пол" />
+                <ScalarProperty Name="ДомашнийТелефон" ColumnName="ДомашнийТелефон" />
+                <ScalarProperty Name="МобильныйТелефон" ColumnName="МобильныйТелефон" />
+                <ScalarProperty Name="Дополнительно" ColumnName="Дополнительно" />
+                <ScalarProperty Name="Фото" ColumnName="Фото" />
+                <ScalarProperty Name="Должность_ДолжностьId" ColumnName="Должность_ДолжностьId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Статусы">
+            <EntityTypeMapping TypeName="HuredModel.Статусы">
+              <MappingFragment StoreEntitySet="Статусы">
+                <ScalarProperty Name="СтатусId" ColumnName="СтатусId" />
+                <ScalarProperty Name="Название" ColumnName="Название" />
+                <ScalarProperty Name="Цвет" ColumnName="Цвет" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ТабельныеЗаписи">
+            <EntityTypeMapping TypeName="HuredModel.ТабельныеЗаписи">
+              <MappingFragment StoreEntitySet="ТабельныеЗаписи">
+                <ScalarProperty Name="ТабельнаяЗаписьId" ColumnName="ТабельнаяЗаписьId" />
+                <ScalarProperty Name="Дата" ColumnName="Дата" />
+                <ScalarProperty Name="Часы" ColumnName="Часы" />
+                <ScalarProperty Name="Примечание" ColumnName="Примечание" />
+                <ScalarProperty Name="Сотрудник_СотрудникId" ColumnName="Сотрудник_СотрудникId" />
+                <ScalarProperty Name="Статус_СтатусId" ColumnName="Статус_СтатусId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="УдостоверенияЛичности">
+            <EntityTypeMapping TypeName="HuredModel.УдостоверенияЛичности">
+              <MappingFragment StoreEntitySet="УдостоверенияЛичности">
+                <ScalarProperty Name="УдостоверениеЛичностиId" ColumnName="УдостоверениеЛичностиId" />
+                <ScalarProperty Name="Серия" ColumnName="Серия" />
+                <ScalarProperty Name="Номер" ColumnName="Номер" />
+                <ScalarProperty Name="ДатаРождения" ColumnName="ДатаРождения" />
+                <ScalarProperty Name="МестоРождения" ColumnName="МестоРождения" />
+                <ScalarProperty Name="КемВыдан" ColumnName="КемВыдан" />
+                <ScalarProperty Name="КогдаВыдан" ColumnName="КогдаВыдан" />
+                <ScalarProperty Name="Прописка_АдресId" ColumnName="Прописка_АдресId" />
+                <ScalarProperty Name="ФактическоеМестоЖительства_АдресId" ColumnName="ФактическоеМестоЖительства_АдресId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="УчётнаяЗапись">
+            <EntityTypeMapping TypeName="HuredModel.УчётнаяЗапись">
+              <MappingFragment StoreEntitySet="УчётнаяЗапись">
+                <ScalarProperty Name="УчётнаяЗаписьId" ColumnName="УчётнаяЗаписьId" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -201,8 +201,8 @@
                                                 <GridViewColumn Header="Документ" DisplayMemberBinding="{Binding Документ}" />
                                                 <GridViewColumn Header="Серия" DisplayMemberBinding="{Binding Серия}" />
                                                 <GridViewColumn Header="Номер" DisplayMemberBinding="{Binding Номер}" />
-                                                <GridViewColumn Header="Начало" DisplayMemberBinding="{Binding НачалоОбучения}" />
-                                                <GridViewColumn Header="Окончание" DisplayMemberBinding="{Binding КонецОбучения}" />
+                                                <GridViewColumn Header="Начало" DisplayMemberBinding="{Binding Path=НачалоОбучения, StringFormat='yyyy-MM-dd'}" />
+                                                <GridViewColumn Header="Окончание" DisplayMemberBinding="{Binding Path=КонецОбучения, StringFormat='yyyy-MM-dd'}" />
                                                 <GridViewColumn Header="Специальность" DisplayMemberBinding="{Binding Специальность}" />
                                                 <GridViewColumn Header="Квалификация" DisplayMemberBinding="{Binding Квалификация}" />
                                                 <GridViewColumn Header="Дополнительно" DisplayMemberBinding="{Binding Дополнительно}" />

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using Hured.DataBase;
 using Hured.Tables_templates;
 using MahApps.Metro.Controls;
 
@@ -41,6 +42,7 @@ namespace Hured
                 return;
             }
 
+            Controller.OpenConnection();
 
             var order = new ПриказКомандировка
             {

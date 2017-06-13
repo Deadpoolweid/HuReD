@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="b8c0821db36e43a2896001d091e14a83" Name="Diagram1" ZoomLevel="67" DisplayType="false" ShowGrid="true">
+        <EntityTypeShape EntityType="HuredModel.C__MigrationHistory" Width="1.875" PointX="2" PointY="1.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuredModel.Sessions" Width="1.25" PointX="1.25" PointY="2.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuredModel.Адреса" Width="1.5" PointX="1.125" PointY="4" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuredModel.Должности" Width="1.5" PointX="1.25" PointY="7.125" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuredModel.Подразделения" Width="2.75" PointX="0.5" PointY="5.25" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuredModel.ПриказыКомандировка" Width="2.25" PointX="9.25" PointY="2.25" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuredModel.ПриказыОтпуск" Width="1.5" PointX="9.25" PointY="3.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuredModel.ПриказыПриёма" Width="2.375" PointX="9.25" PointY="1" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuredModel.ПриказыУвольнение" Width="2" PointX="9.25" PointY="6.875" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuredModel.Сотрудники" Width="1.625" PointX="6.875" PointY="4" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuredModel.СписокВоинскогоУчёта" Width="2.125" PointX="4" PointY="2.875" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuredModel.СписокДополнительнойИнформации" Width="2.125" PointX="4" PointY="6" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuredModel.СписокОбразований" Width="2.125" PointX="9.25" PointY="8" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuredModel.СписокОсновнойИнформации" Width="2.625" PointX="3.5" PointY="7.125" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuredModel.Статусы" Width="1.5" PointX="9.25" PointY="6.125" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuredModel.ТабельныеЗаписи" Width="2" PointX="9.25" PointY="5" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuredModel.УдостоверенияЛичности" Width="2.625" PointX="3.5" PointY="4" IsExpanded="false" />
+        <EntityTypeShape EntityType="HuredModel.УчётнаяЗапись" Width="2" PointX="4.75" PointY="1.625" IsExpanded="false" />
+        <AssociationConnector Association="HuredModel.FK_1d9ed013ccf14d0bbaf61537f7973374" ManuallyRouted="false" />
+        <AssociationConnector Association="HuredModel.FK_УдостоверенияЛичности_Адреса_Прописка_АдресId" ManuallyRouted="false" />
+        <AssociationConnector Association="HuredModel.FK_def7e0fb8d9d435da0267eff8107e60b" ManuallyRouted="false" />
+        <AssociationConnector Association="HuredModel.FK_Должности_Подразделения_Подразделение_ПодразделениеId" ManuallyRouted="false" />
+        <AssociationConnector Association="HuredModel.FK_ПриказыПриёма_Должности_Должность_ДолжностьId" ManuallyRouted="false" />
+        <AssociationConnector Association="HuredModel.FK_ПриказыКомандировка_Сотрудники_Сотрудник_СотрудникId" ManuallyRouted="false" />
+        <AssociationConnector Association="HuredModel.FK_ПриказыОтпуск_Сотрудники_Сотрудник_СотрудникId" ManuallyRouted="false" />
+        <AssociationConnector Association="HuredModel.FK_ПриказыПриёма_Сотрудники_Сотрудник_СотрудникId" ManuallyRouted="false" />
+        <AssociationConnector Association="HuredModel.FK_ПриказыУвольнение_Сотрудники_Сотрудник_СотрудникId" ManuallyRouted="false" />
+        <AssociationConnector Association="HuredModel.FK_82661c53ed774ca7988fa98213490c07" ManuallyRouted="false" />
+        <AssociationConnector Association="HuredModel.FK_a653f5f575044420b1ec10717432abe1" ManuallyRouted="false" />
+        <AssociationConnector Association="HuredModel.FK_c8d3f43d5e7b432b913c20d82c99c82f" ManuallyRouted="false" />
+        <AssociationConnector Association="HuredModel.FK_d51e218896ea41ecbd4cf99ff13d8b28" ManuallyRouted="false" />
+        <AssociationConnector Association="HuredModel.FK_СписокОбразований_Сотрудники_Сотрудник_СотрудникId" ManuallyRouted="false" />
+        <AssociationConnector Association="HuredModel.FK_ТабельныеЗаписи_Сотрудники_Сотрудник_СотрудникId" ManuallyRouted="false" />
+        <AssociationConnector Association="HuredModel.FK_ТабельныеЗаписи_Статусы_Статус_СтатусId" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

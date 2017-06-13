@@ -1,7 +1,9 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using Catel.Collections;
 using Hured.DataBase;
 using Hured.Tables_templates;
 using MahApps.Metro.Controls;
@@ -20,12 +22,22 @@ namespace Hured
             InitializeComponent();
             Functions.AddUnitsFromDB(ref CbUnit);
             CbUnit.SelectedIndex = 0;
+
+            var cbselecteditem = new ComboBoxItem();
+            var units = new List<ComboBoxItem>();
+            foreach (var item in CbUnit.Items)
+            {
+                units.Add(item as ComboBoxItem);
+            }
+
+
             if (position != null)
             {
                 _isEditMode = true;
                 TbName.Text = _oldName = position.Название;
                 TbРасписание.Text = position.Расписание;
-                CbUnit.SelectedItem = position.Подразделение.Название;
+                CbUnit.SelectedItem = units.Find(q => (q.Content as Подразделение).ПодразделениеId ==
+                                                      position.Подразделение.ПодразделениеId);
             }
         }
 
@@ -33,11 +45,6 @@ namespace Hured
         private readonly string _oldName;
 
         private void bOk_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-
-        private void Position_OnClosing(object sender, CancelEventArgs e)
         {
             try
             {
@@ -52,7 +59,7 @@ namespace Hured
                 var tag = (CbUnit.SelectedItem as ComboBoxItem)?.Tag;
                 if (tag != null)
                 {
-                    var unitId = (int) tag;
+                    var unitId = (int)tag;
 
                     var unit = Controller.Select<Подразделение>(
                         q => q.ПодразделениеId == unitId).FirstOrDefault();
@@ -84,6 +91,13 @@ namespace Hured
             {
                 Controller.CloseConnection(true);
             }
+
+            Close();
+        }
+
+        private void Position_OnClosing(object sender, CancelEventArgs e)
+        {
+            
         }
 
         private void bCancel_Click(object sender, RoutedEventArgs e)

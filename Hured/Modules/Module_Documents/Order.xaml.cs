@@ -98,7 +98,7 @@ namespace Hured
                 .FirstOrDefault(q => q.Name == swindowType);
             var type = DocumentsTypeDictionary.GetDocumentTypeByEnum((OrderType)CbOrderType.SelectedIndex);
 
-
+       
             dynamic window;
 
             var paramLength = type.GetConstructors().FirstOrDefault().GetParameters().Length;
@@ -141,7 +141,6 @@ namespace Hured
 
             if (window.DialogResult == true)
             {
-                Controller.OpenConnection();
 
                 var order = Convert.ChangeType(window.Tag,type);
                 if (order != null)

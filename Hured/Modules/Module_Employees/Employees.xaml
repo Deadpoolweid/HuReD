@@ -47,6 +47,8 @@
                 <Button Name="BAdd" Click="bAdd_OnClick">Добавить</Button>
                 <Button Name="BChange" Click="BChange_OnClick">Изменить</Button>
                 <Button x:Name="BRemove" Click="bRemove_Click">Удалить</Button>
+                <Button x:Name="BPrint" Click="BPrint_OnClick" ToolTip="Печатает личную карточку">Печать</Button>
+
             </StackPanel>
 
             <TextBox Grid.Row="2" Grid.Column="2" Name="tbSearch" ToolTip="Введите фамилию,имя или отчество сотрудника" 

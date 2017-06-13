@@ -158,10 +158,10 @@ namespace Hured
                     if (!Controller.Remove<ОсновнаяИнформация>(
                         q => q.ОсновнаяИнформацияId == employee.ОсновнаяИнформация.ОсновнаяИнформацияId))
                         throw new Exception("Не удалось удалить элемент. Информация: " + employee.ОсновнаяИнформация);
-                    if (Controller.Remove<УдостоверениеЛичности>(
+                    if (!Controller.Remove<УдостоверениеЛичности>(
                         q => q.УдостоверениеЛичностиId == employee.УдостоверениеЛичности.УдостоверениеЛичностиId))
                         throw new Exception("Не удалось удалить элемент. Информация: " + employee.УдостоверениеЛичности);
-                    if (Controller.Remove<ВоинскийУчёт>(
+                    if (!Controller.Remove<ВоинскийУчёт>(
                         q => q.ВоинскийУчётId == employee.ВоинскийУчёт.ВоинскийУчётId))
                         throw new Exception("Не удалось удалить элемент. Информация: " + employee.ВоинскийУчёт);
 
@@ -169,12 +169,23 @@ namespace Hured
 
                     foreach (var id in educationsId)
                     {
-                        if (Controller.Remove<Образование>(q => q.ОбразованиеId == id))
+                        if (!Controller.Remove<Образование>(q => q.ОбразованиеId == id))
                             throw new Exception("Не удалось удалить элемент. Информация: " +
                                                 employee.Образование.FirstOrDefault(q => q.ОбразованиеId == id));
                     }
-                    if (Controller.Remove<Сотрудник>(q => q.СотрудникId == index))
+
+                    var entriesId = Controller.Select<ТабельнаяЗапись>(q => q.Сотрудник.СотрудникId == index).Select(q => q.ТабельнаяЗаписьId);
+
+                    foreach (var entryID in entriesId)
+                    {
+                        if (!Controller.Remove<ТабельнаяЗапись>(q => q.ТабельнаяЗаписьId == entryID))
+                            throw new Exception("Не удалось удалить элемент. Информация: ");
+                    }
+
+                    if (!Controller.Remove<Сотрудник>(q => q.СотрудникId == index))
                         throw new Exception("Не удалось удалить элемент. Информация: " + employee);
+
+
 
                     Controller.CloseConnection();
 
@@ -270,6 +281,11 @@ namespace Hured
         {
             if (tbSearch.IsHavePlaceholder()) return;
             SyncEmployeesList();
+        }
+
+        private void BPrint_OnClick(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }

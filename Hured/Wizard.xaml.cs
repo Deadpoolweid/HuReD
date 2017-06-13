@@ -257,6 +257,8 @@ namespace Hured
 
                 _settings.SetConnectionStringBuilder(builder);
 
+                Controller.InitDb();
+
                 return;
             }
 

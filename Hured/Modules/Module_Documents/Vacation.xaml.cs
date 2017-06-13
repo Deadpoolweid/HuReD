@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows;
+using Hured.DataBase;
 using Hured.Tables_templates;
 
 namespace Hured
@@ -59,6 +60,8 @@ namespace Hured
             {
                 vacationType = TbДругое.Text;
             }
+
+            Controller.OpenConnection();
 
             var order = new ПриказОтпуск
             {

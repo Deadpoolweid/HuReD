@@ -27,14 +27,29 @@ namespace Hured
 
             if (employee != null)
             {
+                this.employee = employee;
                 Tag = employee.СотрудникId;
 
                 _isEditMode = true;
                 TbФио.Text = employee.ОсновнаяИнформация.Фамилия + " " +
                     employee.ОсновнаяИнформация.Имя + " " +
                     employee.ОсновнаяИнформация.Отчество;
-                CbUnit.SelectedItem = employee.ОсновнаяИнформация.Должность.Подразделение.Название;
-                CbPosition.SelectedItem = employee.ОсновнаяИнформация.Должность.Название;
+
+                var units = new List<ComboBoxItem>();
+                foreach (var item in CbUnit.Items)
+                {
+                    units.Add(item as ComboBoxItem);
+                }
+                CbUnit.SelectedItem = units.Find(q => (q.Content as Подразделение).ПодразделениеId ==
+                                                      employee.ОсновнаяИнформация.Должность.Подразделение.ПодразделениеId);
+                units.Clear();
+                foreach (var item in CbPosition.Items)
+                {
+                    units.Add(item as ComboBoxItem);
+                }
+                var selectedPosition = units.Find(q => Convert.ToInt32(q.Tag) ==
+                                                       employee.ОсновнаяИнформация.Должность.ДолжностьId);
+                CbPosition.SelectedItem = selectedPosition ;
                 DpCurrentDate.Text = employee.ОсновнаяИнформация.ДатаПриема.ToShortDateString();
                 TbДомашний.Text = employee.ОсновнаяИнформация.ДомашнийТелефон;
                 TbИнн.Text = employee.ОсновнаяИнформация.Инн;
@@ -87,6 +102,8 @@ namespace Hured
         }
 
         private readonly bool _isEditMode;
+
+        private Сотрудник employee;
 
         private void SyncEducationList()
         {
@@ -250,7 +267,21 @@ namespace Hured
 
                 if (_isEditMode)
                 {
-                    Controller.Edit(q => q.СотрудникId == (int)Tag, employeeToAdd);
+                    var result = Controller.Edit<ОсновнаяИнформация>(
+                        q => q.ОсновнаяИнформацияId == employee.ОсновнаяИнформация.ОсновнаяИнформацияId,
+                        employeeToAdd.ОсновнаяИнформация);
+                    result = Controller.Edit<УдостоверениеЛичности>(
+                        q => q.УдостоверениеЛичностиId == employee.УдостоверениеЛичности.УдостоверениеЛичностиId,
+                        employeeToAdd.УдостоверениеЛичности);
+                    result = Controller.Edit<ВоинскийУчёт>(
+                        q => q.ВоинскийУчётId == employee.ВоинскийУчёт.ВоинскийУчётId,
+                        employeeToAdd.ВоинскийУчёт);
+                    result = Controller.Edit<ДополнительнаяИнформация>(
+                        q => q.ДополнительнаяИнформацияId == employee.ДополнительнаяИнформация.ДополнительнаяИнформацияId,
+                        employeeToAdd.ДополнительнаяИнформация);
+
+                    //Controller.Edit(q => q.СотрудникId == (int)Tag, employeeToAdd);
+                    // TODO Изменять все поля, а не только запись о сотруднике, что позволит избежать дублирования данных
                 }
                 else
                 {
