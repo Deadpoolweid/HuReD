@@ -152,7 +152,7 @@ namespace Hured
 
                     if (_isEditMode)
                     {
-                        ControllerExtensions.EditDocumentByNumberNotGeneric(order.Номер,order,type);
+                        ControllerExtensions.EditDocumentByNumberNotGeneric(Convert.ToInt32(order.Номер),order,type);
                     }
                     else
                     {

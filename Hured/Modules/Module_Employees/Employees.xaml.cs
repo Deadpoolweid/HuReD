@@ -182,6 +182,17 @@ namespace Hured
                             throw new Exception("Не удалось удалить элемент. Информация: ");
                     }
 
+
+                    var documentTypes = DocumentsTypeDictionary.GetTypesOfAllDocuments();
+
+                    foreach (var type in documentTypes)
+                    {
+                        ControllerExtensions.RemoveDocumentNotGeneric(type,
+                            q => (q as IДокумент).Сотрудник.СотрудникId == index);
+                    }
+
+                    var documents = new List<IДокумент>();
+
                     if (!Controller.Remove<Сотрудник>(q => q.СотрудникId == index))
                         throw new Exception("Не удалось удалить элемент. Информация: " + employee);
 

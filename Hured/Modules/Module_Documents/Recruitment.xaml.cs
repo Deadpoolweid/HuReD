@@ -52,18 +52,10 @@ namespace Hured
 
         private void bOk_Click(object sender, RoutedEventArgs e)
         {
-
-            Close();
-        }
-
-
-        private void Recruitment_OnClosing(object sender, CancelEventArgs e)
-        {
             if (this.FindChildren<TextBox>().Where(
-    textbox => textbox.Name != "tbИспытательныйСрокДлительность" ||
-    ChIsTraineship.IsChecked != false).Any(Functions.IsEmpty))
+                textbox => textbox.Name != "tbИспытательныйСрокДлительность" &&
+                           ChIsTraineship.IsChecked != false).Any(Functions.IsEmpty))
             {
-                e.Cancel = true;
                 return;
             }
 
@@ -83,7 +75,7 @@ namespace Hured
                     var positionId = (int)comboboxItem;
 
                     var position = Controller.Find<Должность>(q => q.Подразделение.ПодразделениеId == unit.ПодразделениеId
-                             && q.ДолжностьId == positionId);
+                                                                   && q.ДолжностьId == positionId);
 
                     var приём = new ПриказПриём
                     {
@@ -103,6 +95,13 @@ namespace Hured
             }
 
             DialogResult = true;
+            Close();
+        }
+
+
+        private void Recruitment_OnClosing(object sender, CancelEventArgs e)
+        {
+            
         }
 
         private void CbUnit_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
