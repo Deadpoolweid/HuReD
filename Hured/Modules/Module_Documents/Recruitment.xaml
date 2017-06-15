@@ -45,7 +45,7 @@
             </StackPanel>
 
             <CheckBox Grid.Row="1" Grid.Column="1" x:Name="ChIsTraineship" IsThreeState="False"
-                      Checked="ChIsTraineship_OnChecked">Испытательный срок на</CheckBox>
+                      Click="ChIsTraineship_OnChecked" >Испытательный срок на</CheckBox>
 
             <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
                 <TextBox Name="TbИспытательныйСрокДлительность" />

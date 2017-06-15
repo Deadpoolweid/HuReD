@@ -61,6 +61,8 @@ namespace Hured
 
         void SyncTimeSheet(List<Сотрудник> сотрудники = null, DateTime firstDay = default(DateTime))
         {
+            IsHitTestVisible = false;
+
             try
             {
                 if (firstDay == default(DateTime))
@@ -144,6 +146,8 @@ namespace Hured
             {
                 Controller.CloseConnection(true);
             }
+
+            IsHitTestVisible = true;
         }
 
         private List<Сотрудник> FilterEmployees()

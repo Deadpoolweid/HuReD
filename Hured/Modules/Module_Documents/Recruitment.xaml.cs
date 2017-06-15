@@ -39,6 +39,7 @@ namespace Hured
 
             }
 
+            ChIsTraineship.IsChecked = false;
             TbИспытательныйСрокДлительность.IsHitTestVisible = false;
         }
 
@@ -115,8 +116,7 @@ namespace Hured
 
         private void ChIsTraineship_OnChecked(object sender, RoutedEventArgs e)
         {
-            if (ChIsTraineship.IsChecked != null)
-                TbИспытательныйСрокДлительность.IsHitTestVisible = ChIsTraineship.IsChecked.Value;
+                TbИспытательныйСрокДлительность.IsHitTestVisible = !TbИспытательныйСрокДлительность.IsHitTestVisible;
         }
     }
 }
